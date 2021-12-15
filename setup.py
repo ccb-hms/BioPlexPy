@@ -7,5 +7,5 @@ setup(
    author='Roger Vargas',
    author_email='roger_vargas@g.harvard.edu',
    packages=['BioPlexPy'],  #same as name
-   install_requires=['pandas'], #external packages as dependencies
+   install_requires=['pandas','requests','anndata'], #external packages as dependencies
 )
