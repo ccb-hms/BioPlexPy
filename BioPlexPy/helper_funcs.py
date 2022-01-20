@@ -2,30 +2,33 @@ import io
 import requests
 import anndata as ad
 import pandas as pd
+import networkx as nx
 
 def getBioPlex(cell_line, version):
-
     '''
-    Function to Load BioPlex interactions data
+    Load BioPlex interactions data.
     
-    cell_line: takes input ['293T','HCT116']
-    version: takes input ['3.0','1.0','2.0']
+    This function loads BioPlex PPI data for
+    for cell lines HEK293T and HCT116, note we
+    only have version 1.0 for HCT116 cells.
     
-    data for cell lines: HEK293T and HCT116
-    we only have version 1.0 for HCT116 cells
+    Parameters
+    ----------
+    cell_line : str
+        Takes input ['293T','HCT116'].
+    version : str
+        Takes input ['3.0','1.0','2.0'].
     
-    Column Descriptions
-    GeneA: Entrez Gene ID for the first interacting protein
-    GeneB: Entrez Gene ID for the second interacting protein
-    UniprotA: Uniprot ID for the first interacting protein
-    UniprotB: Uniprot ID for the second interacting protein
-    SymbolA: Symbol for the first interacting protein
-    SymbolB: Symbol for the second interacting protein
-    p(Wrong ID): Probability of wrong protein ID (CompPASS-Plus)
-    p(NotInteractor): Probability of nonspecific background (CompPASS-Plus)
-    p(Interactor): Probability of high-confidence interaction (CompPASS-Plus)
+    Returns
+    -------
+    Pandas DataFrame
+        A dataframe with each row corresponding to a PPI interaction.
+    
+    Examples
+    --------
+    >>> bp_293t = getBioPlex('293T', '1.0')
+    >>> bp_hct116 = getBioPlex('HCT116', '1.0')
     '''
-    
     if f'{cell_line}.{version}' not in ['293T.1.0','293T.2.0','293T.3.0','HCT116.1.0']:
         print('dataset not available for this Cell Line - Version')
         
@@ -44,16 +47,21 @@ def getBioPlex(cell_line, version):
     return BioPlex_interactions_df
 
 def getGSE122425():
-    
     '''
-    Function to retrieve HEK293 RNAseq expression data
+    Retrieve HEK293 RNAseq expression data.
     
-    output is two AnnData objects: (1) HEK293 raw counts, (2) HEK293 rpkm
-    example usage:
+    Returns
+    -------
+    adata_raw : AnnData object
+        SummarizedExperiment of HEK293 raw count.
     
-        HEK293_adata_raw, HEK293_adata_rpkm = getGSE122425()
+    adata_rpkm : AnnData object
+        SummarizedExperiement of HEK293 rpkm.
+    
+    Examples
+    --------
+    >>> HEK293_adata_raw, HEK293_adata_rpkm = getGSE122425()
     '''
-
     # specify URL where data is stored
     baseURL = 'https://ftp.ncbi.nlm.nih.gov/geo/series/GSE122nnn/GSE122425/suppl/'
     filename = 'GSE122425_all.counts.293_vs_293NK.edgeR_all.xls.gz'
@@ -69,19 +77,64 @@ def getGSE122425():
     obs.set_index('gene_id',inplace=True)
     obs.rename(mapper={'GeneSymbol':'SYMBOL'}, inplace=True, axis=1)
 
-    # we have raw counts and rpkms here in one matrix...
-    # let's pull them out seperately and make each one an assay
-
+    # we have raw counts and rpkms here in one matrix
     # raw counts
     raw_X = GSE122425_df.loc[:,['HEK293NK-SEQ1','HEK293NK-SEQ2','HEK293NK-SEQ3','HEK293-SEQ1','HEK293-SEQ2','HEK293-SEQ3']].values
     raw_var = pd.DataFrame(index=['NK.1','NK.2','NK.3','WT.1','WT.2','WT.3']) # annot for variables (cols)
+    
+    # convert to AnnData object (default datatype is 'float32')
+    adata = ad.AnnData(raw_X, obs=obs, var=raw_var)
 
-    # rpkms
+    # store rpkms as a layer
     rpkm_X = GSE122425_df.loc[:,['HEK293NK-SEQ1_RPKM','HEK293NK-SEQ2_RPKM','HEK293NK-SEQ3_RPKM','HEK293-SEQ1_RPKM','HEK293-SEQ2_RPKM','HEK293-SEQ3_RPKM']].values
-    rpkm_var = pd.DataFrame(index=['NK.1','NK.2','NK.3','WT.1','WT.2','WT.3']) # annot for variables (cols)
+    adata.layers["rpkm"] = rpkm_X
 
-    # convert to AnnData objects (default datatype is 'float32')
-    adata_raw = ad.AnnData(raw_X, obs=obs, var=raw_var)
-    adata_rpkm = ad.AnnData(rpkm_X, obs=obs, var=rpkm_var)
+    return adata
 
-    return [adata_raw, adata_rpkm]
+def bioplex2graph(bp_PPI_df):
+    '''
+    Convert BioPlex PPIs into a graph.
+    
+    This function converts representation of BioPlex PPIs into a graph data structure
+    Representation of BioPlex PPIs in a NetworkX object from NetworkX. 
+
+    Parameters
+    ----------
+    DataFrame of PPIs : Pandas DataFrame
+
+    Returns
+    -------
+    NetworkX graph
+        A NetworkX graph with Nodes = Uniprot Gene Symbols and Edges = interactions.
+
+    Examples
+    --------
+    >>> bp_293t_df = getBioPlex('293T', '3.0') # (1) Obtain the latest version of the 293T PPI network
+    >>> bp_293t_G = bioplex2graph(bp_293t_df) # (2) Turn the data into a graph
+    '''
+    # construct graph from BioPlex PPI data
+    bp_G = nx.DiGraph()
+    for source, target, pW, pNI, pInt in zip(bp_PPI_df.UniprotA, bp_PPI_df.UniprotB, bp_PPI_df.pW, bp_PPI_df.pNI, bp_PPI_df.pInt):
+        bp_G.add_edge(source, target, pW=pW, pNI=pNI, pInt=pInt)
+        
+    # get mapping uniprot -> entrez & store as node attribute
+    uniprot_entrez_dict = {}
+    for uniprot_A, entrez_A in zip(bp_PPI_df.UniprotA, bp_PPI_df.GeneA):
+        uniprot_entrez_dict[uniprot_A] = entrez_A
+    for uniprot_B, entrez_B in zip(bp_PPI_df.UniprotB, bp_PPI_df.GeneB):
+        uniprot_entrez_dict[uniprot_B] = entrez_B
+
+    for node_i in bp_G.nodes():
+        bp_G.nodes[node_i]["entrezid"] = uniprot_entrez_dict[node_i]
+
+    # get mapping uniprot -> symbol & store as node attribute
+    uniprot_symbol_dict = {}
+    for uniprot_A, symbol_A in zip(bp_PPI_df.UniprotA, bp_PPI_df.SymbolA):
+        uniprot_symbol_dict[uniprot_A] = symbol_A
+    for uniprot_B, symbol_B in zip(bp_PPI_df.UniprotB, bp_PPI_df.SymbolB):
+        uniprot_symbol_dict[uniprot_B] = symbol_B
+
+    for node_i in bp_G.nodes():
+        bp_G.nodes[node_i]["symbol"] = uniprot_symbol_dict[node_i]
+    
+    return bp_G
