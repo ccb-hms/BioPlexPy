@@ -52,15 +52,12 @@ def getGSE122425():
     
     Returns
     -------
-    adata_raw : AnnData object
-        SummarizedExperiment of HEK293 raw count.
-    
-    adata_rpkm : AnnData object
-        SummarizedExperiement of HEK293 rpkm.
+    adata : AnnData object
+        SummarizedExperiment of HEK293 raw count with an added layer storing rpkm.
     
     Examples
     --------
-    >>> HEK293_adata_raw, HEK293_adata_rpkm = getGSE122425()
+    >>> HEK293_adata = getGSE122425()
     '''
     # specify URL where data is stored
     baseURL = 'https://ftp.ncbi.nlm.nih.gov/geo/series/GSE122nnn/GSE122425/suppl/'
@@ -83,7 +80,7 @@ def getGSE122425():
     raw_var = pd.DataFrame(index=['NK.1','NK.2','NK.3','WT.1','WT.2','WT.3']) # annot for variables (cols)
     
     # convert to AnnData object (default datatype is 'float32')
-    adata = ad.AnnData(raw_X, obs=obs, var=raw_var)
+    adata = ad.AnnData(raw_X, obs=obs, var=raw_var, dtype='int32')
 
     # store rpkms as a layer
     rpkm_X = GSE122425_df.loc[:,['HEK293NK-SEQ1_RPKM','HEK293NK-SEQ2_RPKM','HEK293NK-SEQ3_RPKM','HEK293-SEQ1_RPKM','HEK293-SEQ2_RPKM','HEK293-SEQ3_RPKM']].values
