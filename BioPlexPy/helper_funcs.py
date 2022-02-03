@@ -109,6 +109,29 @@ def bioplex2graph(bp_PPI_df):
     >>> bp_293t_df = getBioPlex('293T', '3.0') # (1) Obtain the latest version of the 293T PPI network
     >>> bp_293t_G = bioplex2graph(bp_293t_df) # (2) Turn the data into a graph
     '''
+    # add isoform columns for Uniprot source & Uniprot target
+    bp_PPI_df.loc[:,'isoformA'] = bp_PPI_df.UniprotA
+    bp_PPI_df.loc[:,'isoformB'] = bp_PPI_df.UniprotB
+
+    # reconstruct UniprotA/UniprotB columns without '-' isoform id
+    UniprotA_new = []
+    UniprotB_new = []
+    for UniprotA, UniprotB in zip(bp_PPI_df.UniprotA, bp_PPI_df.UniprotB):
+
+        if '-' in UniprotA:
+            UniprotA_new.append(UniprotA.split('-')[0])
+        else:
+            UniprotA_new.append(UniprotA)
+
+        if '-' in UniprotB:
+            UniprotB_new.append(UniprotB.split('-')[0])
+        else:
+            UniprotB_new.append(UniprotB)
+
+    # update columns for Uniprot source & Uniprot target to exclude isoform '-' ID
+    bp_PPI_df.loc[:,'UniprotA'] = UniprotA_new
+    bp_PPI_df.loc[:,'UniprotB'] = UniprotB_new
+    
     # construct graph from BioPlex PPI data
     bp_G = nx.DiGraph()
     for source, target, pW, pNI, pInt in zip(bp_PPI_df.UniprotA, bp_PPI_df.UniprotB, bp_PPI_df.pW, bp_PPI_df.pNI, bp_PPI_df.pInt):
@@ -133,5 +156,15 @@ def bioplex2graph(bp_PPI_df):
 
     for node_i in bp_G.nodes():
         bp_G.nodes[node_i]["symbol"] = uniprot_symbol_dict[node_i]
+
+    # get mapping uniprot -> isoform & store as node attribute
+    uniprot_isoform_dict = {}
+    for uniprot_A, isoform_A in zip(bp_PPI_df.UniprotA, bp_PPI_df.isoformA):
+        uniprot_isoform_dict[uniprot_A] = isoform_A
+    for uniprot_B, isoform_B in zip(bp_PPI_df.UniprotB, bp_PPI_df.isoformB):
+        uniprot_isoform_dict[uniprot_B] = isoform_B
+
+    for node_i in bp_G.nodes():
+        bp_G.nodes[node_i]["isoform"] = uniprot_isoform_dict[node_i]
     
     return bp_G
