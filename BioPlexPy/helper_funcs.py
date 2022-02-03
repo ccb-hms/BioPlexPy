@@ -168,3 +168,40 @@ def bioplex2graph(bp_PPI_df):
         bp_G.nodes[node_i]["isoform"] = uniprot_isoform_dict[node_i]
     
     return bp_G
+
+def getCorum(complex_set = 'all', organism = 'Human'):
+    '''
+    Functionality for retrieving the CORUM protein complex data.
+
+    Parameters
+    ----------
+    complex_set : str
+        Takes input [all','core','splice'] (default 'all').
+    organism : str
+        Takes input ['Bovine','Dog','Hamster','Human','MINK','Mammalia','Mouse','Pig','Rabbit','Rat'] (default 'Human').
+
+    Returns
+    -------
+    Pandas DataFrame
+        A dataframe with each row corresponding to a CORUM complex.
+
+    Examples
+    --------
+    >>> CORUM_df = getCorum()
+    >>> CORUM_df = getCorum('core', 'Human')
+    '''
+    # specify URL where data is stored
+    baseURL = 'https://mips.helmholtz-muenchen.de/corum/download/'
+    filename = f'{complex_set}Complexes.txt.zip'
+    outFilePath = filename[:-4]
+
+    # stream the file as bytes into memory using io.bytesIO and decompress using pandas
+    response = requests.get(baseURL + filename)
+    content = response.content
+    CORUM_df = pd.read_csv(io.BytesIO(content), sep='\t', compression='zip')
+
+    # filter to keep only CORUM sets for a specific organism
+    CORUM_df = CORUM_df[CORUM_df.Organism == organism]
+    CORUM_df.reset_index(inplace = True, drop = True)
+    
+    return CORUM_df
