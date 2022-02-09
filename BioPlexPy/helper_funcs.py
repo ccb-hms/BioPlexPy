@@ -43,6 +43,13 @@ def getBioPlex(cell_line, version):
             file_ext = 'HCT116_Network_5.5K_Dec_2019'
 
         BioPlex_interactions_df = pd.read_csv(f"https://bioplex.hms.harvard.edu/data/BioPlex_{file_ext}.tsv", sep = '\t')
+        
+    # if pulling 293T cell line version 1.0 or 2.0, change column names to standardize across datasets for input into other functions
+    if (cell_line == '293T') and (version == '1.0'):
+        BioPlex_interactions_df.rename({'Gene A':'GeneA','Gene B':'GeneB','Uniprot A':'UniprotA','Uniprot B':'UniprotB','Symbol A':'SymbolA','Symbol B':'SymbolB','p(Wrong)':'pW','p(No Interaction)':'pNI','p(Interaction)':'pInt'}, axis = 1, inplace = True)
+
+    if (cell_line == '293T') and (version == '2.0'):
+        BioPlex_interactions_df.rename({'p(Wrong)':'pW','p(No Interaction)':'pNI','p(Interaction)':'pInt'}, axis = 1, inplace = True)
     
     return BioPlex_interactions_df
 
