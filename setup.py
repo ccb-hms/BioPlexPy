@@ -10,7 +10,3 @@ setup(
 <<<<<<< HEAD
    install_requires=['pandas','requests','anndata','networkx','numpy','matplotlib'], #external packages as dependencies
 )
-=======
-   install_requires=['pandas','requests','anndata','networkx'], #external packages as dependencies
-)
->>>>>>> bfa64393a8a9a2653b6024435ca48a44057136aa
