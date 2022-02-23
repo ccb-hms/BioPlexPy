@@ -218,7 +218,7 @@ def getCorum(complex_set = 'all', organism = 'Human'):
     
     return CORUM_df
 
-def display_PPI_network_for_complex(bp_PPI_df, Corum_DF, ComplexName_i, node_size, edge_width, fig_out_path):
+def display_PPI_network_for_complex(bp_PPI_df, Corum_DF, ComplexName_i, node_size, edge_width, bait_node_color, prey_node_color, AP_MS_edge_color , fig_out_path):
     '''
     Display network of BioPlex PPIs for a CORUM complex.
     
@@ -233,6 +233,9 @@ def display_PPI_network_for_complex(bp_PPI_df, Corum_DF, ComplexName_i, node_siz
     Name of Corum Complex: str
     Size of Nodes in Network: int
     Width of Edges in Network: float
+    Color of Nodes targeted as baits: str
+    Color of Nodes detected as preys only: str
+    Color of Edges observed via AP-MS from PPI data: str
     Path to save figure: str
 
     Returns
@@ -271,6 +274,14 @@ def display_PPI_network_for_complex(bp_PPI_df, Corum_DF, ComplexName_i, node_siz
 
     # labels will be the gene symbols, pull from attribute for each node
     labels = nx.get_node_attributes(bp_complex_i_G, 'symbol')
+    
+    # add genes in CORUM complex that were not detected as baits or preys as "dummy" nodes (for visualization purposes only)
+    dummy_node = 1
+    for gene_i in genes_in_complex_i:
+        if gene_i not in list(labels.values()): # gene already not a node
+            bp_complex_i_G.add_nodes_from([(f'dummy_{dummy_node}', {"symbol": gene_i})])
+            labels[f'dummy_{dummy_node}'] = gene_i
+            dummy_node += 1
 
     # color nodes according to whether they were present among "baits" & "preys", just "baits", or just "preys" for this complex
     node_color_map = []
@@ -280,15 +291,19 @@ def display_PPI_network_for_complex(bp_PPI_df, Corum_DF, ComplexName_i, node_siz
 
         # gene is present among baits & preys for the PPIs detected in this complex
         if (node_i_gene_symbol in bp_complex_i_baits) and (node_i_gene_symbol in bp_complex_i_preys):
-            node_color_map.append('xkcd:red')
+            node_color_map.append(bait_node_color)
 
         # gene is present among baits but NOT preys for the PPIs detected in this complex
         elif (node_i_gene_symbol in bp_complex_i_baits) and (node_i_gene_symbol not in bp_complex_i_preys):
-            node_color_map.append('xkcd:red')
+            node_color_map.append(bait_node_color)
 
-        # gene is NOT present among baits & but is present among preys for the PPIs detected in this complex
+        # gene is NOT present among baits but is present among preys for the PPIs detected in this complex
         elif (node_i_gene_symbol not in bp_complex_i_baits) and (node_i_gene_symbol in bp_complex_i_preys):
-            node_color_map.append('xkcd:rose pink')
+            node_color_map.append(prey_node_color)
+            
+        # gene is NOT present among baits and is NOT present among preys for the PPIs detected in this complex ("dummy" nodes)
+        elif (node_i_gene_symbol not in bp_complex_i_baits) and (node_i_gene_symbol not in bp_complex_i_preys):
+            node_color_map.append('0.7')
 
     # create a complete graph from the nodes of complex graph to add in all "background" edges (edges detected with AP-MS will be colored over)
     # position will be the same for both graphs since nodes are the same
@@ -308,7 +323,7 @@ def display_PPI_network_for_complex(bp_PPI_df, Corum_DF, ComplexName_i, node_siz
 
     # construct edges
     edges = nx.draw_networkx_edges(bp_complex_i_G, pos, width = edge_width)
-    edges.set_edgecolor("xkcd:red")
+    edges.set_edgecolor(AP_MS_edge_color)
 
     # construct nodes
     nodes = nx.draw_networkx_nodes(bp_complex_i_G, pos, node_size = node_size, node_color = node_color_map)
