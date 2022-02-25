@@ -218,7 +218,7 @@ def getCorum(complex_set = 'all', organism = 'Human'):
     
     return CORUM_df
 
-def display_PPI_network_for_complex(bp_PPI_df, Corum_DF, ComplexName_i, node_size, edge_width, bait_node_color, prey_node_color, AP_MS_edge_color , fig_out_path):
+def display_PPI_network_for_complex(bp_PPI_df, Corum_DF, ComplexName_i, node_size, edge_width, bait_node_color, prey_node_color, AP_MS_edge_color, fig_out_path, node_pos = False, node_labels = False):
     '''
     Display network of BioPlex PPIs for a CORUM complex.
     
@@ -237,17 +237,23 @@ def display_PPI_network_for_complex(bp_PPI_df, Corum_DF, ComplexName_i, node_siz
     Color of Nodes detected as preys only: str
     Color of Edges observed via AP-MS from PPI data: str
     Path to save figure: str
+    Networkx Position of Nodes: dict (optional)
+    Node Labels: dict (optional)
 
     Returns
     -------
     PNG file
         Displays and outputs a PNG file of network.
+    Node Positions
+        Dictionary of Node Positions in NetworkX layout
+    Node Labels
+        Dictionary of Labels for Nodes used in plotting
 
     Examples
     --------
     >>> bp_293t_df = getBioPlex('293T', '3.0') # (1) Obtain the latest version of the 293T PPI network
     >>> Corum_DF = getCorum('core', 'Human') # (2) Obtain CORUM complexes
-    >>> display_PPI_network_for_complex(bp_PPI_df, Corum_DF, 'ING2 complex', 2300, 3.5, /n/shared_db/ccb/bioplex/BioPlexPy_testing/figures/network_293T_3.0_ING2-complex.png') # (3) Visualize network for specified protein complex using PPI data
+    >>> ING2_node_layout, ING2_node_labels = display_PPI_network_for_complex(bp_PPI_df, Corum_DF, 'ING2 complex', 2300, 3.5, /n/shared_db/ccb/bioplex/BioPlexPy_testing/figures/network_293T_3.0_ING2-complex.png') # (3) Visualize network for specified protein complex using PPI data
     '''
     # store gene symbols that belong to this complex in a list
     genes_in_complex_i = Corum_DF[Corum_DF.ComplexName == ComplexName_i].loc[:,'subunits(Gene name)'].values[0].split(';')
@@ -272,16 +278,31 @@ def display_PPI_network_for_complex(bp_PPI_df, Corum_DF, ComplexName_i, node_siz
     bp_complex_i_baits = list(set(bp_complex_i_df.SymbolA))
     bp_complex_i_preys = list(set(bp_complex_i_df.SymbolB))
 
-    # labels will be the gene symbols, pull from attribute for each node
-    labels = nx.get_node_attributes(bp_complex_i_G, 'symbol')
-    
-    # add genes in CORUM complex that were not detected as baits or preys as "dummy" nodes (for visualization purposes only)
-    dummy_node = 1
-    for gene_i in genes_in_complex_i:
-        if gene_i not in list(labels.values()): # gene already not a node
-            bp_complex_i_G.add_nodes_from([(f'dummy_{dummy_node}', {"symbol": gene_i})])
-            labels[f'dummy_{dummy_node}'] = gene_i
-            dummy_node += 1
+    ############################################################################
+    #### optional argument "node_labels" used here
+    ############################################################################
+    # check to see if node labels have been fed as an argument
+    if node_labels == False:
+        labels = nx.get_node_attributes(bp_complex_i_G, 'symbol') # DEFAULT: labels will be the gene symbols, pull from attribute for each node
+
+        # add genes in CORUM complex that were not detected as baits or preys as "dummy" nodes (for visualization purposes only)
+        dummy_node = 1
+        for gene_i in genes_in_complex_i:
+            if gene_i not in list(labels.values()): # gene already not a node
+                bp_complex_i_G.add_nodes_from([(f'dummy_{dummy_node}', {"symbol": gene_i})])
+                labels[f'dummy_{dummy_node}'] = gene_i
+                dummy_node += 1
+                
+    # use labels passed as argument to keep things consistent between network visualizations
+    else:
+        labels = node_labels # use node labels fed into function
+        labels_r = {value : key for (key, value) in labels.items()} # reverse dictionary to add nodes to graph
+        
+        # add genes in CORUM complex that were not detected as baits or preys as "dummy" nodes (for visualization purposes only)
+        for gene_i in genes_in_complex_i:
+            if gene_i not in list(bp_complex_i_G.nodes()): # gene not already a node
+                bp_complex_i_G.add_nodes_from([(labels_r[gene_i], {"symbol": gene_i})])
+    ############################################################################
 
     # color nodes according to whether they were present among "baits" & "preys", just "baits", or just "preys" for this complex
     node_color_map = []
@@ -313,9 +334,16 @@ def display_PPI_network_for_complex(bp_PPI_df, Corum_DF, ComplexName_i, node_siz
 
     # create figure instance
     fig, ax = plt.subplots()
-
-    # set position of nodes
-    pos = nx.circular_layout(bp_complex_i_G)
+    
+    ############################################################################
+    #### optional argument "node_pos" used here
+    ############################################################################
+    # check to see if node position object has been fed as an argument
+    if node_pos == False:
+        pos = nx.circular_layout(bp_complex_i_G)  # DEFAULT: set position of nodes w/ circular layout
+    else:
+        pos = node_pos # use node positions fed into function
+    ############################################################################
 
     # construct edges for COMPLETE graph for "background" edges
     edges_complete = nx.draw_networkx_edges(bp_complex_i_G_complete, pos, width = edge_width, alpha = 0.25)
@@ -338,3 +366,6 @@ def display_PPI_network_for_complex(bp_PPI_df, Corum_DF, ComplexName_i, node_siz
     # save figure as PNG
     plt.savefig(fig_out_path, bbox_inches='tight', dpi = 300 , transparent = True)
     plt.show()
+    
+    # return node position layout & labels for nodes
+    return [pos, labels]
