@@ -4,7 +4,7 @@ import itertools
 import numpy as np
 import matplotlib.pyplot as plt
 
-def display_PPI_network_for_complex(bp_PPI_df, Corum_DF, ComplexName_i, node_size, edge_width, bait_node_color, prey_node_color, AP_MS_edge_color, fig_out_path, node_pos = False, node_labels = False):
+def display_PPI_network_for_complex(ax, bp_PPI_df, Corum_DF, ComplexName_i, node_size, edge_width, bait_node_color='xkcd:red', prey_node_color='xkcd:rose pink', AP_MS_edge_color='xkcd:red', node_pos=False, node_labels=False):
     '''
     Display network of BioPlex PPIs for a CORUM complex.
     
@@ -14,22 +14,20 @@ def display_PPI_network_for_complex(bp_PPI_df, Corum_DF, ComplexName_i, node_siz
 
     Parameters
     ----------
+    ax object to draw on: Matplotlib Axes
     DataFrame of PPIs : Pandas DataFrame
     DataFrame of CORUM complexes : Pandas DataFrame
     Name of Corum Complex: str
     Size of Nodes in Network: int
     Width of Edges in Network: float
-    Color of Nodes targeted as baits: str
-    Color of Nodes detected as preys only: str
-    Color of Edges observed via AP-MS from PPI data: str
-    Path to save figure: str
+    Color of Nodes targeted as baits: str (optional)
+    Color of Nodes detected as preys only: str (optional)
+    Color of Edges observed via AP-MS from PPI data: str (optional)
     Networkx Position of Nodes: dict (optional)
     Node Labels: dict (optional)
 
     Returns
     -------
-    PNG file
-        Displays and outputs a PNG file of network.
     Node Positions
         Dictionary of Node Positions in NetworkX layout
     Node Labels
@@ -39,7 +37,7 @@ def display_PPI_network_for_complex(bp_PPI_df, Corum_DF, ComplexName_i, node_siz
     --------
     >>> bp_293t_df = getBioPlex('293T', '3.0') # (1) Obtain the latest version of the 293T PPI network
     >>> Corum_DF = getCorum('core', 'Human') # (2) Obtain CORUM complexes
-    >>> ING2_node_layout, ING2_node_labels = display_PPI_network_for_complex(bp_PPI_df, Corum_DF, 'ING2 complex', 2300, 3.5, /n/shared_db/ccb/bioplex/BioPlexPy_testing/figures/network_293T_3.0_ING2-complex.png') # (3) Visualize network for specified protein complex using PPI data
+    >>> ING2_node_layout, ING2_node_labels = display_PPI_network_for_complex(bp_PPI_df, Corum_DF, 'ING2 complex', 2300, 3.5) # (3) Visualize network for specified protein complex using PPI data
     '''
     # store gene symbols that belong to this complex in a list
     genes_in_complex_i = Corum_DF[Corum_DF.ComplexName == ComplexName_i].loc[:,'subunits(Gene name)'].values[0].split(';')
@@ -86,7 +84,7 @@ def display_PPI_network_for_complex(bp_PPI_df, Corum_DF, ComplexName_i, node_siz
         
         # add genes in CORUM complex that were not detected as baits or preys as "dummy" nodes (for visualization purposes only)
         for gene_i in genes_in_complex_i:
-            if gene_i not in list(bp_complex_i_G.nodes()): # gene not already a node
+            if gene_i not in list(bp_complex_i_G.nodes()): # gene not already a node  ##### PROBLEM HERE! ##### ALSO ADD OPTION TO CHANGE FONT SIZE FOR NODE LABELS #####
                 bp_complex_i_G.add_nodes_from([(labels_r[gene_i], {"symbol": gene_i})])
     ############################################################################
 
@@ -117,9 +115,6 @@ def display_PPI_network_for_complex(bp_PPI_df, Corum_DF, ComplexName_i, node_siz
     bp_complex_i_G_complete = nx.Graph()
     bp_complex_i_G_complete.add_nodes_from(bp_complex_i_G.nodes)
     bp_complex_i_G_complete.add_edges_from(itertools.combinations(bp_complex_i_G.nodes, 2))
-
-    # create figure instance
-    fig, ax = plt.subplots()
     
     ############################################################################
     #### optional argument "node_pos" used here
@@ -132,26 +127,18 @@ def display_PPI_network_for_complex(bp_PPI_df, Corum_DF, ComplexName_i, node_siz
     ############################################################################
 
     # construct edges for COMPLETE graph for "background" edges
-    edges_complete = nx.draw_networkx_edges(bp_complex_i_G_complete, pos, width = edge_width, alpha = 0.25)
+    edges_complete = nx.draw_networkx_edges(bp_complex_i_G_complete, pos, width = edge_width, alpha = 0.25, ax = ax)
     edges_complete.set_edgecolor("xkcd:grey")
 
     # construct edges
-    edges = nx.draw_networkx_edges(bp_complex_i_G, pos, width = edge_width)
+    edges = nx.draw_networkx_edges(bp_complex_i_G, pos, width = edge_width, ax = ax)
     edges.set_edgecolor(AP_MS_edge_color)
 
     # construct nodes
-    nodes = nx.draw_networkx_nodes(bp_complex_i_G, pos, node_size = node_size, node_color = node_color_map)
+    nodes = nx.draw_networkx_nodes(bp_complex_i_G, pos, node_size = node_size, node_color = node_color_map, ax = ax)
     nodes.set_edgecolor("xkcd:black")
     nodes.set_linewidth(1.5)
-    nx.draw_networkx_labels(bp_complex_i_G, pos, labels = labels, font_size = 10, font_weight = 'bold', font_color = 'xkcd:white')
-
-    fig = plt.gcf()
-    fig.set_size_inches(7.5, 7.5)
-    fig.tight_layout()
-    
-    # save figure as PNG
-    plt.savefig(fig_out_path, bbox_inches='tight', dpi = 300 , transparent = True)
-    plt.show()
+    nx.draw_networkx_labels(bp_complex_i_G, pos, labels = labels, font_size = 10, font_weight = 'bold', font_color = 'xkcd:white', ax = ax)
     
     # return node position layout & labels for nodes
     return [pos, labels]
