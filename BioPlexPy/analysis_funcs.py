@@ -127,7 +127,7 @@ def get_PPI_network_edges_for_complex(bp_PPI_df, Corum_DF, Complex_ID):
     complex_i_PPI_filter = np.array(complex_i_PPI_filter)
     bp_complex_i_df = bp_PPI_df[complex_i_PPI_filter] # use filter to subset bp PPI dataframe, AP-MS interactions for this CORUM complex
     bp_complex_i_df.reset_index(inplace = True, drop = True) # reset index
-    bp_complex_i_df = bp_complex_i_df.loc[:,['SymbolA', 'SymbolB', 'pW', 'pNI', 'pInt']] # drop columns not needed
+    bp_complex_i_df = bp_complex_i_df.loc[:,['UniprotA','UniprotB','SymbolA', 'SymbolB','pW', 'pNI', 'pInt']] # drop columns not needed
     
     return bp_complex_i_df
 
