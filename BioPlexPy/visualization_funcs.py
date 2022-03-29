@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 
-import itertools
 import numpy as np
-import matplotlib.pyplot as plt
+import itertools
 import networkx as nx
 
 def display_PPI_network_for_complex(ax, bp_PPI_df, Corum_DF, Complex_ID, node_size, edge_width, node_font_size = 10, bait_node_color='xkcd:red', prey_node_color='xkcd:rose pink', AP_MS_edge_color='xkcd:red', node_pos=False):
@@ -38,15 +37,22 @@ def display_PPI_network_for_complex(ax, bp_PPI_df, Corum_DF, Complex_ID, node_si
     >>> Corum_DF = getCorum('core', 'Human') # (2) Obtain CORUM complexes
     >>> ING2_node_layout = display_PPI_network_for_complex(bp_PPI_df, Corum_DF, 2851, 2300, 3.5) # (3) Visualize network for specified protein complex using PPI data (ING2 complex ID: 2851)
     '''
-    # store gene symbols that belong to this complex in a list
-    genes_in_complex_i = Corum_DF[Corum_DF.ComplexID == Complex_ID].loc[:,'subunits(Gene name)'].values[0].split(';')
+    # store uniprot IDs & gene symbols that belong to this complex in a list
+    genes_in_complex_i = Corum_DF[Corum_DF.ComplexID == Complex_ID].loc[:,'subunits(UniProt IDs)'].values[0].split(';') # Uniprot
+    gene_symbols_in_complex_i = Corum_DF[Corum_DF.ComplexID == Complex_ID].loc[:,'subunits(Gene name)'].values[0].split(';') # Symbol
 
     # filter BioPlex PPI dataframe to include only interactions where both genes are found in complex
     complex_i_PPI_filter = []
-    for symbol_A, symbol_B in zip(bp_PPI_df.SymbolA, bp_PPI_df.SymbolB):
+    for uniprot_A, uniprot_B in zip(bp_PPI_df.UniprotA, bp_PPI_df.UniprotB):
+        
+        # check for isoform IDs and adjust
+        if '-' in uniprot_A:
+            uniprot_A = uniprot_A.split('-')[0]
+        if '-' in uniprot_B:
+            uniprot_B = uniprot_B.split('-')[0]
 
         # check to see if both gene symbols for this interaction are genes in complex
-        if (symbol_A in genes_in_complex_i) and (symbol_B in genes_in_complex_i):
+        if (uniprot_A in genes_in_complex_i) and (uniprot_B in genes_in_complex_i):
             complex_i_PPI_filter.append(True)
         else:
             complex_i_PPI_filter.append(False)
@@ -54,43 +60,66 @@ def display_PPI_network_for_complex(ax, bp_PPI_df, Corum_DF, Complex_ID, node_si
     complex_i_PPI_filter = np.array(complex_i_PPI_filter)
     bp_complex_i_df = bp_PPI_df[complex_i_PPI_filter] # use filter to subset bp PPI dataframe
     bp_complex_i_df.reset_index(inplace = True, drop = True) # reset index
-    bp_complex_i_df = bp_complex_i_df.loc[:,['SymbolA','SymbolB']] # subset PPI dataframe to the cols we need to construct graph
 
+    # reconstruct UniprotA/UniprotB columns without '-' isoform id
+    UniprotA_new = []
+    UniprotB_new = []
+    for UniprotA, UniprotB in zip(bp_complex_i_df.UniprotA, bp_complex_i_df.UniprotB):
+
+        if '-' in UniprotA:
+            UniprotA_new.append(UniprotA.split('-')[0])
+        else:
+            UniprotA_new.append(UniprotA)
+
+        if '-' in UniprotB:
+            UniprotB_new.append(UniprotB.split('-')[0])
+        else:
+            UniprotB_new.append(UniprotB)
+            
+    # update columns for Uniprot source & Uniprot target to exclude isoform '-' ID
+    bp_complex_i_df.loc[:,'UniprotA'] = UniprotA_new
+    bp_complex_i_df.loc[:,'UniprotB'] = UniprotB_new
+    
+    # subset PPI dataframe to the cols we need to construct graph
+    bp_complex_i_df = bp_complex_i_df.loc[:,['UniprotA','UniprotB','SymbolA','SymbolB']]
+    
     # create a graph from the nodes/genes of specified complex
     bp_complex_i_G = nx.Graph()
     bp_complex_i_G.add_nodes_from(genes_in_complex_i)
-
+    
     # iterate over AP-MS interactions in PPI df and add edges
-    for source, target in zip(bp_complex_i_df.SymbolA, bp_complex_i_df.SymbolB):
+    for source, target in zip(bp_complex_i_df.UniprotA, bp_complex_i_df.UniprotB):
         bp_complex_i_G.add_edge(source, target)
+        
+    # get mapping uniprot -> symbol & store as node attribute from CORUM complex data
+    uniprot_symbol_dict = dict([key,val] for key, val in zip(genes_in_complex_i, gene_symbols_in_complex_i))
+    for node_i in bp_complex_i_G.nodes():
+        bp_complex_i_G.nodes[node_i]["symbol"] = uniprot_symbol_dict[node_i]
 
     # get a list of genes that were identifed as "baits" and "preys" for coloring nodes
-    bp_complex_i_baits = list(set(bp_complex_i_df.SymbolA))
-    bp_complex_i_preys = list(set(bp_complex_i_df.SymbolB))
+    bp_complex_i_baits = list(set(bp_complex_i_df.UniprotA))
+    bp_complex_i_preys = list(set(bp_complex_i_df.UniprotB))
 
-    #labels = nx.get_node_attributes(bp_complex_i_G, 'symbol') # DEFAULT: labels will be the gene symbols, pull from attribute for each node
-    labels = dict([(key,val) for key, val in zip(list(bp_complex_i_G.nodes), list(bp_complex_i_G.nodes))])
+    labels = dict([(key,val) for key, val in zip(list(bp_complex_i_G.nodes), [bp_complex_i_G.nodes[node_i]['symbol'] for node_i in bp_complex_i_G.nodes])])
 
     # color nodes according to whether they were present among "baits" & "preys", just "baits", just "preys" or not detected in PPI data for this complex
     node_color_map = []
     for node_i_uniprot in bp_complex_i_G.nodes:
 
-        node_i_gene_symbol = labels[node_i_uniprot] # get gene symbol
-
         # gene is present among baits & preys for the PPIs detected in this complex
-        if (node_i_gene_symbol in bp_complex_i_baits) and (node_i_gene_symbol in bp_complex_i_preys):
+        if (node_i_uniprot in bp_complex_i_baits) and (node_i_uniprot in bp_complex_i_preys):
             node_color_map.append(bait_node_color)
 
         # gene is present among baits but NOT preys for the PPIs detected in this complex
-        elif (node_i_gene_symbol in bp_complex_i_baits) and (node_i_gene_symbol not in bp_complex_i_preys):
+        elif (node_i_uniprot in bp_complex_i_baits) and (node_i_uniprot not in bp_complex_i_preys):
             node_color_map.append(bait_node_color)
 
         # gene is NOT present among baits but is present among preys for the PPIs detected in this complex
-        elif (node_i_gene_symbol not in bp_complex_i_baits) and (node_i_gene_symbol in bp_complex_i_preys):
+        elif (node_i_uniprot not in bp_complex_i_baits) and (node_i_uniprot in bp_complex_i_preys):
             node_color_map.append(prey_node_color)
 
         # gene is NOT present among baits and is NOT present among preys for the PPIs detected in this complex
-        elif (node_i_gene_symbol not in bp_complex_i_baits) and (node_i_gene_symbol not in bp_complex_i_preys):
+        elif (node_i_uniprot not in bp_complex_i_baits) and (node_i_uniprot not in bp_complex_i_preys):
             node_color_map.append('0.7')
 
     # create a complete graph from the nodes of complex graph to add in all "background" edges (edges detected with AP-MS will be colored over)
@@ -99,15 +128,12 @@ def display_PPI_network_for_complex(ax, bp_PPI_df, Corum_DF, Complex_ID, node_si
     bp_complex_i_G_complete.add_nodes_from(bp_complex_i_G.nodes)
     bp_complex_i_G_complete.add_edges_from(itertools.combinations(bp_complex_i_G.nodes, 2))
 
-    ############################################################################
-    #### optional argument "node_pos" used here
-    ############################################################################
+    # optional argument "node_pos" used here
     # check to see if node position object has been fed as an argument
     if node_pos == False:
         pos = nx.circular_layout(bp_complex_i_G)  # DEFAULT: set position of nodes w/ circular layout
     else:
         pos = node_pos # use node positions fed into function
-    ############################################################################
 
     # construct edges for COMPLETE graph for "background" edges
     edges_complete = nx.draw_networkx_edges(bp_complex_i_G_complete, pos, width = edge_width, alpha = 0.25, ax = ax)
