@@ -87,49 +87,38 @@ def bioplex2graph(bp_PPI_df):
     
     return bp_G
 
-def get_PPI_network_edges_for_complex(bp_PPI_df, Corum_DF, Complex_ID):
+def get_PPI_network_for_complex(bp_PPI_G, Corum_DF, Complex_ID):
     '''
-    Retrieve DataFrame of BioPlex (AP-MS) PPIs for a CORUM complex.
+    Retrieve Network of BioPlex (AP-MS) PPIs for a CORUM complex.
     
-    This function returns a dataframe of PPIs identified through AP-MS
+    This function returns a subgraph of PPIs identified through AP-MS
     between the proteins in a specified CORUM complex.
 
     Parameters
     ----------
-    DataFrame of PPIs : Pandas DataFrame
+    Network of PPIs : NetworkX graph
     DataFrame of CORUM complexes : Pandas DataFrame
     Corum Complex ID: int
 
     Returns
     -------
-    Pandas DataFrame
-        A dataframe with each row corresponding to a PPI interaction detected via AP-MS for specified complex
+    NetworkX Graph
+        A subgraph induced by the proteins in a CORUM complex from the BioPlex network used as input.
 
     Examples
     --------
     >>> bp_293t_df = getBioPlex('293T', '3.0') # (1) Obtain the latest version of the 293T PPI network
-    >>> Corum_DF = getCorum('core', 'Human') # (2) Obtain CORUM complexes
-    >>> get_PPI_network_edges_for_complex(bp_293t_df, Corum_DF, 2851) # (3) Get AP-MS interactions for a specified protein complex using PPI data
+    >>> bp_293t_G = bioplex2graph(bp_293t_df) # (2) Obtain NetworkX graph representation of 293T PPI network
+    >>> Corum_DF = getCorum('core', 'Human') # (3) Obtain CORUM complexes
+    >>> ING2_bp_293t_G = get_PPI_network_for_complex(bp_293t_G, Corum_DF, 2851) # (4) Get AP-MS interactions as subgraph for a specified protein complex using PPI data
     '''
-    # store gene symbols that belong to this complex in a list
-    genes_in_complex_i = Corum_DF[Corum_DF.ComplexID == Complex_ID].loc[:,'subunits(Gene name)'].values[0].split(';')
-
-    # filter BioPlex PPI dataframe to include only interactions where both genes are found in complex
-    complex_i_PPI_filter = []
-    for symbol_A, symbol_B in zip(bp_PPI_df.SymbolA, bp_PPI_df.SymbolB):
-
-        # check to see if both gene symbols for this interaction are genes in complex
-        if (symbol_A in genes_in_complex_i) and (symbol_B in genes_in_complex_i):
-            complex_i_PPI_filter.append(True)
-        else:
-            complex_i_PPI_filter.append(False)
-
-    complex_i_PPI_filter = np.array(complex_i_PPI_filter)
-    bp_complex_i_df = bp_PPI_df[complex_i_PPI_filter] # use filter to subset bp PPI dataframe, AP-MS interactions for this CORUM complex
-    bp_complex_i_df.reset_index(inplace = True, drop = True) # reset index
-    bp_complex_i_df = bp_complex_i_df.loc[:,['UniprotA','UniprotB','SymbolA', 'SymbolB','pW', 'pNI', 'pInt']] # drop columns not needed
+    # store gene UNIPROT IDs that belong to this complex in a list
+    genes_in_complex_i = Corum_DF[Corum_DF.ComplexID == Complex_ID].loc[:,'subunits(UniProt IDs)'].values[0].split(';')
     
-    return bp_complex_i_df
+    # get subgraph induced by the subset of nodes in this CORUM complex
+    bp_complex_i_G = bp_PPI_G.subgraph(genes_in_complex_i)
+    
+    return bp_complex_i_G
 
 def get_prop_edges_in_complex_identfied(bp_PPI_df, Corum_DF, Complex_ID):
     '''
