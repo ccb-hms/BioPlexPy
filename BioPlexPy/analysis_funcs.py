@@ -120,6 +120,74 @@ def get_PPI_network_for_complex(bp_PPI_G, Corum_DF, Complex_ID):
     
     return bp_complex_i_G
 
+def get_DataFrame_from_PPI_network(bp_PPI_G):
+    '''
+    Convert Network of BioPlex (AP-MS) PPIs into DataFrame of BioPlex interaction edges.
+    
+    This function returns a subgraph of PPIs identified through AP-MS
+    between the proteins in a specified CORUM complex.
+
+    Parameters
+    ----------
+    Network of PPIs : NetworkX graph
+
+    Returns
+    -------
+    Pandas DataFrame
+        A DataFrame of edges (AP-MS interactions) from a network.
+
+    Examples
+    --------
+    >>> bp_293t_df = getBioPlex('293T', '3.0') # (1) Obtain the latest version of the 293T PPI network
+    >>> bp_293t_G = bioplex2graph(bp_293t_df) # (2) Obtain NetworkX graph representation of 293T PPI network
+    >>> Corum_DF = getCorum('core', 'Human') # (3) Obtain CORUM complexes
+    >>> ING2_bp_293t_G = get_PPI_network_for_complex(bp_293t_G, Corum_DF, 2851) # (4) Get AP-MS interactions as subgraph for a specified ING2 protein complex using PPI data
+    >>> ING2_bp_293t_df = get_DataFrame_from_PPI_network(ING2_bp_293t_G) # (5) Convert ING2 AP-MS network into DataFrame w/ each row corresponding to an edge
+    '''
+    # get list of edges in network
+    PPI_edge_list = list(bp_PPI_G.edges)
+
+    # make node_A and node_B columns for both UNIPROT & SYMBOLS
+    uniprotA_list = []
+    uniprotB_list = []
+    symbolA_list = []
+    symbolB_list = []
+
+    # make columns for calcs detected for each edge
+    pW_list = []
+    pNI_list = []
+    pInt_list = []
+
+    # iterate through each edge to store data for each row of DataFrame
+    for edge_i in PPI_edge_list:
+
+        nodeA, nodeB = edge_i
+
+        # nodes are labeled with UNIPROT
+        uniprotA_list.append(nodeA)
+        uniprotB_list.append(nodeB)
+
+        # get gene SYMBOL
+        symbolA_list.append(bp_PPI_G.nodes[nodeA]['symbol'])
+        symbolB_list.append(bp_PPI_G.nodes[nodeB]['symbol'])
+
+        # get AP-MS calculations
+        pW_list.append(bp_PPI_G.edges[edge_i]['pW'])
+        pNI_list.append(bp_PPI_G.edges[edge_i]['pNI'])
+        pInt_list.append(bp_PPI_G.edges[edge_i]['pInt'])
+
+    # convert lists into cols of DataFrame
+    bp_complex_i_df = pd.DataFrame()
+    bp_complex_i_df.loc[:,'UniprotA'] = uniprotA_list
+    bp_complex_i_df.loc[:,'UniprotB'] = uniprotB_list
+    bp_complex_i_df.loc[:,'SymbolA'] = symbolA_list
+    bp_complex_i_df.loc[:,'SymbolB'] = symbolB_list
+    bp_complex_i_df.loc[:,'pW'] = pW_list
+    bp_complex_i_df.loc[:,'pNI'] = pNI_list
+    bp_complex_i_df.loc[:,'pInt'] = pInt_list
+    
+    return bp_complex_i_df
+
 def get_prop_edges_in_complex_identfied(bp_PPI_df, Corum_DF, Complex_ID):
     '''
     Calculates proportion of all possible edges identified from BioPlex (AP-MS) PPIs for a CORUM complex.
