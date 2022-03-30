@@ -84,6 +84,14 @@ def bioplex2graph(bp_PPI_df):
 
     for node_i in bp_G.nodes():
         bp_G.nodes[node_i]["isoform"] = uniprot_isoform_dict[node_i]
+        
+    # get set of baits & store a bait boolean as node attribute if node is a bait True & False otherwise
+    bp_i_baits = set(bp_PPI_df.UniprotA)
+    for node_i in bp_G.nodes():
+        if node_i in bp_i_baits:
+            bp_G.nodes[node_i]["bait"] = True
+        else:
+            bp_G.nodes[node_i]["bait"] = False
     
     return bp_G
 
