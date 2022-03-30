@@ -246,8 +246,6 @@ def permutation_test_for_CORUM_complex(bp_PPI_G, Corum_DF, Complex_ID, num_perms
     DataFrame of CORUM complexes : Pandas DataFrame
     Corum Complex ID: int
     Number of Permutations: int
-    Minimum Number of Subunits in Complex: int
-    Minimum Number of Subunits Targeted as Baits: int
 
     Returns
     -------
