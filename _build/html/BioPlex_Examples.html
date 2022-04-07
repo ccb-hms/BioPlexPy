@@ -1,0 +1,2916 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Examples for how to use functions from BioPlexPy &mdash; BioPlexPy  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/mystnb.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="BioPlexPy" href="README.html" />
+    <link rel="prev" title="Welcome to BioplexPy’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> BioPlexPy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Examples for how to use functions from BioPlexPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#getbioplex-function-to-retrieve-interactions-data">[1] <em>getBioPlex</em> - function to retrieve interactions data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#parameters">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#returns">Returns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-1">Example 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-2">Example 2</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#getgse122425-function-to-retrieve-hek293-rnaseq-expression-data">[2] <em>getGSE122425</em> - function to retrieve HEK293 RNAseq expression data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">Returns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">Example 1</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#bioplex2graph-function-to-convert-bioplex-ppis-into-a-graph-data-structure">[3] <em>bioplex2graph</em> - function to convert BioPlex PPIs into a graph data structure</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id4">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">Returns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">Example 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-2-examine-properties-of-network">Example 2 - Examine properties of Network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-3-run-network-algorithms-using-networkx">Example 3 - Run network algorithms using NetworkX</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#getcorum-function-to-retrieve-corum-complex-data">[4] <em>getCorum</em> - function to retrieve CORUM complex data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id8">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id9">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id10">Returns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id11">Example 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id12">Example 2</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#display-ppi-network-for-complex-function-to-visualize-ppi-data-for-a-given-complex-from-corum">[5] <em>display_PPI_network_for_complex</em> - function to visualize PPI data for a given complex from CORUM</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id13">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id14">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id15">Returns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id16">Example 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id17">Example 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-3">Example 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-4">Example 4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-5-recreate-figure-1-from-cell-2021-bioplex-3-0-paper">Example 5 - Recreate <em>Figure 1</em> from <em>Cell</em> 2021 BioPlex 3.0 paper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-6-recreate-figure-2-from-nature-2017-bioplex-2-0-paper">Example 6 - Recreate <em>Figure 2</em> from <em>Nature</em> 2017 BioPlex 2.0 paper</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#get-ppi-network-edges-for-complex-function-that-returns-matching-edges-ppi-data-for-a-given-corum-complex-in-a-list">[6] <em>get_PPI_network_edges_for_complex</em> - function that returns matching edges (PPI data) for a given CORUM complex in a list</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id18">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id19">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id20">Returns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id21">Example 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id22">Example 2</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#get-prop-edges-in-complex-identfied-function-that-returns-the-proportion-of-interactions-between-proteins-in-a-corum-complex-detected-by-ap-ms">[7] <em>get_prop_edges_in_complex_identfied</em> - function that returns the proportion of interactions between proteins in a CORUM complex detected by AP-MS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id23">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id24">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id25">Returns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id26">Example 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id27">Example 2</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#permutation-test-for-corum-complex-function-that-runs-permutation-test-to-test-whether-number-of-edges-for-corum-complex-ppi-network-is-enriched-for-interactions">[8] <em>permutation_test_for_CORUM_complex</em> - function that runs permutation test to test whether number of edges for CORUM complex PPI network is enriched for interactions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id28">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id29">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id30">Returns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id31">Example 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-2-iterate-through-all-corum-complexes-and-run-permutation-test-on-each-one-using-ppi-293t-v3-data">Example 2 - iterate through all CORUM complexes and run permutation test on each one using <em>PPI 293T v3</em> data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">BioPlexPy</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BioPlexPy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Examples for how to use functions from BioPlexPy</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/BioPlex_Examples.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">HTML</span>
+<span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="s2">&quot;&lt;style&gt;.container { width:100% !important; }&lt;/style&gt;&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2312/3777615979.py:1: DeprecationWarning: Importing display from IPython.core.display is deprecated since IPython 7.14, please import from IPython display
+  from IPython.core.display import display, HTML
+</pre></div>
+</div>
+<div class="output text_html"><style>.container { width:100% !important; }</style></div></div>
+</div>
+<section id="examples-for-how-to-use-functions-from-bioplexpy">
+<h1>Examples for how to use functions from BioPlexPy<a class="headerlink" href="#examples-for-how-to-use-functions-from-bioplexpy" title="Permalink to this headline"></a></h1>
+<p>Import functions from module</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># data import funcs</span>
+<span class="kn">from</span> <span class="nn">BioPlexPy.data_import_funcs</span> <span class="kn">import</span> <span class="n">getBioPlex</span>
+<span class="kn">from</span> <span class="nn">BioPlexPy.data_import_funcs</span> <span class="kn">import</span> <span class="n">getGSE122425</span>
+<span class="kn">from</span> <span class="nn">BioPlexPy.data_import_funcs</span> <span class="kn">import</span> <span class="n">getCorum</span>
+
+<span class="c1"># analysis funcs</span>
+<span class="kn">from</span> <span class="nn">BioPlexPy.analysis_funcs</span> <span class="kn">import</span> <span class="n">bioplex2graph</span>
+<span class="kn">from</span> <span class="nn">BioPlexPy.analysis_funcs</span> <span class="kn">import</span> <span class="n">get_PPI_network_edges_for_complex</span>
+<span class="kn">from</span> <span class="nn">BioPlexPy.analysis_funcs</span> <span class="kn">import</span> <span class="n">get_prop_edges_in_complex_identfied</span>
+<span class="kn">from</span> <span class="nn">BioPlexPy.analysis_funcs</span> <span class="kn">import</span> <span class="n">permutation_test_for_CORUM_complex</span>
+
+<span class="c1"># visualization funcs</span>
+<span class="kn">from</span> <span class="nn">BioPlexPy.visualization_funcs</span> <span class="kn">import</span> <span class="n">display_PPI_network_for_complex</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="nn">Input In [2],</span> in <span class="ni">&lt;cell line: 2&gt;</span><span class="nt">()</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># data import funcs</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="kn">from</span> <span class="nn">BioPlexPy.data_import_funcs</span> <span class="kn">import</span> <span class="n">getBioPlex</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">from</span> <span class="nn">BioPlexPy.data_import_funcs</span> <span class="kn">import</span> <span class="n">getGSE122425</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="kn">from</span> <span class="nn">BioPlexPy.data_import_funcs</span> <span class="kn">import</span> <span class="n">getCorum</span>
+
+<span class="n">File</span> <span class="o">~/</span><span class="n">projects</span><span class="o">/</span><span class="n">BioPlexPy</span><span class="o">/</span><span class="n">BioPlexPy</span><span class="o">/</span><span class="fm">__init__</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="kn">from</span> <span class="nn">.data_import_funcs</span> <span class="kn">import</span> <span class="n">getBioPlex</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="kn">from</span> <span class="nn">.data_import_funcs</span> <span class="kn">import</span> <span class="n">getGSE122425</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">from</span> <span class="nn">.data_import_funcs</span> <span class="kn">import</span> <span class="n">getCorum</span>
+
+<span class="n">File</span> <span class="o">~/</span><span class="n">projects</span><span class="o">/</span><span class="n">BioPlexPy</span><span class="o">/</span><span class="n">BioPlexPy</span><span class="o">/</span><span class="n">data_import_funcs</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">import</span> <span class="nn">io</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="kn">import</span> <span class="nn">requests</span>
+<span class="ne">----&gt; </span><span class="mi">5</span> <span class="kn">import</span> <span class="nn">anndata</span> <span class="k">as</span> <span class="nn">ad</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="k">def</span> <span class="nf">getBioPlex</span><span class="p">(</span><span class="n">cell_line</span><span class="p">,</span> <span class="n">version</span><span class="p">):</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;anndata&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="getbioplex-function-to-retrieve-interactions-data">
+<h1>[1] <em>getBioPlex</em> - function to retrieve interactions data<a class="headerlink" href="#getbioplex-function-to-retrieve-interactions-data" title="Permalink to this headline"></a></h1>
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<p>Load BioPlex interactions data - This function loads BioPlex PPI data for cell lines HEK293T and HCT116, note we only have version 1.0 for HCT116 cells.</p>
+</section>
+<section id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline"></a></h2>
+<ol class="simple">
+<li><p>cell_line : str</p></li>
+</ol>
+<ul class="simple">
+<li><p>Takes input: ‘293T’ or ‘HCT116’</p></li>
+</ul>
+<ol class="simple">
+<li><p>version : str</p></li>
+</ol>
+<ul class="simple">
+<li><p>Takes input: ‘3.0’, ‘1.0’ or ‘2.0’</p></li>
+</ul>
+</section>
+<section id="returns">
+<h2>Returns<a class="headerlink" href="#returns" title="Permalink to this headline"></a></h2>
+<p>Pandas DataFrame</p>
+<ul class="simple">
+<li><p>A dataframe with each row corresponding to a PPI interaction.</p></li>
+</ul>
+<p><ins>Column Descriptions</ins></p>
+<p>GeneA: Entrez Gene ID for the first interacting protein</p>
+<p>GeneB: Entrez Gene ID for the second interacting protein</p>
+<p>UniprotA: Uniprot ID for the first interacting protein</p>
+<p>UniprotB: Uniprot ID for the second interacting protein</p>
+<p>SymbolA: Symbol for the first interacting protein</p>
+<p>SymbolB: Symbol for the second interacting protein</p>
+<p>p(Wrong ID): Probability of wrong protein ID (CompPASS-Plus)</p>
+<p>p(NotInteractor): Probability of nonspecific background (CompPASS-Plus)</p>
+<p>p(Interactor): Probability of high-confidence interaction (CompPASS-Plus)</p>
+</section>
+<section id="example-1">
+<h2>Example 1<a class="headerlink" href="#example-1" title="Permalink to this headline"></a></h2>
+<p>Load DataFrames that contain protein-protein interactions from <strong>HEK293T</strong> &amp; <strong>HCT116</strong> cell lines</p>
+<p><a class="reference external" href="https://www.sciencedirect.com/science/article/abs/pii/S0092867421004463">Huttlin, E. L., Bruckner, R. J., Navarrete-Perea, J., Cannon, J. R., Baltier, K., Gebreab, F., … &amp; Gygi, S. P. (2021). Dual proteome-scale networks reveal cell-specific remodeling of the human interactome. Cell, 184(11), 3022-3040.</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bp_293t</span> <span class="o">=</span> <span class="n">getBioPlex</span><span class="p">(</span><span class="s1">&#39;293T&#39;</span><span class="p">,</span> <span class="s1">&#39;3.0&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bp_293t</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>GeneA</th>
+      <th>GeneB</th>
+      <th>UniprotA</th>
+      <th>UniprotB</th>
+      <th>SymbolA</th>
+      <th>SymbolB</th>
+      <th>pW</th>
+      <th>pNI</th>
+      <th>pInt</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>100</td>
+      <td>728378</td>
+      <td>P00813</td>
+      <td>A5A3E0</td>
+      <td>ADA</td>
+      <td>POTEF</td>
+      <td>6.881844e-10</td>
+      <td>0.000118</td>
+      <td>0.999882</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>222389</td>
+      <td>6137</td>
+      <td>Q8N7W2-2</td>
+      <td>P26373</td>
+      <td>BEND7</td>
+      <td>RPL13</td>
+      <td>1.340380e-18</td>
+      <td>0.225664</td>
+      <td>0.774336</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>222389</td>
+      <td>5928</td>
+      <td>Q8N7W2-2</td>
+      <td>Q09028-3</td>
+      <td>BEND7</td>
+      <td>RBBP4</td>
+      <td>7.221401e-21</td>
+      <td>0.000064</td>
+      <td>0.999936</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>222389</td>
+      <td>25873</td>
+      <td>Q8N7W2-2</td>
+      <td>Q9Y3U8</td>
+      <td>BEND7</td>
+      <td>RPL36</td>
+      <td>7.058372e-17</td>
+      <td>0.128183</td>
+      <td>0.871817</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>222389</td>
+      <td>6124</td>
+      <td>Q8N7W2-2</td>
+      <td>P36578</td>
+      <td>BEND7</td>
+      <td>RPL4</td>
+      <td>1.632313e-22</td>
+      <td>0.200638</td>
+      <td>0.799362</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="example-2">
+<h2>Example 2<a class="headerlink" href="#example-2" title="Permalink to this headline"></a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bp_hct116</span> <span class="o">=</span> <span class="n">getBioPlex</span><span class="p">(</span><span class="s1">&#39;HCT116&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bp_hct116</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>GeneA</th>
+      <th>GeneB</th>
+      <th>UniprotA</th>
+      <th>UniprotB</th>
+      <th>SymbolA</th>
+      <th>SymbolB</th>
+      <th>pW</th>
+      <th>pNI</th>
+      <th>pInt</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>88455</td>
+      <td>50649</td>
+      <td>Q8IZ07</td>
+      <td>Q9NR80-4</td>
+      <td>ANKRD13A</td>
+      <td>ARHGEF4</td>
+      <td>3.959215e-04</td>
+      <td>0.000033</td>
+      <td>0.999571</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>88455</td>
+      <td>115106</td>
+      <td>Q8IZ07</td>
+      <td>Q96CS2</td>
+      <td>ANKRD13A</td>
+      <td>HAUS1</td>
+      <td>4.488473e-02</td>
+      <td>0.001935</td>
+      <td>0.953181</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>88455</td>
+      <td>23086</td>
+      <td>Q8IZ07</td>
+      <td>Q8NEV8-2</td>
+      <td>ANKRD13A</td>
+      <td>EXPH5</td>
+      <td>7.402394e-05</td>
+      <td>0.000930</td>
+      <td>0.998996</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>88455</td>
+      <td>54930</td>
+      <td>Q8IZ07</td>
+      <td>Q9H6D7</td>
+      <td>ANKRD13A</td>
+      <td>HAUS4</td>
+      <td>9.180959e-07</td>
+      <td>0.000128</td>
+      <td>0.999871</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>88455</td>
+      <td>79441</td>
+      <td>Q8IZ07</td>
+      <td>Q68CZ6</td>
+      <td>ANKRD13A</td>
+      <td>HAUS3</td>
+      <td>8.709394e-07</td>
+      <td>0.001495</td>
+      <td>0.998504</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="getgse122425-function-to-retrieve-hek293-rnaseq-expression-data">
+<h1>[2] <em>getGSE122425</em> - function to retrieve HEK293 RNAseq expression data<a class="headerlink" href="#getgse122425-function-to-retrieve-hek293-rnaseq-expression-data" title="Permalink to this headline"></a></h1>
+<section id="id1">
+<h2>Description<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h2>
+<p>Retrieve HEK293 RNAseq expression data.</p>
+</section>
+<section id="id2">
+<h2>Returns<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h2>
+<p>adata : AnnData object</p>
+<ul class="simple">
+<li><p>SummarizedExperiment of HEK293 raw count with an added layer storing rpkm.</p></li>
+</ul>
+</section>
+<section id="id3">
+<h2>Example 1<a class="headerlink" href="#id3" title="Permalink to this headline"></a></h2>
+<p>Load AnnData structure that has mRNA profiles (RNA-seq) of wild type (WT) and NSUN2-/- HEK293 cells that were generated by deep sequencing, in triplicate.</p>
+<p><a class="reference external" href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE122425">Effects of NSUN2 deficiency on the mRNA 5-methylcytosine modification and gene expression profile in HEK293 cells (RNA-Seq)</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">HEK293_adata</span> <span class="o">=</span> <span class="n">getGSE122425</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">HEK293_adata</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AnnData object with n_obs × n_vars = 57905 × 6 
+    obs: &#39;SYMBOL&#39;, &#39;KO&#39;, &#39;GO&#39;, &#39;length&#39;
+    layers: &#39;rpkm&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>List rows (observations) that specify <strong>genes</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">HEK293_adata</span><span class="o">.</span><span class="n">obs_names</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;ENSG00000223972&#39;, &#39;ENSG00000227232&#39;, &#39;ENSG00000243485&#39;, &#39;ENSG00000237613&#39;, &#39;ENSG00000268020&#39;, &#39;ENSG00000240361&#39;, &#39;ENSG00000186092&#39;, &#39;ENSG00000238009&#39;, &#39;ENSG00000239945&#39;, &#39;ENSG00000233750&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>List columns (variables) that specify whether at <strong>knock-out or wildtype replicates</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">HEK293_adata</span><span class="o">.</span><span class="n">var_names</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;NK.1&#39;, &#39;NK.2&#39;, &#39;NK.3&#39;, &#39;WT.1&#39;, &#39;WT.2&#39;, &#39;WT.3&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Call matrix with <strong>raw counts</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">HEK293_adata</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[   0    0    2    1    2    2]
+ [ 705  812 1121  732  690  804]
+ [   0    0    0    0    0    2]
+ ...
+ [   0    0    0    0    0    0]
+ [   0    0    0    0    0    0]
+ [   0    0    0    0    0    0]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Call matrix with <strong>rpkm</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">HEK293_adata</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s2">&quot;rpkm&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[0.   0.   0.01 0.01 0.01 0.01]
+ [4.77 5.21 6.8  5.43 5.07 5.39]
+ [0.   0.   0.   0.   0.   0.04]
+ ...
+ [0.   0.   0.   0.   0.   0.  ]
+ [0.   0.   0.   0.   0.   0.  ]
+ [0.   0.   0.   0.   0.   0.  ]]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="bioplex2graph-function-to-convert-bioplex-ppis-into-a-graph-data-structure">
+<h1>[3] <em>bioplex2graph</em> - function to convert BioPlex PPIs into a graph data structure<a class="headerlink" href="#bioplex2graph-function-to-convert-bioplex-ppis-into-a-graph-data-structure" title="Permalink to this headline"></a></h1>
+<section id="id4">
+<h2>Description<a class="headerlink" href="#id4" title="Permalink to this headline"></a></h2>
+<p>Convert BioPlex PPIs into a graph - This function converts representation of BioPlex PPIs into a graph data structure representation of BioPlex PPIs in a NetworkX object from NetworkX.</p>
+</section>
+<section id="id5">
+<h2>Parameters<a class="headerlink" href="#id5" title="Permalink to this headline"></a></h2>
+<ol class="simple">
+<li><p>DataFrame of PPIs : Pandas DataFrame</p></li>
+</ol>
+</section>
+<section id="id6">
+<h2>Returns<a class="headerlink" href="#id6" title="Permalink to this headline"></a></h2>
+<p>NetworkX graph</p>
+<ul class="simple">
+<li><p>A NetworkX graph with Nodes = Uniprot Gene Symbols and Edges = interactions.</p></li>
+</ul>
+</section>
+<section id="id7">
+<h2>Example 1<a class="headerlink" href="#id7" title="Permalink to this headline"></a></h2>
+<ol class="simple">
+<li><p>Obtain the latest version of the 293T PPI network</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bp_293t_df</span> <span class="o">=</span> <span class="n">getBioPlex</span><span class="p">(</span><span class="s1">&#39;293T&#39;</span><span class="p">,</span> <span class="s1">&#39;3.0&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bp_293t_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>GeneA</th>
+      <th>GeneB</th>
+      <th>UniprotA</th>
+      <th>UniprotB</th>
+      <th>SymbolA</th>
+      <th>SymbolB</th>
+      <th>pW</th>
+      <th>pNI</th>
+      <th>pInt</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>100</td>
+      <td>728378</td>
+      <td>P00813</td>
+      <td>A5A3E0</td>
+      <td>ADA</td>
+      <td>POTEF</td>
+      <td>6.881844e-10</td>
+      <td>0.000118</td>
+      <td>0.999882</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>222389</td>
+      <td>6137</td>
+      <td>Q8N7W2-2</td>
+      <td>P26373</td>
+      <td>BEND7</td>
+      <td>RPL13</td>
+      <td>1.340380e-18</td>
+      <td>0.225664</td>
+      <td>0.774336</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>222389</td>
+      <td>5928</td>
+      <td>Q8N7W2-2</td>
+      <td>Q09028-3</td>
+      <td>BEND7</td>
+      <td>RBBP4</td>
+      <td>7.221401e-21</td>
+      <td>0.000064</td>
+      <td>0.999936</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>222389</td>
+      <td>25873</td>
+      <td>Q8N7W2-2</td>
+      <td>Q9Y3U8</td>
+      <td>BEND7</td>
+      <td>RPL36</td>
+      <td>7.058372e-17</td>
+      <td>0.128183</td>
+      <td>0.871817</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>222389</td>
+      <td>6124</td>
+      <td>Q8N7W2-2</td>
+      <td>P36578</td>
+      <td>BEND7</td>
+      <td>RPL4</td>
+      <td>1.632313e-22</td>
+      <td>0.200638</td>
+      <td>0.799362</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<ol class="simple">
+<li><p>Turn the data into a graph with NetworkX</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bp_293t_G</span> <span class="o">=</span> <span class="n">bioplex2graph</span><span class="p">(</span><span class="n">bp_293t_df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="example-2-examine-properties-of-network">
+<h2>Example 2 - Examine properties of Network<a class="headerlink" href="#example-2-examine-properties-of-network" title="Permalink to this headline"></a></h2>
+<p>Analyze nodes in PPI network</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">bp_293t_G</span><span class="o">.</span><span class="n">nodes</span><span class="p">())</span> <span class="c1"># number of nodes</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>13689
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">list</span><span class="p">(</span><span class="n">bp_293t_G</span><span class="o">.</span><span class="n">nodes</span><span class="p">())[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;P00813&#39;, &#39;A5A3E0&#39;, &#39;Q8N7W2&#39;, &#39;P26373&#39;, &#39;Q09028&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Call nodes and attributes stored for each node</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bp_293t_G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="s1">&#39;P00813&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;entrezid&#39;: 100, &#39;symbol&#39;: &#39;ADA&#39;, &#39;isoform&#39;: &#39;P00813&#39;}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bp_293t_G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="s1">&#39;Q8N7W2&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;entrezid&#39;: 222389, &#39;symbol&#39;: &#39;BEND7&#39;, &#39;isoform&#39;: &#39;Q8N7W2-2&#39;}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Analyze edges in PPI network</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">bp_293t_G</span><span class="o">.</span><span class="n">edges</span><span class="p">())</span> <span class="c1"># number of edges</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>115868
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">list</span><span class="p">(</span><span class="n">bp_293t_G</span><span class="o">.</span><span class="n">edges</span><span class="p">())[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(&#39;P00813&#39;, &#39;A5A3E0&#39;),
+ (&#39;Q8N7W2&#39;, &#39;P26373&#39;),
+ (&#39;Q8N7W2&#39;, &#39;Q09028&#39;),
+ (&#39;Q8N7W2&#39;, &#39;Q9Y3U8&#39;),
+ (&#39;Q8N7W2&#39;, &#39;P36578&#39;)]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Call edges and attributes stored for each edge (PPI)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bp_293t_G</span><span class="o">.</span><span class="n">get_edge_data</span><span class="p">(</span><span class="s1">&#39;P00813&#39;</span><span class="p">,</span> <span class="s1">&#39;A5A3E0&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;pW&#39;: 6.881843799526549e-10,
+ &#39;pNI&#39;: 0.000117635665707004,
+ &#39;pInt&#39;: 0.9998823636461089}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="example-3-run-network-algorithms-using-networkx">
+<h2>Example 3 - Run network algorithms using NetworkX<a class="headerlink" href="#example-3-run-network-algorithms-using-networkx" title="Permalink to this headline"></a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Run <a class="reference external" href="https://networkx.guide/algorithms/link-analysis/pagerank/">pagerank algorithm</a> on network and rank nodes</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bp_293t_G_pr</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">pagerank</span><span class="p">(</span><span class="n">bp_293t_G</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">bp_293t_G_pr</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">bp_293t_G_pr</span><span class="p">)</span>
+<span class="n">bp_293t_G_pr</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bp_293t_G_pr</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>P11142    0.002610
+P11021    0.002168
+Q04917    0.001840
+O14556    0.001527
+P0CG47    0.001471
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="getcorum-function-to-retrieve-corum-complex-data">
+<h1>[4] <em>getCorum</em> - function to retrieve CORUM complex data<a class="headerlink" href="#getcorum-function-to-retrieve-corum-complex-data" title="Permalink to this headline"></a></h1>
+<section id="id8">
+<h2>Description<a class="headerlink" href="#id8" title="Permalink to this headline"></a></h2>
+<p>Functionality for retrieving the CORUM protein complex data.</p>
+</section>
+<section id="id9">
+<h2>Parameters<a class="headerlink" href="#id9" title="Permalink to this headline"></a></h2>
+<ol class="simple">
+<li><p>complex_set : str</p></li>
+</ol>
+<ul class="simple">
+<li><p>Takes input ‘all’ (default), ‘core’ or ‘splice’</p></li>
+</ul>
+<ol class="simple">
+<li><p>organism : str</p></li>
+</ol>
+<ul class="simple">
+<li><p>Takes input ‘Bovine’, ‘Dog’, ‘Hamster’, ‘Human’ (default), ‘MINK’, ‘Mammalia’, ‘Mouse’, ‘Pig’, ‘Rabbit’ or ‘Rat’</p></li>
+</ul>
+</section>
+<section id="id10">
+<h2>Returns<a class="headerlink" href="#id10" title="Permalink to this headline"></a></h2>
+<p>Pandas DataFrame</p>
+<ul class="simple">
+<li><p>A dataframe with each row corresponding to a CORUM complex.</p></li>
+</ul>
+</section>
+<section id="id11">
+<h2>Example 1<a class="headerlink" href="#id11" title="Permalink to this headline"></a></h2>
+<p>Retrieve <strong>all</strong> CORUM complexes for <strong>Human</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_Human_CORUM_df</span> <span class="o">=</span> <span class="n">getCorum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_Human_CORUM_df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ComplexID</th>
+      <th>ComplexName</th>
+      <th>Organism</th>
+      <th>Synonyms</th>
+      <th>Cell line</th>
+      <th>subunits(UniProt IDs)</th>
+      <th>subunits(Entrez IDs)</th>
+      <th>Protein complex purification method</th>
+      <th>GO ID</th>
+      <th>GO description</th>
+      <th>FunCat ID</th>
+      <th>FunCat description</th>
+      <th>subunits(Gene name)</th>
+      <th>Subunits comment</th>
+      <th>PubMed ID</th>
+      <th>Complex comment</th>
+      <th>Disease comment</th>
+      <th>SWISSPROT organism</th>
+      <th>subunits(Gene name syn)</th>
+      <th>subunits(Protein name)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>BCL6-HDAC4 complex</td>
+      <td>Human</td>
+      <td>None</td>
+      <td>None</td>
+      <td>P41182;P56524</td>
+      <td>604;9759</td>
+      <td>MI:0007-anti tag coimmunoprecipitation</td>
+      <td>GO:0006265;GO:0045892;GO:0051276;GO:0030183;GO...</td>
+      <td>DNA topological change;negative regulation of ...</td>
+      <td>10.01.09.05;11.02.03.04.03;42.10.03;43.03.07.0...</td>
+      <td>DNA conformation modification (e.g. chromatin)...</td>
+      <td>BCL6;HDAC4</td>
+      <td>None</td>
+      <td>11929873</td>
+      <td>Transcriptional repression by BCL6 is thought ...</td>
+      <td>None</td>
+      <td>Homo sapiens (Human);Homo sapiens (Human)</td>
+      <td>BCL5 LAZ3 ZBTB27 ZNF51;KIAA0288</td>
+      <td>B-cell lymphoma 6 protein;Histone deacetylase 4</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>BCL6-HDAC5 complex</td>
+      <td>Human</td>
+      <td>None</td>
+      <td>None</td>
+      <td>P41182;Q9UQL6</td>
+      <td>604;10014</td>
+      <td>MI:0007-anti tag coimmunoprecipitation</td>
+      <td>GO:0006265;GO:0045892;GO:0051276;GO:0030183;GO...</td>
+      <td>DNA topological change;negative regulation of ...</td>
+      <td>10.01.09.05;11.02.03.04.03;42.10.03;43.03.07.0...</td>
+      <td>DNA conformation modification (e.g. chromatin)...</td>
+      <td>BCL6;HDAC5</td>
+      <td>None</td>
+      <td>11929873</td>
+      <td>Transcriptional repression by BCL6 is thought ...</td>
+      <td>None</td>
+      <td>Homo sapiens (Human);Homo sapiens (Human)</td>
+      <td>BCL5 LAZ3 ZBTB27 ZNF51;KIAA0600</td>
+      <td>B-cell lymphoma 6 protein;Histone deacetylase 5</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>BCL6-HDAC7 complex</td>
+      <td>Human</td>
+      <td>None</td>
+      <td>None</td>
+      <td>P41182;Q8WUI4</td>
+      <td>604;51564</td>
+      <td>MI:0007-anti tag coimmunoprecipitation</td>
+      <td>GO:0006265;GO:0045892;GO:0051276;GO:0030183;GO...</td>
+      <td>DNA topological change;negative regulation of ...</td>
+      <td>10.01.09.05;11.02.03.04.03;42.10.03;43.03.07.0...</td>
+      <td>DNA conformation modification (e.g. chromatin)...</td>
+      <td>BCL6;HDAC7</td>
+      <td>None</td>
+      <td>11929873</td>
+      <td>Transcriptional repression by BCL6 is thought ...</td>
+      <td>None</td>
+      <td>Homo sapiens (Human);Homo sapiens (Human)</td>
+      <td>BCL5 LAZ3 ZBTB27 ZNF51;HDAC7A</td>
+      <td>B-cell lymphoma 6 protein;Histone deacetylase 7</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_Human_CORUM_df</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2916, 20)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id12">
+<h2>Example 2<a class="headerlink" href="#id12" title="Permalink to this headline"></a></h2>
+<p>Retrieve the <strong>core</strong> CORUM complexes for <strong>Mouse</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">core_Mouse_CORUM_df</span> <span class="o">=</span> <span class="n">getCorum</span><span class="p">(</span><span class="s1">&#39;core&#39;</span><span class="p">,</span><span class="s1">&#39;Mouse&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">core_Mouse_CORUM_df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ComplexID</th>
+      <th>ComplexName</th>
+      <th>Organism</th>
+      <th>Synonyms</th>
+      <th>Cell line</th>
+      <th>subunits(UniProt IDs)</th>
+      <th>subunits(Entrez IDs)</th>
+      <th>Protein complex purification method</th>
+      <th>GO ID</th>
+      <th>GO description</th>
+      <th>FunCat ID</th>
+      <th>FunCat description</th>
+      <th>subunits(Gene name syn)</th>
+      <th>Complex comment</th>
+      <th>Disease comment</th>
+      <th>SWISSPROT organism</th>
+      <th>Subunits comment</th>
+      <th>subunits(Gene name)</th>
+      <th>PubMed ID</th>
+      <th>subunits(Protein name)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>9</td>
+      <td>6S-nuclear aryl hydrocarbon (Ah) receptor liga...</td>
+      <td>Mouse</td>
+      <td>None</td>
+      <td>None</td>
+      <td>P30561;P53762</td>
+      <td>11622;11863</td>
+      <td>MI:0019- coimmunoprecipitation</td>
+      <td>GO:2001141;GO:0006355;GO:0003677;GO:0023052;GO...</td>
+      <td>regulation of RNA biosynthetic process;regulat...</td>
+      <td>11.02.03.04;16.03.01;30.01;34.11.03;70.10</td>
+      <td>transcriptional control;DNA binding;cellular s...</td>
+      <td>;None</td>
+      <td>Arnt contains a basic helix-loop-helix motif, ...</td>
+      <td>None</td>
+      <td>Mus musculus (Mouse);Mus musculus (Mouse)</td>
+      <td>None</td>
+      <td>Ahr;Arnt</td>
+      <td>1317062</td>
+      <td>Aryl hydrocarbon receptor ;Aryl hydrocarbon re...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>25</td>
+      <td>9S-cytosolic aryl hydrocarbon (Ah) receptor no...</td>
+      <td>Mouse</td>
+      <td>None</td>
+      <td>None</td>
+      <td>O08915;P07901;P11499;P30561</td>
+      <td>11632;15519;15516;11622</td>
+      <td>MI:0019- coimmunoprecipitation; MI:0030- cross...</td>
+      <td>GO:0006950;GO:0009593;GO:0042221;GO:0005737</td>
+      <td>response to stress;detection of chemical stimu...</td>
+      <td>32.01;34.11.03;70.03</td>
+      <td>stress response;chemoperception and response;c...</td>
+      <td>;Hsp86 Hsp86-1 Hspca;Hsp84 Hsp84-1 Hspcb;</td>
+      <td>The authors propose that the AhR exists in cyt...</td>
+      <td>None</td>
+      <td>Mus musculus (Mouse);Mus musculus (Mouse);Mus ...</td>
+      <td>None</td>
+      <td>Aip;Hsp90aa1;Hsp90ab1;Ahr</td>
+      <td>1310021</td>
+      <td>AH receptor-interacting protein ;Heat shock pr...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>39</td>
+      <td>Immunoproteasome</td>
+      <td>Mouse</td>
+      <td>20S immunoproteasome; proteasome</td>
+      <td>None</td>
+      <td>O09061;O35955;O70435;P28063;P28076;P49722;P990...</td>
+      <td>19170;19171;19167;16913;16912;19166;19172;2644...</td>
+      <td>MI:0019-coimmunoprecipitation</td>
+      <td>GO:0016485;GO:0043161;GO:0006511;GO:0006950;GO...</td>
+      <td>protein processing;proteasome-mediated ubiquit...</td>
+      <td>14.07.11;14.13.01.01;32.01;36.25.16.03.05;70.0...</td>
+      <td>protein processing (proteolytic);proteasomal d...</td>
+      <td>None;Lmp10 Mecl1;None;Lmp7 Mc13;Lmp2 Ring12;Lm...</td>
+      <td>The proteasome is an essential component of th...</td>
+      <td>None</td>
+      <td>Mus musculus (Mouse);Mus musculus (Mouse);Mus ...</td>
+      <td>None</td>
+      <td>Psmb1;Psmb10;Psma3;Psmb8;Psmb9;Psma2;Psmb4;Psm...</td>
+      <td>10436176</td>
+      <td>Proteasome subunit beta type-1;Proteasome subu...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">core_Mouse_CORUM_df</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(540, 20)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="display-ppi-network-for-complex-function-to-visualize-ppi-data-for-a-given-complex-from-corum">
+<h1>[5] <em>display_PPI_network_for_complex</em> - function to visualize PPI data for a given complex from CORUM<a class="headerlink" href="#display-ppi-network-for-complex-function-to-visualize-ppi-data-for-a-given-complex-from-corum" title="Permalink to this headline"></a></h1>
+<section id="id13">
+<h2>Description<a class="headerlink" href="#id13" title="Permalink to this headline"></a></h2>
+<p>Display network of BioPlex PPIs for a CORUM complex - This function displays a complete network in which nodes represent the proteins in a specified CORUM complex and edges represent BioPlex PPIs using NetworkX. Edges detected through AP-MS are colored darker.</p>
+<p>See <a class="reference external" href="https://www.sciencedirect.com/science/article/abs/pii/S0092867421004463">Huttlin, E. L., Bruckner, R. J., Navarrete-Perea, J., Cannon, J. R., Baltier, K., Gebreab, F., … &amp; Gygi, S. P. (2021). Dual proteome-scale networks reveal cell-specific remodeling of the human interactome. Cell, 184(11), 3022-3040.</a> for reference.</p>
+</section>
+<section id="id14">
+<h2>Parameters<a class="headerlink" href="#id14" title="Permalink to this headline"></a></h2>
+<ol class="simple">
+<li><p>ax object to draw on: Matplotlib Axes</p></li>
+<li><p>DataFrame of PPIs : Pandas DataFrame</p></li>
+<li><p>DataFrame of CORUM complexes : Pandas DataFrame</p></li>
+<li><p>Name of Corum Complex: str</p></li>
+<li><p>Size of Nodes in Network: int</p></li>
+<li><p>Width of Edges in Network: float</p></li>
+<li><p><strong>optional</strong> Color of Nodes targeted as baits: str</p></li>
+<li><p><strong>optional</strong> Color of Nodes detected as preys only: str</p></li>
+<li><p><strong>optional</strong> Color of Edges observed via AP-MS from PPI data: str</p></li>
+<li><p><strong>optional</strong> NetworkX Position of Nodes: dict</p></li>
+</ol>
+</section>
+<section id="id15">
+<h2>Returns<a class="headerlink" href="#id15" title="Permalink to this headline"></a></h2>
+<p>Node Positions</p>
+<ul class="simple">
+<li><p>Dictionary of Node Positions in NetworkX layout.</p></li>
+</ul>
+</section>
+<section id="id16">
+<h2>Example 1<a class="headerlink" href="#id16" title="Permalink to this headline"></a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+</div>
+<ol class="simple">
+<li><p>Obtain the latest version of the <strong>293T</strong> PPI network</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bp_PPI_df</span> <span class="o">=</span> <span class="n">getBioPlex</span><span class="p">(</span><span class="s1">&#39;293T&#39;</span><span class="p">,</span> <span class="s1">&#39;3.0&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<ol class="simple">
+<li><p>Obtain <strong>core</strong> CORUM complexes for <strong>Human</strong></p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Corum_DF</span> <span class="o">=</span> <span class="n">getCorum</span><span class="p">(</span><span class="s1">&#39;core&#39;</span><span class="p">,</span> <span class="s1">&#39;Human&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<ol class="simple">
+<li><p>Visualize network for specified protein complex using PPI data (<strong>ING2 complex</strong> ID: 2851)</p></li>
+</ol>
+<p><strong>ING2</strong> complex from HEK293T cell line PPI data version 3.0</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Corum_DF</span><span class="p">[</span><span class="n">Corum_DF</span><span class="o">.</span><span class="n">ComplexName</span> <span class="o">==</span> <span class="s1">&#39;ING2 complex&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ComplexID</th>
+      <th>ComplexName</th>
+      <th>Organism</th>
+      <th>Synonyms</th>
+      <th>Cell line</th>
+      <th>subunits(UniProt IDs)</th>
+      <th>subunits(Entrez IDs)</th>
+      <th>Protein complex purification method</th>
+      <th>GO ID</th>
+      <th>GO description</th>
+      <th>FunCat ID</th>
+      <th>FunCat description</th>
+      <th>subunits(Gene name syn)</th>
+      <th>Complex comment</th>
+      <th>Disease comment</th>
+      <th>SWISSPROT organism</th>
+      <th>Subunits comment</th>
+      <th>subunits(Gene name)</th>
+      <th>PubMed ID</th>
+      <th>subunits(Protein name)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>920</th>
+      <td>2851</td>
+      <td>ING2 complex</td>
+      <td>Human</td>
+      <td>None</td>
+      <td>HeLa S3 cells</td>
+      <td>A0A024R3R1;O75446;P29374;Q09028;Q13547;Q16576;...</td>
+      <td>51742;8819;5926;5928;3065;5931;84312;3066;2594...</td>
+      <td>MI:0069-mass spectrometry studies of complexes...</td>
+      <td>GO:0006265;GO:0000278;GO:0051726;GO:0006473;GO...</td>
+      <td>DNA topological change;mitotic cell cycle;regu...</td>
+      <td>10.01.09.05;10.03.01.01;10.03.01;14.07.04;40.1...</td>
+      <td>DNA conformation modification (e.g. chromatin)...</td>
+      <td>hCG_19319;None;RBBP1, RBP1;RBAP48;RPD3L1;RBAP4...</td>
+      <td>ING2 is in an HDAC complex similar to ING1.ING...</td>
+      <td>None</td>
+      <td>Homo sapiens (Human);Homo sapiens (Human);Homo...</td>
+      <td>None</td>
+      <td>ARID4B;SAP30;ARID4A;RBBP4;HDAC1;RBBP7;BRMS1L;H...</td>
+      <td>16387653</td>
+      <td>AT rich interactive domain 4B (RBP1-like), iso...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+
+<span class="n">bp_PPI_df</span> <span class="o">=</span> <span class="n">getBioPlex</span><span class="p">(</span><span class="s1">&#39;293T&#39;</span><span class="p">,</span> <span class="s1">&#39;3.0&#39;</span><span class="p">)</span>
+<span class="n">Corum_DF</span> <span class="o">=</span> <span class="n">getCorum</span><span class="p">(</span><span class="s1">&#39;core&#39;</span><span class="p">,</span> <span class="s1">&#39;Human&#39;</span><span class="p">)</span>
+<span class="n">ING2_node_layout</span> <span class="o">=</span> <span class="n">display_PPI_network_for_complex</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">bp_PPI_df</span><span class="p">,</span> <span class="n">Corum_DF</span><span class="p">,</span> <span class="mi">2851</span><span class="p">,</span> <span class="mi">2300</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">)</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mf">7.5</span><span class="p">,</span> <span class="mf">7.5</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+<span class="c1"># save figure as PNG</span>
+<span class="n">fig_out_path</span> <span class="o">=</span> <span class="s1">&#39;/n/shared_db/ccb/bioplex/BioPlexPy_testing/figures/network_293T_3.0_ING2-complex.png&#39;</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">fig_out_path</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span> <span class="n">dpi</span> <span class="o">=</span> <span class="mi">300</span> <span class="p">,</span> <span class="n">transparent</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/BioPlex_Examples_99_0.png" src="_images/BioPlex_Examples_99_0.png" />
+</div>
+</div>
+</section>
+<section id="id17">
+<h2>Example 2<a class="headerlink" href="#id17" title="Permalink to this headline"></a></h2>
+<p><strong>Arp2/3</strong> complex from HEK293T cell line PPI data version 3.0</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Corum_DF</span><span class="p">[</span><span class="n">Corum_DF</span><span class="o">.</span><span class="n">ComplexName</span> <span class="o">==</span> <span class="s1">&#39;Arp2/3 protein complex&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ComplexID</th>
+      <th>ComplexName</th>
+      <th>Organism</th>
+      <th>Synonyms</th>
+      <th>Cell line</th>
+      <th>subunits(UniProt IDs)</th>
+      <th>subunits(Entrez IDs)</th>
+      <th>Protein complex purification method</th>
+      <th>GO ID</th>
+      <th>GO description</th>
+      <th>FunCat ID</th>
+      <th>FunCat description</th>
+      <th>subunits(Gene name syn)</th>
+      <th>Complex comment</th>
+      <th>Disease comment</th>
+      <th>SWISSPROT organism</th>
+      <th>Subunits comment</th>
+      <th>subunits(Gene name)</th>
+      <th>PubMed ID</th>
+      <th>subunits(Protein name)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>9</th>
+      <td>27</td>
+      <td>Arp2/3 protein complex</td>
+      <td>Human</td>
+      <td>ARP2/3 protein complex</td>
+      <td>None</td>
+      <td>O15143;O15144;O15145;O15511;P59998;P61158;P61160</td>
+      <td>10095;10109;10094;10092;10093;10096;10097</td>
+      <td>MI:0027-cosedimentation;MI:0071-molecular sieving</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>ARC41;ARC34;ARC21;ARC16;ARC20;ARP3;ARP2</td>
+      <td>None</td>
+      <td>Transcript levels of ARP2/3 complex subunits, ...</td>
+      <td>Homo sapiens (Human);Homo sapiens (Human);Homo...</td>
+      <td>None</td>
+      <td>ARPC1B;ARPC2;ARPC3;ARPC5;ARPC4;ACTR3;ACTR2</td>
+      <td>9359840</td>
+      <td>Actin-related protein 2/3 complex subunit 1B;A...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+
+<span class="n">bp_PPI_df</span> <span class="o">=</span> <span class="n">getBioPlex</span><span class="p">(</span><span class="s1">&#39;293T&#39;</span><span class="p">,</span> <span class="s1">&#39;3.0&#39;</span><span class="p">)</span>
+<span class="n">Corum_DF</span> <span class="o">=</span> <span class="n">getCorum</span><span class="p">(</span><span class="s1">&#39;core&#39;</span><span class="p">,</span> <span class="s1">&#39;Human&#39;</span><span class="p">)</span>
+<span class="n">Arp23_node_layout</span> <span class="o">=</span> <span class="n">display_PPI_network_for_complex</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">bp_PPI_df</span><span class="p">,</span> <span class="n">Corum_DF</span><span class="p">,</span> <span class="mi">27</span><span class="p">,</span> <span class="mi">2300</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">)</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mf">7.5</span><span class="p">,</span> <span class="mf">7.5</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+<span class="c1"># save figure as PNG</span>
+<span class="n">fig_out_path</span> <span class="o">=</span> <span class="s1">&#39;/n/shared_db/ccb/bioplex/BioPlexPy_testing/figures/network_293T_3.0_Arp2-3-complex.png&#39;</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">fig_out_path</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span> <span class="n">dpi</span> <span class="o">=</span> <span class="mi">300</span> <span class="p">,</span> <span class="n">transparent</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/BioPlex_Examples_103_0.png" src="_images/BioPlex_Examples_103_0.png" />
+</div>
+</div>
+</section>
+<section id="example-3">
+<h2>Example 3<a class="headerlink" href="#example-3" title="Permalink to this headline"></a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">gridspec</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>COP9 Signalsome</strong> complex from <em>HCT116 cell line PPI data version 1.0</em> &amp; <em>HEK293T cell line PPI data version 3.0</em></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Corum_DF</span><span class="p">[</span><span class="n">Corum_DF</span><span class="o">.</span><span class="n">ComplexName</span> <span class="o">==</span> <span class="s1">&#39;COP9 signalosome complex&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ComplexID</th>
+      <th>ComplexName</th>
+      <th>Organism</th>
+      <th>Synonyms</th>
+      <th>Cell line</th>
+      <th>subunits(UniProt IDs)</th>
+      <th>subunits(Entrez IDs)</th>
+      <th>Protein complex purification method</th>
+      <th>GO ID</th>
+      <th>GO description</th>
+      <th>FunCat ID</th>
+      <th>FunCat description</th>
+      <th>subunits(Gene name syn)</th>
+      <th>Complex comment</th>
+      <th>Disease comment</th>
+      <th>SWISSPROT organism</th>
+      <th>Subunits comment</th>
+      <th>subunits(Gene name)</th>
+      <th>PubMed ID</th>
+      <th>subunits(Protein name)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>655</th>
+      <td>2174</td>
+      <td>COP9 signalosome complex</td>
+      <td>Human</td>
+      <td>JAB1-containing signalosome (GPS1, COPS2, COPS...</td>
+      <td>None</td>
+      <td>P61201;Q13098;Q7L5N1;Q92905;Q99627;Q9BT78;Q9UB...</td>
+      <td>9318;2873;10980;10987;10920;51138;50813;8533</td>
+      <td>MI:0047-far western blotting</td>
+      <td>GO:2001141;GO:0006355;GO:0007165;GO:0009583;GO...</td>
+      <td>regulation of RNA biosynthetic process;regulat...</td>
+      <td>11.02.03.04;30;34.11.01</td>
+      <td>transcriptional control;CELLULAR COMMUNICATION...</td>
+      <td>CSN2, TRIP15;COPS1, CSN1;CSN6, HVIP;CSN5, JAB1...</td>
+      <td>The purified complex is very similar, if not i...</td>
+      <td>None</td>
+      <td>Homo sapiens (Human);Homo sapiens (Human);Homo...</td>
+      <td>Since the authors did not specify COP7, we use...</td>
+      <td>COPS2;GPS1;COPS6;COPS5;COPS8;COPS4;COPS7A;COPS3</td>
+      <td>9535219</td>
+      <td>COP9 signalosome complex subunit 2;COP9 signal...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">constrained_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">spec</span> <span class="o">=</span> <span class="n">gridspec</span><span class="o">.</span><span class="n">GridSpec</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">figure</span><span class="o">=</span><span class="n">fig</span><span class="p">)</span> <span class="c1"># define 2 columns since we&#39;ll have two networks</span>
+<span class="n">spec</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">wspace</span><span class="o">=</span><span class="mf">0.025</span><span class="p">)</span> <span class="c1"># set the spacing between axes.</span>
+
+<span class="c1"># pull CORUM complexes we&#39;re interested in</span>
+<span class="n">Corum_DF</span> <span class="o">=</span> <span class="n">getCorum</span><span class="p">(</span><span class="s1">&#39;core&#39;</span><span class="p">,</span> <span class="s1">&#39;Human&#39;</span><span class="p">)</span>
+
+<span class="c1"># HCT116 1.0</span>
+<span class="n">ax_HCT116_v1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="c1"># create axes object for HCT116 v1 network</span>
+<span class="n">bp_HCT116_v1_PPI_df</span> <span class="o">=</span> <span class="n">getBioPlex</span><span class="p">(</span><span class="s1">&#39;HCT116&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0&#39;</span><span class="p">)</span> <span class="c1"># load PPI data for HCT116 v1</span>
+<span class="n">COP9_node_layout</span> <span class="o">=</span> <span class="n">display_PPI_network_for_complex</span><span class="p">(</span><span class="n">ax_HCT116_v1</span><span class="p">,</span> <span class="n">bp_HCT116_v1_PPI_df</span><span class="p">,</span> <span class="n">Corum_DF</span><span class="p">,</span> <span class="mi">2174</span><span class="p">,</span> <span class="mi">2300</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">,</span> <span class="n">bait_node_color</span><span class="o">=</span><span class="s1">&#39;xkcd:blue&#39;</span><span class="p">,</span> <span class="n">prey_node_color</span><span class="o">=</span><span class="s1">&#39;xkcd:light blue&#39;</span><span class="p">,</span> <span class="n">AP_MS_edge_color</span><span class="o">=</span><span class="s1">&#39;xkcd:blue&#39;</span><span class="p">)</span>
+
+<span class="c1"># HEK293T 3.0</span>
+<span class="n">ax_293T_v3</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="c1"># create axes object for HEK293T v3 network</span>
+<span class="n">bp_293T_v3_df</span> <span class="o">=</span> <span class="n">getBioPlex</span><span class="p">(</span><span class="s1">&#39;293T&#39;</span><span class="p">,</span> <span class="s1">&#39;3.0&#39;</span><span class="p">)</span> <span class="c1"># load PPI data for HEK293T v3</span>
+<span class="n">COP9_node_layout</span> <span class="o">=</span> <span class="n">display_PPI_network_for_complex</span><span class="p">(</span><span class="n">ax_293T_v3</span><span class="p">,</span> <span class="n">bp_293T_v3_df</span><span class="p">,</span> <span class="n">Corum_DF</span><span class="p">,</span> <span class="mi">2174</span><span class="p">,</span> <span class="mi">2300</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">,</span> <span class="n">node_pos</span><span class="o">=</span><span class="n">COP9_node_layout</span><span class="p">)</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mf">7.5</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+<span class="c1"># save figure as PNG</span>
+<span class="n">fig_out_path</span> <span class="o">=</span> <span class="s1">&#39;/n/shared_db/ccb/bioplex/BioPlexPy_testing/figures/network_HCT116_1.0_VS_293T_3.0_COP9-signalsome-complex.png&#39;</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">fig_out_path</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span> <span class="n">dpi</span> <span class="o">=</span> <span class="mi">300</span> <span class="p">,</span> <span class="n">transparent</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/rv76/anaconda2/envs/CCB_BioPlexPy/lib/python3.7/site-packages/ipykernel_launcher.py:20: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+</pre></div>
+</div>
+<img alt="_images/BioPlex_Examples_108_1.png" src="_images/BioPlex_Examples_108_1.png" />
+</div>
+</div>
+</section>
+<section id="example-4">
+<h2>Example 4<a class="headerlink" href="#example-4" title="Permalink to this headline"></a></h2>
+<p><strong>Fanconi Anemia Core</strong> complex from <em>HCT116 cell line PPI data version 1.0</em> &amp; <em>HEK293T cell line PPI data version 3.0</em></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Corum_DF</span><span class="p">[</span><span class="n">Corum_DF</span><span class="o">.</span><span class="n">ComplexName</span> <span class="o">==</span> <span class="s1">&#39;FA core complex 1 (Fanconi anemia core complex 1)&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ComplexID</th>
+      <th>ComplexName</th>
+      <th>Organism</th>
+      <th>Synonyms</th>
+      <th>Cell line</th>
+      <th>subunits(UniProt IDs)</th>
+      <th>subunits(Entrez IDs)</th>
+      <th>Protein complex purification method</th>
+      <th>GO ID</th>
+      <th>GO description</th>
+      <th>FunCat ID</th>
+      <th>FunCat description</th>
+      <th>subunits(Gene name syn)</th>
+      <th>Complex comment</th>
+      <th>Disease comment</th>
+      <th>SWISSPROT organism</th>
+      <th>Subunits comment</th>
+      <th>subunits(Gene name)</th>
+      <th>PubMed ID</th>
+      <th>subunits(Protein name)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>607</th>
+      <td>1623</td>
+      <td>FA core complex 1 (Fanconi anemia core complex 1)</td>
+      <td>Human</td>
+      <td>None</td>
+      <td>None</td>
+      <td>O15287;O15360;Q00597;Q9HB96;Q9NPI8</td>
+      <td>2189;2175;2176;2178;2188</td>
+      <td>MI:0027-cosedimentation</td>
+      <td>GO:0016567;GO:0006974;GO:0005634</td>
+      <td>protein ubiquitination;cellular response to DN...</td>
+      <td>14.07.05;32.01.09;70.10</td>
+      <td>modification by ubiquitination, deubiquitinati...</td>
+      <td>XRCC9;FAA FACA FANCH;FAC FACC;FACE;None</td>
+      <td>FANCE functions to target cytoplasmic FANCC to...</td>
+      <td>FA complex is involved in Fanconi anemia (FA) ...</td>
+      <td>Homo sapiens (Human);Homo sapiens (Human);Homo...</td>
+      <td>None</td>
+      <td>FANCG;FANCA;FANCC;FANCE;FANCF</td>
+      <td>12093742</td>
+      <td>Fanconi anemia group G protein;Fanconi anemia ...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">constrained_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">spec</span> <span class="o">=</span> <span class="n">gridspec</span><span class="o">.</span><span class="n">GridSpec</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">figure</span><span class="o">=</span><span class="n">fig</span><span class="p">)</span> <span class="c1"># define 2 columns since we&#39;ll have two networks</span>
+<span class="n">spec</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">wspace</span><span class="o">=</span><span class="mf">0.025</span><span class="p">)</span> <span class="c1"># set the spacing between axes.</span>
+
+<span class="c1"># pull CORUM complexes we&#39;re interested in</span>
+<span class="n">Corum_DF</span> <span class="o">=</span> <span class="n">getCorum</span><span class="p">(</span><span class="s1">&#39;core&#39;</span><span class="p">,</span> <span class="s1">&#39;Human&#39;</span><span class="p">)</span>
+
+<span class="c1"># HCT116 1.0</span>
+<span class="n">ax_HCT116_v1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="c1"># create axes object for HCT116 v1 network</span>
+<span class="n">bp_HCT116_v1_PPI_df</span> <span class="o">=</span> <span class="n">getBioPlex</span><span class="p">(</span><span class="s1">&#39;HCT116&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0&#39;</span><span class="p">)</span> <span class="c1"># load PPI data for HCT116 v1</span>
+<span class="n">Fanconi_Anemia_node_layout</span> <span class="o">=</span> <span class="n">display_PPI_network_for_complex</span><span class="p">(</span><span class="n">ax_HCT116_v1</span><span class="p">,</span> <span class="n">bp_HCT116_v1_PPI_df</span><span class="p">,</span> <span class="n">Corum_DF</span><span class="p">,</span> <span class="mi">1623</span><span class="p">,</span> <span class="mi">2300</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">,</span> <span class="n">bait_node_color</span><span class="o">=</span><span class="s1">&#39;xkcd:blue&#39;</span><span class="p">,</span> <span class="n">prey_node_color</span><span class="o">=</span><span class="s1">&#39;xkcd:light blue&#39;</span><span class="p">,</span> <span class="n">AP_MS_edge_color</span><span class="o">=</span><span class="s1">&#39;xkcd:blue&#39;</span><span class="p">)</span>
+<span class="n">ax_HCT116_v1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;HCT116 v1.0&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span><span class="p">)</span> <span class="c1"># set title</span>
+
+<span class="c1"># HEK293T 3.0</span>
+<span class="n">ax_293T_v3</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="c1"># create axes object for HEK293T v3 network</span>
+<span class="n">bp_293T_v3_df</span> <span class="o">=</span> <span class="n">getBioPlex</span><span class="p">(</span><span class="s1">&#39;293T&#39;</span><span class="p">,</span> <span class="s1">&#39;3.0&#39;</span><span class="p">)</span> <span class="c1"># load PPI data for HEK293T v3</span>
+<span class="n">Fanconi_Anemia_node_layout</span> <span class="o">=</span> <span class="n">display_PPI_network_for_complex</span><span class="p">(</span><span class="n">ax_293T_v3</span><span class="p">,</span> <span class="n">bp_293T_v3_df</span><span class="p">,</span> <span class="n">Corum_DF</span><span class="p">,</span> <span class="mi">1623</span><span class="p">,</span> <span class="mi">2300</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">,</span> <span class="n">node_pos</span> <span class="o">=</span> <span class="n">Fanconi_Anemia_node_layout</span><span class="p">)</span>
+<span class="n">ax_293T_v3</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;293T v3.0&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span><span class="p">)</span> <span class="c1"># set title</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mf">7.5</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+<span class="c1"># save figure as PNG</span>
+<span class="n">fig_out_path</span> <span class="o">=</span> <span class="s1">&#39;/n/shared_db/ccb/bioplex/BioPlexPy_testing/figures/network_HCT116_1.0_VS_293T_3.0_Fanconi-Anemia-core-complex.png&#39;</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">fig_out_path</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span> <span class="n">dpi</span> <span class="o">=</span> <span class="mi">300</span> <span class="p">,</span> <span class="n">transparent</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/rv76/anaconda2/envs/CCB_BioPlexPy/lib/python3.7/site-packages/ipykernel_launcher.py:22: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+</pre></div>
+</div>
+<img alt="_images/BioPlex_Examples_112_1.png" src="_images/BioPlex_Examples_112_1.png" />
+</div>
+</div>
+</section>
+<section id="example-5-recreate-figure-1-from-cell-2021-bioplex-3-0-paper">
+<h2>Example 5 - Recreate <em>Figure 1</em> from <em>Cell</em> 2021 BioPlex 3.0 paper<a class="headerlink" href="#example-5-recreate-figure-1-from-cell-2021-bioplex-3-0-paper" title="Permalink to this headline"></a></h2>
+<p><strong>Exosome</strong> complex</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Corum_DF</span><span class="p">[</span><span class="n">Corum_DF</span><span class="o">.</span><span class="n">ComplexID</span> <span class="o">==</span> <span class="mi">7443</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ComplexID</th>
+      <th>ComplexName</th>
+      <th>Organism</th>
+      <th>Synonyms</th>
+      <th>Cell line</th>
+      <th>subunits(UniProt IDs)</th>
+      <th>subunits(Entrez IDs)</th>
+      <th>Protein complex purification method</th>
+      <th>GO ID</th>
+      <th>GO description</th>
+      <th>FunCat ID</th>
+      <th>FunCat description</th>
+      <th>subunits(Gene name syn)</th>
+      <th>Complex comment</th>
+      <th>Disease comment</th>
+      <th>SWISSPROT organism</th>
+      <th>Subunits comment</th>
+      <th>subunits(Gene name)</th>
+      <th>PubMed ID</th>
+      <th>subunits(Protein name)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2347</th>
+      <td>7443</td>
+      <td>Exosome</td>
+      <td>Human</td>
+      <td>None</td>
+      <td>HeLa cells</td>
+      <td>Q01780;Q06265;Q13868;Q15024;Q5RKV6;Q8TF46;Q96B...</td>
+      <td>5394;5393;23404;23016;118460;115752;11340;1020...</td>
+      <td>MI:0004-affinity chromatography technologies;M...</td>
+      <td>GO:0004532;GO:0006401;GO:0005737</td>
+      <td>exoribonuclease activity;RNA catabolic process...</td>
+      <td>01.03.16.01;70.03</td>
+      <td>RNA degradation;cytoplasm</td>
+      <td>PMSCL PMSCL2 RRP6;PMSCL1;RRP4;KIAA0116 RRP42;M...</td>
+      <td>None</td>
+      <td>None</td>
+      <td>Homo sapiens (Human);Homo sapiens (Human);Homo...</td>
+      <td>None</td>
+      <td>EXOSC10;EXOSC9;EXOSC2;EXOSC7;EXOSC6;DIS3L;EXOS...</td>
+      <td>20531389</td>
+      <td>Exosome component 10;Exosome complex component...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>BCOR</strong> complex</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Corum_DF</span><span class="p">[</span><span class="n">Corum_DF</span><span class="o">.</span><span class="n">ComplexID</span> <span class="o">==</span> <span class="mi">1178</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ComplexID</th>
+      <th>ComplexName</th>
+      <th>Organism</th>
+      <th>Synonyms</th>
+      <th>Cell line</th>
+      <th>subunits(UniProt IDs)</th>
+      <th>subunits(Entrez IDs)</th>
+      <th>Protein complex purification method</th>
+      <th>GO ID</th>
+      <th>GO description</th>
+      <th>FunCat ID</th>
+      <th>FunCat description</th>
+      <th>subunits(Gene name syn)</th>
+      <th>Complex comment</th>
+      <th>Disease comment</th>
+      <th>SWISSPROT organism</th>
+      <th>Subunits comment</th>
+      <th>subunits(Gene name)</th>
+      <th>PubMed ID</th>
+      <th>subunits(Protein name)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>520</th>
+      <td>1178</td>
+      <td>BCOR complex</td>
+      <td>Human</td>
+      <td>Ubiquitin E3 ligase</td>
+      <td>None</td>
+      <td>P11142;P63208;Q06587;Q6W2J9;Q8N488;Q8NHM5;Q994...</td>
+      <td>3312;6500;6015;54880;23429;84678;6045;84759</td>
+      <td>MI:0019-coimmunoprecipitation</td>
+      <td>GO:0016567;GO:0005634;GO:0006511;GO:0016569;GO...</td>
+      <td>protein ubiquitination;nucleus;ubiquitin-depen...</td>
+      <td>14.07.05;70.10;14.13.01.01;11</td>
+      <td>modification by ubiquitination, deubiquitinati...</td>
+      <td>HSC70, HSP73, HSPA10;EMC19, OCP2, SKP1A, TCEB1...</td>
+      <td>Ubiquitin E3 ligases covalently attach ubiquit...</td>
+      <td>None</td>
+      <td>Homo sapiens (Human);Homo sapiens (Human);Homo...</td>
+      <td>None</td>
+      <td>HSPA8;SKP1;RING1;BCOR;RYBP;KDM2B;RNF2;PCGF1</td>
+      <td>16943429</td>
+      <td>Heat shock cognate 71 kDa protein;S-phase kina...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">constrained_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">spec</span> <span class="o">=</span> <span class="n">gridspec</span><span class="o">.</span><span class="n">GridSpec</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figure</span><span class="o">=</span><span class="n">fig</span><span class="p">)</span> <span class="c1"># define 2 columns since we&#39;ll have two networks</span>
+<span class="n">spec</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">wspace</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span><span class="n">hspace</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span> <span class="c1"># set the spacing between axes.</span>
+
+<span class="c1"># pull CORUM complexes we&#39;re interested in</span>
+<span class="n">Corum_DF</span> <span class="o">=</span> <span class="n">getCorum</span><span class="p">(</span><span class="s1">&#39;core&#39;</span><span class="p">,</span> <span class="s1">&#39;Human&#39;</span><span class="p">)</span>
+
+<span class="c1"># HEK293T 3.0 - create axes objects for HEK293T v3 network</span>
+<span class="n">ax_293T_v3_A</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">ax_293T_v3_C</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">ax_293T_v3_E</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">ax_293T_v3_G</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+
+<span class="n">bp_293T_v3_df</span> <span class="o">=</span> <span class="n">getBioPlex</span><span class="p">(</span><span class="s1">&#39;293T&#39;</span><span class="p">,</span> <span class="s1">&#39;3.0&#39;</span><span class="p">)</span> <span class="c1"># load PPI data for HEK293T v3</span>
+
+<span class="n">Fanconi_Anemia_node_layout</span> <span class="o">=</span> <span class="n">display_PPI_network_for_complex</span><span class="p">(</span><span class="n">ax_293T_v3_A</span><span class="p">,</span> <span class="n">bp_293T_v3_df</span><span class="p">,</span> <span class="n">Corum_DF</span><span class="p">,</span> <span class="mi">1623</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">node_font_size</span><span class="o">=</span><span class="mf">5.5</span><span class="p">)</span>
+<span class="n">Exosome_node_layout</span> <span class="o">=</span> <span class="n">display_PPI_network_for_complex</span><span class="p">(</span><span class="n">ax_293T_v3_C</span><span class="p">,</span> <span class="n">bp_293T_v3_df</span><span class="p">,</span> <span class="n">Corum_DF</span><span class="p">,</span> <span class="mi">7443</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">node_font_size</span><span class="o">=</span><span class="mf">5.5</span><span class="p">)</span>
+<span class="n">COP9_node_layout</span> <span class="o">=</span> <span class="n">display_PPI_network_for_complex</span><span class="p">(</span><span class="n">ax_293T_v3_E</span><span class="p">,</span> <span class="n">bp_293T_v3_df</span><span class="p">,</span> <span class="n">Corum_DF</span><span class="p">,</span> <span class="mi">2174</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">node_font_size</span><span class="o">=</span><span class="mf">5.5</span><span class="p">)</span>
+<span class="n">BCOR_node_layout</span> <span class="o">=</span> <span class="n">display_PPI_network_for_complex</span><span class="p">(</span><span class="n">ax_293T_v3_G</span><span class="p">,</span> <span class="n">bp_293T_v3_df</span><span class="p">,</span> <span class="n">Corum_DF</span><span class="p">,</span> <span class="mi">1178</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">node_font_size</span><span class="o">=</span><span class="mf">5.5</span><span class="p">)</span>
+
+<span class="c1"># set titles</span>
+<span class="n">ax_293T_v3_A</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Fanconi Anemia Core Complex</span><span class="se">\n</span><span class="s1">293T v3.0&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">ax_293T_v3_C</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Exosome complex</span><span class="se">\n</span><span class="s1">293T v3.0&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">ax_293T_v3_E</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;COP9 signalosome complex</span><span class="se">\n</span><span class="s1">293T v3.0&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">ax_293T_v3_G</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;BCOR complex</span><span class="se">\n</span><span class="s1">293T v3.0&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># HCT116 1.0 - create axes object for HCT116 v1 network</span>
+<span class="n">ax_HCT116_v1_B</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax_HCT116_v1_D</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">ax_HCT116_v1_F</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax_HCT116_v1_H</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+
+<span class="n">bp_HCT116_v1_df</span> <span class="o">=</span> <span class="n">getBioPlex</span><span class="p">(</span><span class="s1">&#39;HCT116&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0&#39;</span><span class="p">)</span> <span class="c1"># load PPI data for HCT116 v1</span>
+
+<span class="n">Fanconi_Anemia_node_layout</span> <span class="o">=</span> <span class="n">display_PPI_network_for_complex</span><span class="p">(</span><span class="n">ax_HCT116_v1_B</span><span class="p">,</span> <span class="n">bp_HCT116_v1_df</span><span class="p">,</span> <span class="n">Corum_DF</span><span class="p">,</span> <span class="mi">1623</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">node_font_size</span><span class="o">=</span><span class="mf">5.5</span><span class="p">,</span> <span class="n">bait_node_color</span><span class="o">=</span><span class="s1">&#39;xkcd:blue&#39;</span><span class="p">,</span> <span class="n">prey_node_color</span><span class="o">=</span><span class="s1">&#39;xkcd:light blue&#39;</span><span class="p">,</span> <span class="n">AP_MS_edge_color</span><span class="o">=</span><span class="s1">&#39;xkcd:blue&#39;</span><span class="p">,</span> <span class="n">node_pos</span><span class="o">=</span><span class="n">Fanconi_Anemia_node_layout</span><span class="p">)</span>
+<span class="n">Exosome_node_layout</span> <span class="o">=</span> <span class="n">display_PPI_network_for_complex</span><span class="p">(</span><span class="n">ax_HCT116_v1_D</span><span class="p">,</span> <span class="n">bp_HCT116_v1_df</span><span class="p">,</span> <span class="n">Corum_DF</span><span class="p">,</span> <span class="mi">7443</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">node_font_size</span><span class="o">=</span><span class="mf">5.5</span><span class="p">,</span> <span class="n">bait_node_color</span><span class="o">=</span><span class="s1">&#39;xkcd:blue&#39;</span><span class="p">,</span> <span class="n">prey_node_color</span><span class="o">=</span><span class="s1">&#39;xkcd:light blue&#39;</span><span class="p">,</span> <span class="n">AP_MS_edge_color</span><span class="o">=</span><span class="s1">&#39;xkcd:blue&#39;</span><span class="p">,</span> <span class="n">node_pos</span><span class="o">=</span><span class="n">Exosome_node_layout</span><span class="p">)</span>
+<span class="n">COP9_node_layout</span> <span class="o">=</span> <span class="n">display_PPI_network_for_complex</span><span class="p">(</span><span class="n">ax_HCT116_v1_F</span><span class="p">,</span> <span class="n">bp_HCT116_v1_df</span><span class="p">,</span> <span class="n">Corum_DF</span><span class="p">,</span> <span class="mi">2174</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">node_font_size</span><span class="o">=</span><span class="mf">5.5</span><span class="p">,</span> <span class="n">bait_node_color</span><span class="o">=</span><span class="s1">&#39;xkcd:blue&#39;</span><span class="p">,</span> <span class="n">prey_node_color</span><span class="o">=</span><span class="s1">&#39;xkcd:light blue&#39;</span><span class="p">,</span> <span class="n">AP_MS_edge_color</span><span class="o">=</span><span class="s1">&#39;xkcd:blue&#39;</span><span class="p">,</span> <span class="n">node_pos</span><span class="o">=</span><span class="n">COP9_node_layout</span><span class="p">)</span>
+<span class="n">BCOR_node_layout</span> <span class="o">=</span> <span class="n">display_PPI_network_for_complex</span><span class="p">(</span><span class="n">ax_HCT116_v1_H</span><span class="p">,</span> <span class="n">bp_HCT116_v1_df</span><span class="p">,</span> <span class="n">Corum_DF</span><span class="p">,</span> <span class="mi">1178</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">node_font_size</span><span class="o">=</span><span class="mf">5.5</span><span class="p">,</span> <span class="n">bait_node_color</span><span class="o">=</span><span class="s1">&#39;xkcd:blue&#39;</span><span class="p">,</span> <span class="n">prey_node_color</span><span class="o">=</span><span class="s1">&#39;xkcd:light blue&#39;</span><span class="p">,</span> <span class="n">AP_MS_edge_color</span><span class="o">=</span><span class="s1">&#39;xkcd:blue&#39;</span><span class="p">,</span> <span class="n">node_pos</span><span class="o">=</span><span class="n">BCOR_node_layout</span><span class="p">)</span>
+
+<span class="c1"># set titles</span>
+<span class="n">ax_HCT116_v1_B</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Fanconi Anemia Core Complex</span><span class="se">\n</span><span class="s1">HCT116 v1.0&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">ax_HCT116_v1_D</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Exosome complex</span><span class="se">\n</span><span class="s1">HCT116 v1.0&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">ax_HCT116_v1_F</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;COP9 signalosome complex</span><span class="se">\n</span><span class="s1">HCT116 v1.0&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">ax_HCT116_v1_H</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;BCOR complex</span><span class="se">\n</span><span class="s1">HCT116 v1.0&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mf">14.25</span><span class="p">,</span> <span class="mf">7.5</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+<span class="c1"># save figure as PNG</span>
+<span class="n">fig_out_path</span> <span class="o">=</span> <span class="s1">&#39;/n/shared_db/ccb/bioplex/BioPlexPy_testing/figures/network_HCT116_1.0_VS_293T_3.0_Fig1_Cell2021.png&#39;</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">fig_out_path</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span> <span class="n">dpi</span> <span class="o">=</span> <span class="mi">300</span> <span class="p">,</span> <span class="n">transparent</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/rv76/anaconda2/envs/CCB_BioPlexPy/lib/python3.7/site-packages/ipykernel_launcher.py:48: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+</pre></div>
+</div>
+<img alt="_images/BioPlex_Examples_118_1.png" src="_images/BioPlex_Examples_118_1.png" />
+</div>
+</div>
+</section>
+<section id="example-6-recreate-figure-2-from-nature-2017-bioplex-2-0-paper">
+<h2>Example 6 - Recreate <em>Figure 2</em> from <em>Nature</em> 2017 BioPlex 2.0 paper<a class="headerlink" href="#example-6-recreate-figure-2-from-nature-2017-bioplex-2-0-paper" title="Permalink to this headline"></a></h2>
+<p><strong>Arp2/3</strong> complex</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Corum_DF</span><span class="p">[</span><span class="n">Corum_DF</span><span class="o">.</span><span class="n">ComplexID</span> <span class="o">==</span> <span class="mi">27</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ComplexID</th>
+      <th>ComplexName</th>
+      <th>Organism</th>
+      <th>Synonyms</th>
+      <th>Cell line</th>
+      <th>subunits(UniProt IDs)</th>
+      <th>subunits(Entrez IDs)</th>
+      <th>Protein complex purification method</th>
+      <th>GO ID</th>
+      <th>GO description</th>
+      <th>FunCat ID</th>
+      <th>FunCat description</th>
+      <th>subunits(Gene name syn)</th>
+      <th>Complex comment</th>
+      <th>Disease comment</th>
+      <th>SWISSPROT organism</th>
+      <th>Subunits comment</th>
+      <th>subunits(Gene name)</th>
+      <th>PubMed ID</th>
+      <th>subunits(Protein name)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>9</th>
+      <td>27</td>
+      <td>Arp2/3 protein complex</td>
+      <td>Human</td>
+      <td>ARP2/3 protein complex</td>
+      <td>None</td>
+      <td>O15143;O15144;O15145;O15511;P59998;P61158;P61160</td>
+      <td>10095;10109;10094;10092;10093;10096;10097</td>
+      <td>MI:0027-cosedimentation;MI:0071-molecular sieving</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>ARC41;ARC34;ARC21;ARC16;ARC20;ARP3;ARP2</td>
+      <td>None</td>
+      <td>Transcript levels of ARP2/3 complex subunits, ...</td>
+      <td>Homo sapiens (Human);Homo sapiens (Human);Homo...</td>
+      <td>None</td>
+      <td>ARPC1B;ARPC2;ARPC3;ARPC5;ARPC4;ACTR3;ACTR2</td>
+      <td>9359840</td>
+      <td>Actin-related protein 2/3 complex subunit 1B;A...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>TFIIH transcription factor</strong> complex</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Corum_DF</span><span class="p">[</span><span class="n">Corum_DF</span><span class="o">.</span><span class="n">ComplexID</span> <span class="o">==</span> <span class="mi">1029</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ComplexID</th>
+      <th>ComplexName</th>
+      <th>Organism</th>
+      <th>Synonyms</th>
+      <th>Cell line</th>
+      <th>subunits(UniProt IDs)</th>
+      <th>subunits(Entrez IDs)</th>
+      <th>Protein complex purification method</th>
+      <th>GO ID</th>
+      <th>GO description</th>
+      <th>FunCat ID</th>
+      <th>FunCat description</th>
+      <th>subunits(Gene name syn)</th>
+      <th>Complex comment</th>
+      <th>Disease comment</th>
+      <th>SWISSPROT organism</th>
+      <th>Subunits comment</th>
+      <th>subunits(Gene name)</th>
+      <th>PubMed ID</th>
+      <th>subunits(Protein name)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>430</th>
+      <td>1029</td>
+      <td>TFIIH transcription factor complex</td>
+      <td>Human</td>
+      <td>None</td>
+      <td>None</td>
+      <td>P18074;P19447;P32780;P50613;P51946;P51948;Q138...</td>
+      <td>2068;2071;2965;1022;902;4331;2966;2967;404672;...</td>
+      <td>MI:0091-chromatography technologies;MI:0071-mo...</td>
+      <td>GO:0006281;GO:0007049;GO:0006355;GO:0005634;GO...</td>
+      <td>DNA repair;cell cycle;regulation of transcript...</td>
+      <td>10.01.05.01;10.03;11.02.03.04;70.10</td>
+      <td>DNA repair;cell cycle;transcriptional control;...</td>
+      <td>XPD, XPDC;XPB, XPBC;BTF2;CAK, CAK1, CDKN7, MO1...</td>
+      <td>Transcription factor IIH (TFIIH) is a multisub...</td>
+      <td>None</td>
+      <td>Homo sapiens (Human);Homo sapiens (Human);Homo...</td>
+      <td>None</td>
+      <td>ERCC2;ERCC3;GTF2H1;CDK7;CCNH;MNAT1;GTF2H2;GTF2...</td>
+      <td>8692842</td>
+      <td>TFIIH basal transcription factor complex helic...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>Checkpoint RAD</strong> complex</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Corum_DF</span><span class="p">[</span><span class="n">Corum_DF</span><span class="o">.</span><span class="n">ComplexID</span> <span class="o">==</span> <span class="mi">274</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ComplexID</th>
+      <th>ComplexName</th>
+      <th>Organism</th>
+      <th>Synonyms</th>
+      <th>Cell line</th>
+      <th>subunits(UniProt IDs)</th>
+      <th>subunits(Entrez IDs)</th>
+      <th>Protein complex purification method</th>
+      <th>GO ID</th>
+      <th>GO description</th>
+      <th>FunCat ID</th>
+      <th>FunCat description</th>
+      <th>subunits(Gene name syn)</th>
+      <th>Complex comment</th>
+      <th>Disease comment</th>
+      <th>SWISSPROT organism</th>
+      <th>Subunits comment</th>
+      <th>subunits(Gene name)</th>
+      <th>PubMed ID</th>
+      <th>subunits(Protein name)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>116</th>
+      <td>274</td>
+      <td>9-1-1-RAD17-RFC complex</td>
+      <td>Human</td>
+      <td>RAD17-RFC-9-1-1 checkpoint supercomplex</td>
+      <td>None</td>
+      <td>O60671;O60921;O75943;P35249;P35250;P40937;P409...</td>
+      <td>5810;3364;5884;5984;5982;5985;5983;5883</td>
+      <td>MI:0004-affinity chromatography technologies;M...</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>REC1;None;R24L;None;None;None;None;None</td>
+      <td>Rad17-RFC complex binds to nicked circular, ga...</td>
+      <td>None</td>
+      <td>Homo sapiens (Human);Homo sapiens (Human);Homo...</td>
+      <td>None</td>
+      <td>RAD1;HUS1;RAD17;RFC4;RFC2;RFC5;RFC3;RAD9A</td>
+      <td>12578958</td>
+      <td>Cell cycle checkpoint protein RAD1;Checkpoint ...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>Nau4/Tip60-HAT</strong> complex B</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Corum_DF</span><span class="p">[</span><span class="n">Corum_DF</span><span class="o">.</span><span class="n">ComplexID</span> <span class="o">==</span> <span class="mi">787</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ComplexID</th>
+      <th>ComplexName</th>
+      <th>Organism</th>
+      <th>Synonyms</th>
+      <th>Cell line</th>
+      <th>subunits(UniProt IDs)</th>
+      <th>subunits(Entrez IDs)</th>
+      <th>Protein complex purification method</th>
+      <th>GO ID</th>
+      <th>GO description</th>
+      <th>FunCat ID</th>
+      <th>FunCat description</th>
+      <th>subunits(Gene name syn)</th>
+      <th>Complex comment</th>
+      <th>Disease comment</th>
+      <th>SWISSPROT organism</th>
+      <th>Subunits comment</th>
+      <th>subunits(Gene name)</th>
+      <th>PubMed ID</th>
+      <th>subunits(Protein name)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>338</th>
+      <td>787</td>
+      <td>NuA4/Tip60-HAT complex B</td>
+      <td>Human</td>
+      <td>None</td>
+      <td>None</td>
+      <td>O96019;Q92993;Q9H2F5;Q9NPF5;Q9UBU8;Q9Y230;Q9Y2...</td>
+      <td>86;10524;80314;55929;10933;10856;8607;8295</td>
+      <td>MI:0007-anti tag coimmunoprecipitation</td>
+      <td>GO:0051276;GO:0006281;GO:0006265;GO:0003677;GO...</td>
+      <td>chromosome organization;DNA repair;DNA topolog...</td>
+      <td>42.10.03;10.01.05.01;10.01.09.05;16.03.01;32.0...</td>
+      <td>organization of chromosome structure;DNA repai...</td>
+      <td>BAF53, BAF53A, INO80K;HTATIP, TIP60;None;KIAA1...</td>
+      <td>The NuA4 histone acetyltransferase (HAT) multi...</td>
+      <td>None</td>
+      <td>Homo sapiens (Human);Homo sapiens (Human);Homo...</td>
+      <td>None</td>
+      <td>ACTL6A;KAT5;EPC1;DMAP1;MORF4L1;RUVBL2;RUVBL1;T...</td>
+      <td>14966270</td>
+      <td>Actin-like protein 6A;Histone acetyltransferas...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">constrained_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">spec</span> <span class="o">=</span> <span class="n">gridspec</span><span class="o">.</span><span class="n">GridSpec</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figure</span><span class="o">=</span><span class="n">fig</span><span class="p">)</span> <span class="c1"># define 2 columns since we&#39;ll have two networks</span>
+<span class="n">spec</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">wspace</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span><span class="n">hspace</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span> <span class="c1"># set the spacing between axes.</span>
+
+<span class="c1"># pull CORUM complexes we&#39;re interested in</span>
+<span class="n">Corum_DF</span> <span class="o">=</span> <span class="n">getCorum</span><span class="p">(</span><span class="s1">&#39;core&#39;</span><span class="p">,</span> <span class="s1">&#39;Human&#39;</span><span class="p">)</span>
+
+<span class="c1"># HEK293T 1.0 - create axes objects for HEK293T v1 network</span>
+<span class="n">ax_293T_v1_A</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">ax_293T_v1_B</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax_293T_v1_C</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">ax_293T_v1_D</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+
+<span class="n">bp_293T_v1_df</span> <span class="o">=</span> <span class="n">getBioPlex</span><span class="p">(</span><span class="s1">&#39;293T&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0&#39;</span><span class="p">)</span> <span class="c1"># load PPI data for HEK293T v1</span>
+
+<span class="n">Arp23_node_layout</span> <span class="o">=</span> <span class="n">display_PPI_network_for_complex</span><span class="p">(</span><span class="n">ax_293T_v1_A</span><span class="p">,</span> <span class="n">bp_293T_v1_df</span><span class="p">,</span> <span class="n">Corum_DF</span><span class="p">,</span> <span class="mi">27</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">node_font_size</span><span class="o">=</span><span class="mf">5.5</span><span class="p">,</span> <span class="n">bait_node_color</span><span class="o">=</span><span class="s1">&#39;xkcd:blue&#39;</span><span class="p">,</span> <span class="n">prey_node_color</span><span class="o">=</span><span class="s1">&#39;xkcd:light blue&#39;</span><span class="p">,</span> <span class="n">AP_MS_edge_color</span><span class="o">=</span><span class="s1">&#39;xkcd:blue&#39;</span><span class="p">)</span>
+<span class="n">TFIIH_node_layout</span> <span class="o">=</span> <span class="n">display_PPI_network_for_complex</span><span class="p">(</span><span class="n">ax_293T_v1_B</span><span class="p">,</span> <span class="n">bp_293T_v1_df</span><span class="p">,</span> <span class="n">Corum_DF</span><span class="p">,</span> <span class="mi">1029</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">node_font_size</span><span class="o">=</span><span class="mf">5.5</span><span class="p">,</span> <span class="n">bait_node_color</span><span class="o">=</span><span class="s1">&#39;xkcd:blue&#39;</span><span class="p">,</span> <span class="n">prey_node_color</span><span class="o">=</span><span class="s1">&#39;xkcd:light blue&#39;</span><span class="p">,</span> <span class="n">AP_MS_edge_color</span><span class="o">=</span><span class="s1">&#39;xkcd:blue&#39;</span><span class="p">)</span>
+<span class="n">RAD_node_layout</span> <span class="o">=</span> <span class="n">display_PPI_network_for_complex</span><span class="p">(</span><span class="n">ax_293T_v1_C</span><span class="p">,</span> <span class="n">bp_293T_v1_df</span><span class="p">,</span> <span class="n">Corum_DF</span><span class="p">,</span> <span class="mi">274</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">node_font_size</span><span class="o">=</span><span class="mf">5.5</span><span class="p">,</span> <span class="n">bait_node_color</span><span class="o">=</span><span class="s1">&#39;xkcd:blue&#39;</span><span class="p">,</span> <span class="n">prey_node_color</span><span class="o">=</span><span class="s1">&#39;xkcd:light blue&#39;</span><span class="p">,</span> <span class="n">AP_MS_edge_color</span><span class="o">=</span><span class="s1">&#39;xkcd:blue&#39;</span><span class="p">)</span>
+<span class="n">NuA4_Tip60_node_layout</span> <span class="o">=</span> <span class="n">display_PPI_network_for_complex</span><span class="p">(</span><span class="n">ax_293T_v1_D</span><span class="p">,</span> <span class="n">bp_293T_v1_df</span><span class="p">,</span> <span class="n">Corum_DF</span><span class="p">,</span> <span class="mi">787</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">node_font_size</span><span class="o">=</span><span class="mf">5.5</span><span class="p">,</span> <span class="n">bait_node_color</span><span class="o">=</span><span class="s1">&#39;xkcd:blue&#39;</span><span class="p">,</span> <span class="n">prey_node_color</span><span class="o">=</span><span class="s1">&#39;xkcd:light blue&#39;</span><span class="p">,</span> <span class="n">AP_MS_edge_color</span><span class="o">=</span><span class="s1">&#39;xkcd:blue&#39;</span><span class="p">)</span>
+
+<span class="c1"># set titles</span>
+<span class="n">ax_293T_v1_A</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Arp2/3 protein complex</span><span class="se">\n</span><span class="s1">293T v1.0&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">ax_293T_v1_B</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;TFIIH transcription factor complex</span><span class="se">\n</span><span class="s1">293T v1.0&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">ax_293T_v1_C</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Checkpoint Rad complex</span><span class="se">\n</span><span class="s1">293T v1.0&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">ax_293T_v1_D</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Nua4/Tip60-HAT complex B</span><span class="se">\n</span><span class="s1">293T v1.0&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># HEK293T 2.0 - create axes objects for HEK293T v2 network</span>
+<span class="n">ax_293T_v2_E</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">ax_293T_v2_F</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax_293T_v2_G</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">ax_293T_v2_H</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+
+<span class="n">bp_293T_v2_df</span> <span class="o">=</span> <span class="n">getBioPlex</span><span class="p">(</span><span class="s1">&#39;293T&#39;</span><span class="p">,</span> <span class="s1">&#39;2.0&#39;</span><span class="p">)</span> <span class="c1"># load PPI data for HEK293T v2</span>
+
+<span class="n">Arp23_node_layout</span> <span class="o">=</span> <span class="n">display_PPI_network_for_complex</span><span class="p">(</span><span class="n">ax_293T_v2_E</span><span class="p">,</span> <span class="n">bp_293T_v2_df</span><span class="p">,</span> <span class="n">Corum_DF</span><span class="p">,</span> <span class="mi">27</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">node_font_size</span><span class="o">=</span><span class="mf">5.5</span><span class="p">,</span> <span class="n">node_pos</span><span class="o">=</span><span class="n">Arp23_node_layout</span><span class="p">)</span>
+<span class="n">TFIIH_node_layout</span> <span class="o">=</span> <span class="n">display_PPI_network_for_complex</span><span class="p">(</span><span class="n">ax_293T_v2_F</span><span class="p">,</span> <span class="n">bp_293T_v2_df</span><span class="p">,</span> <span class="n">Corum_DF</span><span class="p">,</span> <span class="mi">1029</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">node_font_size</span><span class="o">=</span><span class="mf">5.5</span><span class="p">,</span> <span class="n">node_pos</span><span class="o">=</span><span class="n">TFIIH_node_layout</span><span class="p">)</span>
+<span class="n">RAD_node_layout</span> <span class="o">=</span> <span class="n">display_PPI_network_for_complex</span><span class="p">(</span><span class="n">ax_293T_v2_G</span><span class="p">,</span> <span class="n">bp_293T_v2_df</span><span class="p">,</span> <span class="n">Corum_DF</span><span class="p">,</span> <span class="mi">274</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">node_font_size</span><span class="o">=</span><span class="mf">5.5</span><span class="p">,</span> <span class="n">node_pos</span><span class="o">=</span><span class="n">RAD_node_layout</span><span class="p">)</span>
+<span class="n">NuA4_Tip60_node_layout</span> <span class="o">=</span> <span class="n">display_PPI_network_for_complex</span><span class="p">(</span><span class="n">ax_293T_v2_H</span><span class="p">,</span> <span class="n">bp_293T_v2_df</span><span class="p">,</span> <span class="n">Corum_DF</span><span class="p">,</span> <span class="mi">787</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">node_font_size</span><span class="o">=</span><span class="mf">5.5</span><span class="p">,</span><span class="n">node_pos</span><span class="o">=</span><span class="n">NuA4_Tip60_node_layout</span><span class="p">)</span>
+
+<span class="c1"># set titles</span>
+<span class="n">ax_293T_v2_E</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Arp2/3 protein complex</span><span class="se">\n</span><span class="s1">293T v2.0&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">ax_293T_v2_F</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;TFIIH transcription factor complex</span><span class="se">\n</span><span class="s1">293T v2.0&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">ax_293T_v2_G</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Checkpoint Rad complex</span><span class="se">\n</span><span class="s1">293T v2.0&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">ax_293T_v2_H</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Nua4/Tip60-HAT complex B</span><span class="se">\n</span><span class="s1">293T v2.0&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mf">14.25</span><span class="p">,</span> <span class="mf">7.5</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+<span class="c1"># save figure as PNG</span>
+<span class="n">fig_out_path</span> <span class="o">=</span> <span class="s1">&#39;/n/shared_db/ccb/bioplex/BioPlexPy_testing/figures/network_293T_1.0_VS_293T_2.0_Fig2_Nature2017.png&#39;</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">fig_out_path</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span> <span class="n">dpi</span> <span class="o">=</span> <span class="mi">300</span> <span class="p">,</span> <span class="n">transparent</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/rv76/anaconda2/envs/CCB_BioPlexPy/lib/python3.7/site-packages/ipykernel_launcher.py:48: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+</pre></div>
+</div>
+<img alt="_images/BioPlex_Examples_128_1.png" src="_images/BioPlex_Examples_128_1.png" />
+</div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="get-ppi-network-edges-for-complex-function-that-returns-matching-edges-ppi-data-for-a-given-corum-complex-in-a-list">
+<h1>[6] <em>get_PPI_network_edges_for_complex</em> - function that returns matching edges (PPI data) for a given CORUM complex in a list<a class="headerlink" href="#get-ppi-network-edges-for-complex-function-that-returns-matching-edges-ppi-data-for-a-given-corum-complex-in-a-list" title="Permalink to this headline"></a></h1>
+<section id="id18">
+<h2>Description<a class="headerlink" href="#id18" title="Permalink to this headline"></a></h2>
+<p>This function returns a dataframe of PPIs identified through AP-MS between the proteins in a specified CORUM complex.</p>
+</section>
+<section id="id19">
+<h2>Parameters<a class="headerlink" href="#id19" title="Permalink to this headline"></a></h2>
+<ol class="simple">
+<li><p>DataFrame of PPIs : Pandas DataFrame</p></li>
+<li><p>DataFrame of CORUM complexes : Pandas DataFrame</p></li>
+<li><p>Corum Complex ID: int</p></li>
+</ol>
+</section>
+<section id="id20">
+<h2>Returns<a class="headerlink" href="#id20" title="Permalink to this headline"></a></h2>
+<p>Pandas DataFrame</p>
+<ul class="simple">
+<li><p>A dataframe with each row corresponding to a PPI interaction detected via AP-MS for specified complex.</p></li>
+</ul>
+</section>
+<section id="id21">
+<h2>Example 1<a class="headerlink" href="#id21" title="Permalink to this headline"></a></h2>
+<ol class="simple">
+<li><p>Obtain the latest version of the <strong>293T</strong> PPI network</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bp_293t_df</span> <span class="o">=</span> <span class="n">getBioPlex</span><span class="p">(</span><span class="s1">&#39;293T&#39;</span><span class="p">,</span> <span class="s1">&#39;3.0&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<ol class="simple">
+<li><p>Obtain <strong>core</strong> CORUM complexes for <strong>Human</strong></p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Corum_DF</span> <span class="o">=</span> <span class="n">getCorum</span><span class="p">(</span><span class="s1">&#39;core&#39;</span><span class="p">,</span> <span class="s1">&#39;Human&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<ol class="simple">
+<li><p>Get edges detected via AP-MS for <strong>ING2</strong> complex from HEK293T cell line PPI data version 3.0 (<strong>ING2 complex</strong> ID: 2851)</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ING2_PPI_edges_df</span> <span class="o">=</span> <span class="n">get_PPI_network_edges_for_complex</span><span class="p">(</span><span class="n">bp_293t_df</span><span class="p">,</span> <span class="n">Corum_DF</span><span class="p">,</span> <span class="mi">2851</span><span class="p">)</span>
+<span class="n">ING2_PPI_edges_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>SymbolA</th>
+      <th>SymbolB</th>
+      <th>pW</th>
+      <th>pNI</th>
+      <th>pInt</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>SIN3A</td>
+      <td>RBBP7</td>
+      <td>9.203087e-31</td>
+      <td>0.000025</td>
+      <td>0.999975</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>SIN3A</td>
+      <td>RBBP4</td>
+      <td>3.786405e-30</td>
+      <td>0.000051</td>
+      <td>0.999949</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>SIN3A</td>
+      <td>HDAC1</td>
+      <td>1.189159e-28</td>
+      <td>0.000086</td>
+      <td>0.999914</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>BRMS1</td>
+      <td>RBBP7</td>
+      <td>3.046638e-30</td>
+      <td>0.000001</td>
+      <td>0.999999</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>BRMS1</td>
+      <td>RBBP4</td>
+      <td>4.715386e-29</td>
+      <td>0.000138</td>
+      <td>0.999862</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ING2_PPI_edges_df</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(56, 5)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id22">
+<h2>Example 2<a class="headerlink" href="#id22" title="Permalink to this headline"></a></h2>
+<p>Get edges detected via AP-MS for <strong>BCOR</strong> complex from HEK293T cell line PPI data version 3.0 (<strong>BCOR complex</strong> ID: 1178)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">BCOR_PPI_edges_df</span> <span class="o">=</span> <span class="n">get_PPI_network_edges_for_complex</span><span class="p">(</span><span class="n">bp_293t_df</span><span class="p">,</span> <span class="n">Corum_DF</span><span class="p">,</span> <span class="mi">1178</span><span class="p">)</span>
+<span class="n">BCOR_PPI_edges_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>SymbolA</th>
+      <th>SymbolB</th>
+      <th>pW</th>
+      <th>pNI</th>
+      <th>pInt</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>SKP1</td>
+      <td>KDM2B</td>
+      <td>1.653213e-09</td>
+      <td>1.353456e-07</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>SKP1</td>
+      <td>BCOR</td>
+      <td>9.611417e-15</td>
+      <td>2.314018e-05</td>
+      <td>0.999977</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>SKP1</td>
+      <td>RNF2</td>
+      <td>3.687013e-15</td>
+      <td>2.535758e-02</td>
+      <td>0.974642</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>SKP1</td>
+      <td>RING1</td>
+      <td>2.803730e-23</td>
+      <td>2.009116e-01</td>
+      <td>0.799088</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>SKP1</td>
+      <td>PCGF1</td>
+      <td>9.810118e-27</td>
+      <td>1.027444e-08</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">BCOR_PPI_edges_df</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(14, 5)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="get-prop-edges-in-complex-identfied-function-that-returns-the-proportion-of-interactions-between-proteins-in-a-corum-complex-detected-by-ap-ms">
+<h1>[7] <em>get_prop_edges_in_complex_identfied</em> - function that returns the proportion of interactions between proteins in a CORUM complex detected by AP-MS<a class="headerlink" href="#get-prop-edges-in-complex-identfied-function-that-returns-the-proportion-of-interactions-between-proteins-in-a-corum-complex-detected-by-ap-ms" title="Permalink to this headline"></a></h1>
+<section id="id23">
+<h2>Description<a class="headerlink" href="#id23" title="Permalink to this headline"></a></h2>
+<p>This function returns the proportion of all possible PPIs identified through AP-MS between the proteins in a specified CORUM complex.</p>
+</section>
+<section id="id24">
+<h2>Parameters<a class="headerlink" href="#id24" title="Permalink to this headline"></a></h2>
+<ol class="simple">
+<li><p>DataFrame of PPIs : Pandas DataFrame</p></li>
+<li><p>DataFrame of CORUM complexes : Pandas DataFrame</p></li>
+<li><p>Corum Complex ID: int</p></li>
+</ol>
+</section>
+<section id="id25">
+<h2>Returns<a class="headerlink" href="#id25" title="Permalink to this headline"></a></h2>
+<p>Float</p>
+<ul class="simple">
+<li><p>The proportion of interactions between all proteins in CORUM complex identified through AP-MS PPI data.</p></li>
+</ul>
+</section>
+<section id="id26">
+<h2>Example 1<a class="headerlink" href="#id26" title="Permalink to this headline"></a></h2>
+<ol class="simple">
+<li><p>Obtain the latest version of the <strong>293T</strong> PPI network</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bp_293t_df</span> <span class="o">=</span> <span class="n">getBioPlex</span><span class="p">(</span><span class="s1">&#39;293T&#39;</span><span class="p">,</span> <span class="s1">&#39;3.0&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<ol class="simple">
+<li><p>Obtain <strong>core</strong> CORUM complexes for <strong>Human</strong></p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Corum_DF</span> <span class="o">=</span> <span class="n">getCorum</span><span class="p">(</span><span class="s1">&#39;core&#39;</span><span class="p">,</span> <span class="s1">&#39;Human&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<ol class="simple">
+<li><p>Get proportion of interactions identified for <strong>ING2</strong> complex from HEK293T cell line PPI data version 3.0 (<strong>ING2 complex</strong> ID: 2851)</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">get_prop_edges_in_complex_identfied</span><span class="p">(</span><span class="n">bp_293t_df</span><span class="p">,</span> <span class="n">Corum_DF</span><span class="p">,</span> <span class="mi">2851</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.718
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id27">
+<h2>Example 2<a class="headerlink" href="#id27" title="Permalink to this headline"></a></h2>
+<ol class="simple">
+<li><p>Get proportion of interactions identified for <strong>Arp2/3</strong> complex from HEK293T cell line PPI data version 3.0 (<strong>Arp2/3 complex</strong> ID: 27)</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">get_prop_edges_in_complex_identfied</span><span class="p">(</span><span class="n">bp_293t_df</span><span class="p">,</span> <span class="n">Corum_DF</span><span class="p">,</span> <span class="mi">27</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.667
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="permutation-test-for-corum-complex-function-that-runs-permutation-test-to-test-whether-number-of-edges-for-corum-complex-ppi-network-is-enriched-for-interactions">
+<h1>[8] <em>permutation_test_for_CORUM_complex</em> - function that runs permutation test to test whether number of edges for CORUM complex PPI network is enriched for interactions<a class="headerlink" href="#permutation-test-for-corum-complex-function-that-runs-permutation-test-to-test-whether-number-of-edges-for-corum-complex-ppi-network-is-enriched-for-interactions" title="Permalink to this headline"></a></h1>
+<section id="id28">
+<h2>Description<a class="headerlink" href="#id28" title="Permalink to this headline"></a></h2>
+<p>This function returns a p-value after running a permutation test by 1. taking the number of proteins in the specified CORUM complex (N), 2. choosing N random proteins from the Graph generated by all of the PPI data (G), 3. calculating the number of edges in the Subgraph (S) induced by N random proteins and storing this value (E_i), 4. repeating steps 1-3 1000 times to create a null distribution, 5. calculating the number of edges between N proteins in the CORUM complex (E), 6. returning a p-value by calculating the proportion of values [E_1, E_2, … , E_1000] that are greater than or equal to E.</p>
+</section>
+<section id="id29">
+<h2>Parameters<a class="headerlink" href="#id29" title="Permalink to this headline"></a></h2>
+<ol class="simple">
+<li><p>DataFrame of PPIs : Pandas DataFrame</p></li>
+<li><p>Network of PPIs : NetworkX graph</p></li>
+<li><p>DataFrame of CORUM complexes : Pandas DataFrame</p></li>
+<li><p>Corum Complex ID: int</p></li>
+</ol>
+</section>
+<section id="id30">
+<h2>Returns<a class="headerlink" href="#id30" title="Permalink to this headline"></a></h2>
+<p>Float</p>
+<ul class="simple">
+<li><p>A p-value from a permutation test to check for enrichment of PPIs detected between proteins of CORUM complex</p></li>
+</ul>
+</section>
+<section id="id31">
+<h2>Example 1<a class="headerlink" href="#id31" title="Permalink to this headline"></a></h2>
+<ol class="simple">
+<li><p>Obtain the latest version of the <strong>293T</strong> PPI network</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bp_293t_df</span> <span class="o">=</span> <span class="n">getBioPlex</span><span class="p">(</span><span class="s1">&#39;293T&#39;</span><span class="p">,</span> <span class="s1">&#39;3.0&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<ol class="simple">
+<li><p>Obtain NetworkX graph representation of 293T PPI network</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bp_293t_G</span> <span class="o">=</span> <span class="n">bioplex2graph</span><span class="p">(</span><span class="n">bp_PPI_df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<ol class="simple">
+<li><p>Obtain <strong>core</strong> CORUM complexes for <strong>Human</strong></p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Corum_DF</span> <span class="o">=</span> <span class="n">getCorum</span><span class="p">(</span><span class="s1">&#39;core&#39;</span><span class="p">,</span> <span class="s1">&#39;Human&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<ol class="simple">
+<li><p>Calculate p-value to check for enrichment of edges in <strong>Arp2/3</strong> complex from HEK293T cell line PPI data version 3.0 (<strong>Arp2/3 complex</strong> ID: 27)</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">permutation_test_for_CORUM_complex</span><span class="p">(</span><span class="n">bp_293t_df</span><span class="p">,</span> <span class="n">bp_293t_G</span><span class="p">,</span> <span class="n">Corum_DF</span><span class="p">,</span> <span class="mi">27</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="example-2-iterate-through-all-corum-complexes-and-run-permutation-test-on-each-one-using-ppi-293t-v3-data">
+<h2>Example 2 - iterate through all CORUM complexes and run permutation test on each one using <em>PPI 293T v3</em> data<a class="headerlink" href="#example-2-iterate-through-all-corum-complexes-and-run-permutation-test-on-each-one-using-ppi-293t-v3-data" title="Permalink to this headline"></a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Corum_DF</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ComplexID</th>
+      <th>ComplexName</th>
+      <th>Organism</th>
+      <th>Synonyms</th>
+      <th>Cell line</th>
+      <th>subunits(UniProt IDs)</th>
+      <th>subunits(Entrez IDs)</th>
+      <th>Protein complex purification method</th>
+      <th>GO ID</th>
+      <th>GO description</th>
+      <th>FunCat ID</th>
+      <th>FunCat description</th>
+      <th>subunits(Gene name syn)</th>
+      <th>Complex comment</th>
+      <th>Disease comment</th>
+      <th>SWISSPROT organism</th>
+      <th>Subunits comment</th>
+      <th>subunits(Gene name)</th>
+      <th>PubMed ID</th>
+      <th>subunits(Protein name)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>BCL6-HDAC4 complex</td>
+      <td>Human</td>
+      <td>None</td>
+      <td>None</td>
+      <td>P41182;P56524</td>
+      <td>604;9759</td>
+      <td>MI:0007-anti tag coimmunoprecipitation</td>
+      <td>GO:0006265;GO:0045892;GO:0051276;GO:0030183;GO...</td>
+      <td>DNA topological change;negative regulation of ...</td>
+      <td>10.01.09.05;11.02.03.04.03;42.10.03;43.03.07.0...</td>
+      <td>DNA conformation modification (e.g. chromatin)...</td>
+      <td>BCL5 LAZ3 ZBTB27 ZNF51;KIAA0288</td>
+      <td>Transcriptional repression by BCL6 is thought ...</td>
+      <td>None</td>
+      <td>Homo sapiens (Human);Homo sapiens (Human)</td>
+      <td>None</td>
+      <td>BCL6;HDAC4</td>
+      <td>11929873</td>
+      <td>B-cell lymphoma 6 protein;Histone deacetylase 4</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>BCL6-HDAC5 complex</td>
+      <td>Human</td>
+      <td>None</td>
+      <td>None</td>
+      <td>P41182;Q9UQL6</td>
+      <td>604;10014</td>
+      <td>MI:0007-anti tag coimmunoprecipitation</td>
+      <td>GO:0006265;GO:0045892;GO:0051276;GO:0030183;GO...</td>
+      <td>DNA topological change;negative regulation of ...</td>
+      <td>10.01.09.05;11.02.03.04.03;42.10.03;43.03.07.0...</td>
+      <td>DNA conformation modification (e.g. chromatin)...</td>
+      <td>BCL5 LAZ3 ZBTB27 ZNF51;KIAA0600</td>
+      <td>Transcriptional repression by BCL6 is thought ...</td>
+      <td>None</td>
+      <td>Homo sapiens (Human);Homo sapiens (Human)</td>
+      <td>None</td>
+      <td>BCL6;HDAC5</td>
+      <td>11929873</td>
+      <td>B-cell lymphoma 6 protein;Histone deacetylase 5</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Corum_DF</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2417, 20)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Running this for every complex takes about ~ 5 minutes to run</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">permutation_pvals_CORUM_complex_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="n">count_i</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">CORUM_complex_ID</span> <span class="ow">in</span> <span class="n">Corum_DF</span><span class="o">.</span><span class="n">ComplexID</span><span class="p">:</span>
+    <span class="n">permutation_pvals_CORUM_complex_dict</span><span class="p">[</span><span class="n">CORUM_complex_ID</span><span class="p">]</span> <span class="o">=</span> <span class="n">permutation_test_for_CORUM_complex</span><span class="p">(</span><span class="n">bp_293t_df</span><span class="p">,</span> <span class="n">bp_293t_G</span><span class="p">,</span> <span class="n">Corum_DF</span><span class="p">,</span> <span class="n">CORUM_complex_ID</span><span class="p">)</span>
+    
+    <span class="n">count_i</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">count_i</span> <span class="o">%</span> <span class="mi">1000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">count_i</span><span class="p">)</span>
+        
+<span class="n">permutation_pvals_CORUM_complex_series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">permutation_pvals_CORUM_complex_dict</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1000
+2000
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;ggplot&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;lines.linewidth&#39;</span><span class="p">]</span><span class="o">=</span><span class="mf">1.0</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;axes.facecolor&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;1.0&#39;</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;xtick.color&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;black&#39;</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;axes.grid&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">False</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;axes.edgecolor&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;black&#39;</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;grid.color&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s1">&#39;1.0&#39;</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">14</span><span class="p">})</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">permutation_pvals_CORUM_complex_series</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">60</span><span class="p">,</span> <span class="n">rwidth</span> <span class="o">=</span> <span class="mf">0.85</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Distribution of p-vals from permutation test on every CORUM</span><span class="se">\n</span><span class="s1">Human core complex w/ 293T v3 BioPlex interaction data &#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">12</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">pad</span> <span class="o">=</span> <span class="o">-</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Number of CORUM complexes&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">12</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">labelpad</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;p-val from permutation test&#39;</span> <span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">12</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">labelpad</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;right&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;top&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">labelcolor</span> <span class="o">=</span> <span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;major&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">12</span> <span class="p">,</span> <span class="n">labelcolor</span> <span class="o">=</span> <span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;major&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">12</span> <span class="p">,</span> <span class="n">labelcolor</span> <span class="o">=</span> <span class="s1">&#39;k&#39;</span><span class="p">)</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mf">7.5</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/BioPlex_Examples_186_0.png" src="_images/BioPlex_Examples_186_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">permutation_pvals_CORUM_complex_series</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">permutation_pvals_CORUM_complex_series</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1233    0.0
+1187    0.0
+5518    0.0
+6994    0.0
+1192    0.0
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">permutation_pvals_CORUM_complex_series</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2649    1.0
+6248    1.0
+2678    1.0
+2641    1.0
+1       1.0
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>Make sure this matches the total number of complexes</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">permutation_pvals_CORUM_complex_series</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2417
+</pre></div>
+</div>
+</div>
+</div>
+<p>Calculate the number of complexes with sig. pvals at Bonferroni cut-off</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">sum</span><span class="p">(</span><span class="n">permutation_pvals_CORUM_complex_series</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mf">0.05</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">permutation_pvals_CORUM_complex_series</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>716
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to BioplexPy’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="README.html" class="btn btn-neutral float-right" title="BioPlexPy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Roger Vargas Jr, Ludwig Geistlinger.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

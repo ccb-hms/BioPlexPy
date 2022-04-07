@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Search &mdash; BioPlexPy  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/mystnb.css" type="text/css" />
+    
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/js/theme.js"></script>
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="#" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> BioPlexPy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="#" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="BioPlex_Examples.html">Examples for how to use functions from BioPlexPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BioPlex_Examples.html#getbioplex-function-to-retrieve-interactions-data">[1] <em>getBioPlex</em> - function to retrieve interactions data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BioPlex_Examples.html#getgse122425-function-to-retrieve-hek293-rnaseq-expression-data">[2] <em>getGSE122425</em> - function to retrieve HEK293 RNAseq expression data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BioPlex_Examples.html#bioplex2graph-function-to-convert-bioplex-ppis-into-a-graph-data-structure">[3] <em>bioplex2graph</em> - function to convert BioPlex PPIs into a graph data structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BioPlex_Examples.html#getcorum-function-to-retrieve-corum-complex-data">[4] <em>getCorum</em> - function to retrieve CORUM complex data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BioPlex_Examples.html#display-ppi-network-for-complex-function-to-visualize-ppi-data-for-a-given-complex-from-corum">[5] <em>display_PPI_network_for_complex</em> - function to visualize PPI data for a given complex from CORUM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BioPlex_Examples.html#get-ppi-network-edges-for-complex-function-that-returns-matching-edges-ppi-data-for-a-given-corum-complex-in-a-list">[6] <em>get_PPI_network_edges_for_complex</em> - function that returns matching edges (PPI data) for a given CORUM complex in a list</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BioPlex_Examples.html#get-prop-edges-in-complex-identfied-function-that-returns-the-proportion-of-interactions-between-proteins-in-a-corum-complex-detected-by-ap-ms">[7] <em>get_prop_edges_in_complex_identfied</em> - function that returns the proportion of interactions between proteins in a CORUM complex detected by AP-MS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BioPlex_Examples.html#permutation-test-for-corum-complex-function-that-runs-permutation-test-to-test-whether-number-of-edges-for-corum-complex-ppi-network-is-enriched-for-interactions">[8] <em>permutation_test_for_CORUM_complex</em> - function that runs permutation test to test whether number of edges for CORUM complex PPI network is enriched for interactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">BioPlexPy</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BioPlexPy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Search</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <noscript>
+  <div id="fallback" class="admonition warning">
+    <p class="last">
+      Please activate JavaScript to enable the search functionality.
+    </p>
+  </div>
+  </noscript>
+
+  
+  <div id="search-results">
+  
+  </div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Roger Vargas Jr, Ludwig Geistlinger.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+  <script>
+    jQuery(function() { Search.loadIndex("searchindex.js"); });
+  </script>
+  
+  <script id="searchindexloader"></script>
+   
+
+
+</body>
+</html>
