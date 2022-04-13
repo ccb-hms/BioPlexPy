@@ -1,0 +1,6 @@
+pandas
+requests
+anndata
+networkx
+numpy
+matplotlib
