@@ -19,3 +19,4 @@ sphinx-material
 sphinx-rtd-theme
 sphinx-typlog-theme
 sphinx-autobuild
+Jinja2<3.1
