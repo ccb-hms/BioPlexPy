@@ -6,7 +6,7 @@ numpy
 matplotlib
 myst-nb
 myst-parser
-sphinx~=2.4.0
+sphinx
 ipykernel
 sphinx-notfound-page
 sphinx-version-warning
@@ -19,4 +19,5 @@ sphinx-material
 sphinx-rtd-theme
 sphinx-typlog-theme
 sphinx-autobuild
-Jinja2<3.1
+mkdocs==1.2.3
+jinja2==3.0.0
