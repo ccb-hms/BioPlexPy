@@ -195,7 +195,7 @@ def get_DataFrame_from_PPI_network(bp_PPI_G):
     
     return bp_complex_i_df
 
-def get_prop_edges_in_complex_identfied(bp_PPI_G, Corum_DF, Complex_ID):
+def get_prop_edges_in_complex_identified(bp_PPI_G, Corum_DF, Complex_ID):
     '''
     Calculates proportion of all possible edges identified from BioPlex (AP-MS) PPIs for a CORUM complex.
     
