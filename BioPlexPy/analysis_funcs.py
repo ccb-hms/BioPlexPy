@@ -130,10 +130,9 @@ def get_PPI_network_for_complex(bp_PPI_G, Corum_DF, Complex_ID):
 
 def get_DataFrame_from_PPI_network(bp_PPI_G):
     '''
-    Convert Network of BioPlex (AP-MS) PPIs into DataFrame of BioPlex interaction edges.
+    Convert Network of BioPlex (AP-MS) PPIs into DataFrame of BioPlex interaction Network.
     
-    This function returns a subgraph of PPIs identified through AP-MS
-    between the proteins in a specified CORUM complex.
+    This function returns a DataFrame of PPIs (identified through AP-MS) represented as a graph.
 
     Parameters
     ----------
@@ -149,7 +148,7 @@ def get_DataFrame_from_PPI_network(bp_PPI_G):
     >>> bp_293t_df = getBioPlex('293T', '3.0') # (1) Obtain the latest version of the 293T PPI network
     >>> bp_293t_G = bioplex2graph(bp_293t_df) # (2) Obtain NetworkX graph representation of 293T PPI network
     >>> Corum_DF = getCorum('core', 'Human') # (3) Obtain CORUM complexes
-    >>> ING2_bp_293t_G = get_PPI_network_for_complex(bp_293t_G, Corum_DF, 2851) # (4) Get AP-MS interactions as subgraph for a specified ING2 protein complex using PPI data
+    >>> ING2_bp_293t_G = get_PPI_network_for_complex(bp_293t_G, Corum_DF, 2851) # (4) Get AP-MS interactions as subgraph for a specified protein complex using PPI data
     >>> ING2_bp_293t_df = get_DataFrame_from_PPI_network(ING2_bp_293t_G) # (5) Convert ING2 AP-MS network into DataFrame w/ each row corresponding to an edge
     '''
     # get list of edges in network
