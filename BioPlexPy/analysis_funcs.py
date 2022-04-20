@@ -275,51 +275,58 @@ def permutation_test_for_CORUM_complex(bp_PPI_G, Corum_DF, Complex_ID, num_perms
 
     # number of edges detected between proteins in this CORUM complex among PPI data
     num_edges_identified_CORUM_complex = float(len(list(bp_complex_i_G.edges)))
-
-    # number of genes in CORUM complex (N genes)
-    num_genes_in_CORUM_complex = len(list(bp_complex_i_G.nodes))
-
-    # list of nodes in large network generated from PPI data
-    nodes_in_overall_PPI_network = list(bp_PPI_G.nodes)
     
-    # find number of baits in complex
-    bp_complex_i_baits_num = np.sum([bp_complex_i_G.nodes[node_i]['bait'] for node_i in bp_complex_i_G.nodes])
-    # find proportion of baits in complex
-    bp_complex_i_baits_prop = float(bp_complex_i_baits_num) / float(num_genes_in_CORUM_complex)
+    # if no edges detected in this complex, return an ERROR message
+    if num_edges_identified_CORUM_complex == 0.0:
+        print('ERROR: no edges detected in PPI data for this CORUM complex, p-value could not be computed.')
+    
+    # if at least 1 edge in CORUM complex, estimate p-value using permutation test
+    else:
 
-    # list that will store number of edges detected in each subgraph
-    num_edges_random_subgraphs = []
+        # number of genes in CORUM complex (N genes)
+        num_genes_in_CORUM_complex = len(list(bp_complex_i_G.nodes))
 
-    # iterate through num_perms random subgraphs induced by N nodes
-    S_i = 0
-    while S_i < num_perms:
+        # list of nodes in large network generated from PPI data
+        nodes_in_overall_PPI_network = list(bp_PPI_G.nodes)
 
-        # choose N genes at random without replacement
-        N_rando_nodes_from_PPI_network = random.sample(nodes_in_overall_PPI_network, num_genes_in_CORUM_complex)
+        # find number of baits in complex
+        bp_complex_i_baits_num = np.sum([bp_complex_i_G.nodes[node_i]['bait'] for node_i in bp_complex_i_G.nodes])
+        # find proportion of baits in complex
+        bp_complex_i_baits_prop = float(bp_complex_i_baits_num) / float(num_genes_in_CORUM_complex)
 
-        # get subgraph induced by random subset of nodes
-        bp_PPI_S = bp_PPI_G.subgraph(N_rando_nodes_from_PPI_network)
+        # list that will store number of edges detected in each subgraph
+        num_edges_random_subgraphs = []
 
-        # check to see if nodes in subgraph have the same proportion of baits as the subgraph induced by the CORUM complex
-        bp_S_baits_num = np.sum([bp_PPI_S.nodes[node_i]['bait'] for node_i in bp_PPI_S.nodes])
-        bp_S_baits_prop = float(bp_S_baits_num) / float(num_genes_in_CORUM_complex)
+        # iterate through num_perms random subgraphs induced by N nodes
+        S_i = 0
+        while S_i < num_perms:
 
-        # proportion of baits in CORUM complex & S are the same (+/- 10%)
-        if abs(bp_complex_i_baits_prop - bp_S_baits_prop) <= 0.1:
+            # choose N genes at random without replacement
+            N_rando_nodes_from_PPI_network = random.sample(nodes_in_overall_PPI_network, num_genes_in_CORUM_complex)
 
-            # calculate the number of edges detected within subgraph induced by random nodes
-            num_edges_S = float(len(list(bp_PPI_S.edges)))
+            # get subgraph induced by random subset of nodes
+            bp_PPI_S = bp_PPI_G.subgraph(N_rando_nodes_from_PPI_network)
 
-            # store in list that contains permutations
-            num_edges_random_subgraphs.append(num_edges_S)
+            # check to see if nodes in subgraph have the same proportion of baits as the subgraph induced by the CORUM complex
+            bp_S_baits_num = np.sum([bp_PPI_S.nodes[node_i]['bait'] for node_i in bp_PPI_S.nodes])
+            bp_S_baits_prop = float(bp_S_baits_num) / float(num_genes_in_CORUM_complex)
 
-            # count this as a permutation
-            S_i += 1
+            # proportion of baits in CORUM complex & S are the same (+/- 10%)
+            if abs(bp_complex_i_baits_prop - bp_S_baits_prop) <= 0.1:
 
-    # convert list to numpy array
-    num_edges_random_subgraphs = np.array(num_edges_random_subgraphs)
+                # calculate the number of edges detected within subgraph induced by random nodes
+                num_edges_S = float(len(list(bp_PPI_S.edges)))
 
-    # calculate proportion of subgraphs that had more edges than edges detected in CORUM complex (p-val from permutation test)
-    p_val = float(np.sum(num_edges_random_subgraphs >= num_edges_identified_CORUM_complex) + 1.0) / (float(num_perms) + 1.0)
+                # store in list that contains permutations
+                num_edges_random_subgraphs.append(num_edges_S)
 
-    return p_val
+                # count this as a permutation
+                S_i += 1
+
+        # convert list to numpy array
+        num_edges_random_subgraphs = np.array(num_edges_random_subgraphs)
+
+        # calculate proportion of subgraphs that had more edges than edges detected in CORUM complex (p-val from permutation test)
+        p_val = float(np.sum(num_edges_random_subgraphs >= num_edges_identified_CORUM_complex) + 1.0) / (float(num_perms) + 1.0)
+
+        return p_val
