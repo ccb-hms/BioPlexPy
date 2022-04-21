@@ -35,7 +35,8 @@ def display_PPI_network_for_complex(ax, bp_PPI_df, Corum_DF, Complex_ID, node_si
     --------
     >>> bp_PPI_df = getBioPlex('293T', '3.0') # (1) Obtain the latest version of the 293T PPI network
     >>> Corum_DF = getCorum('core', 'Human') # (2) Obtain CORUM complexes
-    >>> ING2_node_layout = display_PPI_network_for_complex(bp_PPI_df, Corum_DF, 2851, 2300, 3.5) # (3) Visualize network for specified protein complex using PPI data (ING2 complex ID: 2851)
+    >>> fig, ax = plt.subplots() # (3) create figure and axis objects to draw on
+    >>> ING2_node_layout = display_PPI_network_for_complex(ax, bp_PPI_df, Corum_DF, 2851, 2300, 3.5) # (4) Visualize network for specified protein complex using PPI data (ING2 complex ID: 2851)
     '''
     # store uniprot IDs & gene symbols that belong to this complex in a list
     genes_in_complex_i = Corum_DF[Corum_DF.ComplexID == Complex_ID].loc[:,'subunits(UniProt IDs)'].values[0].split(';') # Uniprot
