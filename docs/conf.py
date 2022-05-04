@@ -18,8 +18,8 @@
 # -- Project information -----------------------------------------------------
 
 project = 'BioPlexPy'
-copyright = '2022, Roger Vargas Jr, Ludwig Geistlinger'
-author = 'Roger Vargas Jr, Ludwig Geistlinger'
+copyright = '2022, Roger Vargas Jr, Ludwig Geistlinger, Tyrone Lee'
+author = 'Roger Vargas Jr, Ludwig Geistlinger, Tyrone Lee'
 
 
 # -- General configuration ---------------------------------------------------
