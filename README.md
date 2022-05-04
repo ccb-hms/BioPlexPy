@@ -1,4 +1,7 @@
 # BioPlexPy
+
+[![Documentation Status](https://readthedocs.org/projects/bioplexpy/badge/?version=latest)](http://bioplexpy.readthedocs.io/?badge=latest)
+
 Python-side access to PPI data from Gygi lab
 
 ## Installation
