@@ -5,6 +5,8 @@ import networkx as nx
 import numpy as np
 import itertools
 import random
+from Bio.PDB import *
+from scipy.spatial.distance import cdist
 
 def bioplex2graph(bp_PPI_df):
     '''
@@ -330,3 +332,68 @@ def permutation_test_for_CORUM_complex(bp_PPI_G, Corum_DF, Complex_ID, num_perms
         p_val = float(np.sum(num_edges_random_subgraphs >= num_edges_identified_CORUM_complex) + 1.0) / (float(num_perms) + 1.0)
 
         return p_val
+    
+def get_interacting_chains_from_PDB(PDB_ID_structure_i, protein_structure_dir):
+    '''
+    Retreive chain pairs that are physically close to eachother from PDB structure.
+    
+    This function downloads the PDB structure that is specified from the input PDB ID
+    into the input directory, then computes the pairwise distances between all atoms
+    for each pair of chains in the structure. A list of chain pairs that are interacting 
+    (have at least a pair of atoms < 6 angstroms apart) is returned.
+
+    Parameters
+    ----------
+    PDB ID: str
+    directory to store PDB file: str
+
+    Returns
+    -------
+    Interacting Chains
+        List of chain pairs from PDB structure that interact.
+
+    Examples
+    --------
+    >>> interacting_chains_list = get_interacting_chains_from_PDB('6YW7', '/n/data1/hms/ccb/lab/projects/bioplex/BioPlexPy/protein_function_testing') # (1) Obtain list of interacting chains from 6YW7 structure
+    '''
+    # download structure from PDB
+    pdbl = PDBList()
+    PBD_file_path = pdbl.retrieve_pdb_file(PDB_ID_structure_i, pdir=protein_structure_dir, file_format='pdb', overwrite=True)
+
+    # create a structure object
+    parser = PDBParser()
+    structure = parser.get_structure(PDB_ID_structure_i, PBD_file_path)
+
+    model = structure[0]
+    chain_IDs = [chain.get_id() for chain in model] # get a list of all chains
+
+    # we want to test every pair of chains to see if they have any atoms that are < 6 angstroms in distance
+    possible_chain_pairs = list(itertools.combinations(chain_IDs, 2))
+
+    chain_pairs_direct_interaction = []
+    # iterate through all chain pairs and check to see if any atoms are close
+    for chain_i_id, chain_j_id in possible_chain_pairs:
+
+        # get chain objects from models
+        chain_i = model[chain_i_id]
+        chain_j = model[chain_j_id]
+
+        # get all atoms from each chain, 'A' stands for ATOM
+        atom_list_i = Selection.unfold_entities(chain_i, "A")
+        atom_list_j = Selection.unfold_entities(chain_j, "A")
+
+        # get the coordinates for the atom in each chain
+        atom_coords_i = [atom_list_i[k].coord for k in range(0,len(atom_list_i))]
+        atom_coords_i = np.vstack(atom_coords_i)
+
+        atom_coords_j = [atom_list_j[k].coord for k in range(0,len(atom_list_j))]
+        atom_coords_j = np.vstack(atom_coords_j)
+
+        # compute pairwise distances betweeen all atoms from different chains
+        dists = cdist(atom_coords_i, atom_coords_j)
+
+        # if a pair of atoms < 6 angstroms apart, store as interacting chains
+        if np.sum(dists < 6) >= 1:
+            chain_pairs_direct_interaction.append([chain_i_id, chain_j_id])
+        
+    return chain_pairs_direct_interaction
