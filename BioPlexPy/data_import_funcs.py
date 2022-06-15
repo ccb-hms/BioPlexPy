@@ -4,6 +4,9 @@ import io
 import requests
 import anndata as ad
 import pandas as pd
+from pypdb import *
+import itertools
+from collections import Counter
 
 def getBioPlex(cell_line, version):
     '''
@@ -132,3 +135,121 @@ def getCorum(complex_set = 'all', organism = 'Human'):
     CORUM_df.reset_index(inplace = True, drop = True)
     
     return CORUM_df
+
+def get_PDB_from_UniProts(uniprot_IDs=None, Corum_DF=None, Complex_ID=None, is_CORUM_complex=False):
+    '''
+    Retreive PDB IDs for protein structures corresponding to set of UniProt IDs or CORUM complex ID.
+    
+    This function takes a (1) a list of UniProt IDs, or (2) a CORUM complex ID and CORUM complex DataFrame
+    and maps the corresponding UniProt IDs (from the UniProt IDs input or CORUM complex ID) to PDB IDs 
+    using the SIFTS project. Some metadata for each PDB ID is pulled from PDB and stored in a DataFrame
+    that is returned.
+
+    Parameters
+    ----------
+    UniProt IDs : list (optional)
+    DataFrame of CORUM complexes : Pandas DataFrame (optional)
+    Corum Complex ID: int (optional)
+    CORUM complex indicator : boolean (optional)
+
+    Returns
+    -------
+    PDB IDs and associated metadata
+        Pandas DataFrame of PDB IDs that map to the UniProt IDs input, or corresponding UniProt IDs from
+        the CORUM complex specified.
+
+    Examples
+    --------
+    >>> Corum_DF = getCorum('core', 'Human') # (1) Obtain CORUM complexes
+    >>> PDB_ID_Arp_2_3 = get_PDB_from_UniProts(Corum_DF = Corum_DF, Complex_ID = 27, is_CORUM_complex = True) # (2) Get set of PDB IDs for specified protein complex (Arp 2/3 complex ID: 27)
+    >>> PDB_ID_Arp_2_3 = get_PDB_from_UniProts(uniprot_IDs = ['Q92747','O15144','P61158','P61160','O15145','P59998','O15511'], is_CORUM_complex = False) # (3) Get set of PDB IDs for list of UniProt IDs that correspond to Arp 2/3
+    '''
+    if is_CORUM_complex == True:
+
+        # get UniProt IDs for each protein in the CORUM complex
+        uniprot_IDs_list = Corum_DF[Corum_DF.ComplexID == Complex_ID].loc[:,'subunits(UniProt IDs)'].values[0].split(';')
+
+    elif is_CORUM_complex == False:
+
+        uniprot_IDs_list = uniprot_IDs
+
+    # get number of proteins in query
+    num_proteins = len(uniprot_IDs_list)
+
+    # Map from CORUM complex subunits given as UniProt IDs 
+    # via [SIFTS](https://www.ebi.ac.uk/pdbe/docs/sifts/quick.html) to PDB structures:
+    # "A summary of the UniProt to PDB mappings showing the UniProt accession followed by a semicolon-separated list of PDB four letter codes."
+    uniprot_pdb_mapping_df = pd.read_csv("ftp://ftp.ebi.ac.uk/pub/databases/msd/sifts/flatfiles/csv/uniprot_pdb.csv.gz", header = 1, sep = ',', compression = 'gzip')
+
+    # set UniProt IDs as index
+    uniprot_pdb_mapping_df.set_index('SP_PRIMARY', drop = True, inplace = True)
+
+    # convert col PDB semicolon-separated list into Python list
+    uniprot_pdb_mapping_df.loc[:,'PDB'] = [PDB_codes_i.split(';') for PDB_codes_i in uniprot_pdb_mapping_df.PDB]
+
+    # get PDB IDs that map to each UniProt ID
+    PDB_IDs_for_uniprot_dict = {}
+    for uniprot_ID_i in uniprot_IDs_list:
+
+        # check to see if UniProt ID exists in mapping
+        if uniprot_ID_i in uniprot_pdb_mapping_df.index:
+
+            # append to list of PDB IDs, take ALL PDB IDs in mapped list
+            mapped_PDB_ID_i = uniprot_pdb_mapping_df.loc[uniprot_ID_i,:].values[0]
+
+            # convert to uppercase
+            mapped_PDB_ID_i = [PDB_ID.upper() for PDB_ID in mapped_PDB_ID_i]
+
+            PDB_IDs_for_uniprot_dict[uniprot_ID_i] = mapped_PDB_ID_i
+
+        else:
+            print(f'WARNING: {uniprot_ID_i_complex_i} does not have any corresponding PDB IDs mapped.')
+
+    # create dictionary of PDB IDs and store list of Uniprot IDs each one is mapped to
+    unique_PDB_IDs = list(set(itertools.chain(*list(PDB_IDs_for_uniprot_dict.values())))) # flatten list of PDB IDs that mapped to UniProt IDs
+    uniprot_IDs_list_for_PDB_dict = {}
+    for PDB_ID in unique_PDB_IDs:
+
+        uniprot_to_PDB_i = []
+        for uniprot_ID in PDB_IDs_for_uniprot_dict.keys():
+            if PDB_ID in PDB_IDs_for_uniprot_dict[uniprot_ID]:
+                uniprot_to_PDB_i.append(uniprot_ID)
+
+        uniprot_IDs_list_for_PDB_dict[PDB_ID] = uniprot_to_PDB_i
+
+    uniprot_IDs_list_for_PDB_series = pd.Series(uniprot_IDs_list_for_PDB_dict)
+
+    # if no PDB IDs mapped to UniProt IDs (empty list), raise warning
+    if len(uniprot_IDs_list_for_PDB_series) == 0:
+        print(f'WARNING: Could not map PDB ID to this CORUM complex ID or UniProt IDs.')
+        complex_i_PDBs_df = None
+
+    else:
+        # iterate through PDB ID & retreive metadata
+        PDB_protein_count = [] # stores number of polymer proteins for this structure
+        PDB_deposit_date = [] # store the date of deposit for this structure
+        PDB_citation_title = [] # store the title of the citation for this structure
+        PDB_to_uniprot_map_list = [] # store list of UniProt IDs that mapped to each PDB ID
+        for PDB_ID in uniprot_IDs_list_for_PDB_series.index:
+
+            # retreive metadata for this structure from PDB
+            PDB_structure_all_info = get_info(PDB_ID)
+            PDB_protein_count.append(PDB_structure_all_info['rcsb_entry_info']['polymer_entity_count_protein'])
+            PDB_deposit_date.append(pd.to_datetime(PDB_structure_all_info['rcsb_accession_info']['deposit_date']))
+            PDB_citation_title.append(PDB_structure_all_info['rcsb_primary_citation']['title'])
+            PDB_to_uniprot_map_list.append(uniprot_IDs_list_for_PDB_series[PDB_ID])
+
+        # convert CORUM complex i - associated PDB IDs into DataFrame w/ # proteins & resolution
+        UniProt_assoc_PDBs_df = pd.DataFrame(index = uniprot_IDs_list_for_PDB_series.index)
+        UniProt_assoc_PDBs_df.loc[:,'num_proteins'] = PDB_protein_count
+        UniProt_assoc_PDBs_df.loc[:,'deposit_date'] = PDB_deposit_date
+        UniProt_assoc_PDBs_df.loc[:,'citation_title'] = PDB_citation_title
+        UniProt_assoc_PDBs_df.loc[:,'UniProts_mapped_to_PDB'] = PDB_to_uniprot_map_list # the UniProt IDs that mapped to this PDB ID from SIFTS
+
+        # column for number of proteins in PDB structure different from num proteins listed in CORUM complex or input by user
+        UniProt_assoc_PDBs_df.loc[:,'num_proteins_diff_btwn_PDB_and_UniProts_input'] = abs(UniProt_assoc_PDBs_df.num_proteins - num_proteins)
+
+        # pick PDB structure that has same number of proteins/chains as CORUM complex (or matches closest), then rank by most recent deposit date
+        UniProt_assoc_PDBs_df.sort_values(by = ['num_proteins_diff_btwn_PDB_and_UniProts_input','deposit_date'], ascending = [True, False], inplace = True)
+        
+    return UniProt_assoc_PDBs_df
