@@ -1,6 +1,7 @@
 from .data_import_funcs import getBioPlex
 from .data_import_funcs import getGSE122425
 from .data_import_funcs import getCorum
+from .data_import_funcs import get_UniProts_from_CORUM
 from .data_import_funcs import get_PDB_from_UniProts
 from .analysis_funcs import bioplex2graph
 from .analysis_funcs import get_PPI_network_for_complex
