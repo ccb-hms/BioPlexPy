@@ -4,7 +4,6 @@ import io
 import requests
 import anndata as ad
 import pandas as pd
-from pypdb import *
 import itertools
 from collections import Counter
 
@@ -136,21 +135,44 @@ def getCorum(complex_set = 'all', organism = 'Human'):
     
     return CORUM_df
 
-def get_PDB_from_UniProts(uniprot_IDs=None, Corum_DF=None, Complex_ID=None, is_CORUM_complex=False):
+def get_UniProts_from_CORUM(Corum_DF, Complex_ID):
     '''
-    Retreive PDB IDs for protein structures corresponding to set of UniProt IDs or CORUM complex ID.
+    Retreive set of UniProt IDs corresponding to a CORUM complex ID.
     
-    This function takes a (1) a list of UniProt IDs, or (2) a CORUM complex ID and CORUM complex DataFrame
-    and maps the corresponding UniProt IDs (from the UniProt IDs input or CORUM complex ID) to PDB IDs 
-    using the SIFTS project. Some metadata for each PDB ID is pulled from PDB and stored in a DataFrame
-    that is returned.
+    This function takes a CORUM complex ID and CORUM complex DataFrame
+    and returns the corresponding UniProt IDs.
+
+    Parameters
+    ----------
+    DataFrame of CORUM complexes : Pandas DataFrame
+    Corum Complex ID: int
+
+    Returns
+    -------
+    UniProt IDs
+        A list of UniProt IDs for the CORUM complex specified.
+
+    Examples
+    --------
+    >>> Corum_DF = getCorum('core', 'Human') # (1) Obtain CORUM complexes
+    >>> UniProts_Arp_2_3 = get_UniProts_from_CORUM(Corum_DF, Complex_ID = 27) # (2) Get set of UniProt IDs for specified protein complex (Arp 2/3 complex ID: 27)
+    '''
+    # get UniProt IDs for each protein in the CORUM complex
+    uniprot_IDs_list = Corum_DF[Corum_DF.ComplexID == Complex_ID].loc[:,'subunits(UniProt IDs)'].values[0].split(';')
+        
+    return uniprot_IDs_list
+
+def get_PDB_from_UniProts(uniprot_IDs_list):
+    '''
+    Retreive PDB IDs for protein structures corresponding to set of UniProt IDs.
+    
+    This function takes a list of UniProt IDs and maps the corresponding UniProt IDs (from
+    the UniProt IDs input or CORUM complex ID) to PDB IDs using the SIFTS project. Some 
+    metadata for each PDB ID is pulled from PDB and stored in a DataFrame that is returned.
 
     Parameters
     ----------
     UniProt IDs : list (optional)
-    DataFrame of CORUM complexes : Pandas DataFrame (optional)
-    Corum Complex ID: int (optional)
-    CORUM complex indicator : boolean (optional)
 
     Returns
     -------
@@ -160,19 +182,8 @@ def get_PDB_from_UniProts(uniprot_IDs=None, Corum_DF=None, Complex_ID=None, is_C
 
     Examples
     --------
-    >>> Corum_DF = getCorum('core', 'Human') # (1) Obtain CORUM complexes
-    >>> PDB_ID_Arp_2_3 = get_PDB_from_UniProts(Corum_DF = Corum_DF, Complex_ID = 27, is_CORUM_complex = True) # (2) Get set of PDB IDs for specified protein complex (Arp 2/3 complex ID: 27)
-    >>> PDB_ID_Arp_2_3 = get_PDB_from_UniProts(uniprot_IDs = ['Q92747','O15144','P61158','P61160','O15145','P59998','O15511'], is_CORUM_complex = False) # (3) Get set of PDB IDs for list of UniProt IDs that correspond to Arp 2/3
+    >>> PDB_ID_Arp_2_3 = get_PDB_from_UniProts(['Q92747','O15144','P61158','P61160','O15145','P59998','O15511']) # (1) Get set of PDB IDs for list of UniProt IDs that correspond to Arp 2/3
     '''
-    if is_CORUM_complex == True:
-
-        # get UniProt IDs for each protein in the CORUM complex
-        uniprot_IDs_list = Corum_DF[Corum_DF.ComplexID == Complex_ID].loc[:,'subunits(UniProt IDs)'].values[0].split(';')
-
-    elif is_CORUM_complex == False:
-
-        uniprot_IDs_list = uniprot_IDs
-
     # get number of proteins in query
     num_proteins = len(uniprot_IDs_list)
 
