@@ -7,6 +7,8 @@ import itertools
 import random
 from Bio.PDB import *
 from scipy.spatial.distance import cdist
+import requests
+import re
 
 def bioplex2graph(bp_PPI_df):
     '''
@@ -397,3 +399,138 @@ def get_interacting_chains_from_PDB(PDB_ID_structure_i, protein_structure_dir):
             chain_pairs_direct_interaction.append([chain_i_id, chain_j_id])
         
     return chain_pairs_direct_interaction
+
+def make_request(url, mode, pdb_id):
+    '''
+    Make requests to PDBe API.
+    
+    This function can make GET and POST requests to the PDBe API.
+    
+    Parameters
+    ----------
+    url: str
+    mode: str
+    pdb_id: str
+    
+    Returns
+    -------
+        JSON or None
+    '''
+    if mode == "get":
+        response = requests.get(url=url+pdb_id)
+    elif mode == "post":
+        response = requests.post(url, data=pdb_id)
+
+    if response.status_code == 200:
+        return response.json()
+    else:
+        print("[No data retrieved - %s] %s" % (response.status_code, response.text))
+    
+    return None
+
+def get_mappings_data(pdb_id):
+    '''
+    Get mappings data for PDB ID.
+    
+    This function will retreive the mappings data from
+    the PDBe API using the make_request() function.
+    
+    Parameters
+    ----------
+    pdb_id: str
+    
+    Returns
+    -------
+        JSON of mappings or None
+    '''
+    # specify URL
+    base_url = "https://www.ebi.ac.uk/pdbe/"
+    api_base = base_url + "api/"
+    uniprot_mapping_url = api_base + 'mappings/uniprot/'
+    
+    # Check if the provided PDB id is valid
+    # There is no point in making an API call
+    # with bad PDB ids
+    if not re.match("[0-9][A-Za-z][A-Za-z0-9]{2}", pdb_id):
+        print("Invalid PDB id")
+        return None
+    
+    # GET the mappings data
+    mappings_data = make_request(uniprot_mapping_url, "get", pdb_id)
+    
+    # Check if there is data
+    if not mappings_data:
+        print("No data found")
+        return None
+    
+    return mappings_data
+
+def list_uniprot_pdb_mappings(pdb_id):
+    '''
+    Get PDB chain to UniProt mappings.
+    
+    This function retrieves PDB > UniProt mappings using the 
+    get_mappings_data() function, the parses the resulting 
+    JSON to construct a dictionary where each key is a chain
+    from the PDB structure, and the corresponding value for
+    each is a list of UniProt IDs that map to the chain from 
+    the SIFTS project.
+    
+    Parameters
+    ----------
+    pdb_id: str
+    
+    Returns
+    -------
+    Chain to UniProt Map
+        Dictionary of PDB ID chain to UniProt ID mappings
+        
+    Examples
+    --------
+    >>> chain_to_UniProt_mapping_dict = list_uniprot_pdb_mappings('6YW7') # (1) Obtain a mapping of PDB ID 6YW7 chains to UniProt IDs
+    '''
+    # convert to PDB id to lower case
+    pdb_id = pdb_id.lower()
+    
+    # Getting the mappings data
+    mappings_data = get_mappings_data(pdb_id)
+    
+    # If there is no data, return None
+    if not mappings_data:
+        return None
+    
+    # dictionary that stores UniProt > chain id mappings
+    uniprot_chain_mapping_dict = {}
+    
+    uniprot = mappings_data[pdb_id]["UniProt"]
+    for uniprot_id in uniprot.keys():
+        mappings = uniprot[uniprot_id]["mappings"]
+        
+        # store the chain ids that correspond to this UniProt ID
+        uniprot_chain_mapping_dict[uniprot_id] = []
+        
+        for mapping in mappings:
+            entity_id = mapping["entity_id"]
+            
+            chain_id = mapping["chain_id"]
+            uniprot_chain_mapping_dict[uniprot_id].append(chain_id)
+            
+            pdb_start = mapping["start"]["residue_number"]
+            pdb_end = mapping["end"]["residue_number"]
+            uniprot_start = mapping["unp_start"]
+            uniprot_end = mapping["unp_end"]
+        
+    # "flip" the uniprot > pdb chain mapping
+    chain_IDs = list(set([item for sublist in uniprot_chain_mapping_dict.values() for item in sublist])) # get all unique chain IDs
+
+    chain_uniprot_mapping_dict = {}
+    # iterate through every chain ID
+    for chain_i in chain_IDs:
+
+        # iterate through every uniprot ID and check to see if chain ID is mapped
+        chain_uniprot_mapping_dict[chain_i] = []
+        for uniprot_i in uniprot_chain_mapping_dict.keys():
+            if chain_i in uniprot_chain_mapping_dict[uniprot_i]:
+                chain_uniprot_mapping_dict[chain_i].append(uniprot_i)
+                
+    return chain_uniprot_mapping_dict
