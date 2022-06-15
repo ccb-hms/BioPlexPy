@@ -534,3 +534,42 @@ def list_uniprot_pdb_mappings(pdb_id):
                 chain_uniprot_mapping_dict[chain_i].append(uniprot_i)
                 
     return chain_uniprot_mapping_dict
+
+def PDB_chains_to_uniprot(interacting_chains_list, chain_to_UniProt_mapping_dict):
+    '''
+    Get interacting chains from PDB structure mapped to UniProt IDs.
+    
+    This function takes the list of interacting chains from function
+    get_interacting_chains_from_PDB() and the chain to UniProt mappings
+    from function list_uniprot_pdb_mappings() and returns a list of 
+    interacting chains using UniProt IDs.
+    
+    Parameters
+    ----------
+    Interacting Chains: list
+    Chain to UniProt Map: dict
+    
+    Returns
+    -------
+    Interacting Chains
+        List of interacting chains using UniProt IDs
+    
+    Examples
+    --------
+    >>> interacting_chains_list = get_interacting_chains_from_PDB('6YW7', '/n/data1/hms/ccb/lab/projects/bioplex/BioPlexPy/protein_function_testing') # (1) Obtain list of interacting chains from 6YW7 structure
+    >>> chain_to_UniProt_mapping_dict = list_uniprot_pdb_mappings('6YW7') # (2) Obtain a mapping of PDB ID 6YW7 chains to UniProt IDs
+    >>> interacting_UniProt_IDs = PDB_chains_to_uniprot(interacting_chains_list, chain_to_UniProt_mapping_dict) # (3) Obtain list of interacting chains from 6YW7 structure using UniProt IDs 
+    '''
+    interacting_UniProt_IDs = []
+    for interacting_chain_pair_i in interacting_chains_list:
+
+        # get UniProt IDs that map to each chain ID
+        chain_i_UniProts = chain_to_UniProt_mapping_dict[interacting_chain_pair_i[0]]
+        chain_j_UniProts = chain_to_UniProt_mapping_dict[interacting_chain_pair_i[1]]
+
+        # store every pair of UniProt IDs that correspond to the interacting chains
+        for chain_i_UniProt_ID in chain_i_UniProts:
+            for chain_j_UniProt_ID in chain_j_UniProts:
+                interacting_UniProt_IDs.append([chain_i_UniProt_ID,chain_j_UniProt_ID])
+                
+    return interacting_UniProt_IDs
