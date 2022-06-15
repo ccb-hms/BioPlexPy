@@ -152,3 +152,74 @@ def display_PPI_network_for_complex(ax, bp_PPI_df, Corum_DF, Complex_ID, node_si
 
     # return node position layout
     return pos
+
+def display_PDB_network_for_complex(ax, interacting_UniProt_IDs, node_size, edge_width, node_font_size=10):
+    '''
+    Display network of interacting chains.
+    
+    This function displays a complete network in which nodes represent the 
+    proteins in a specified PDB structure, and edges represent chains in that
+    structure, using NetworkX. Edges that are classified as interacting
+    (are < 6 angstroms apart) are colored black.
+
+    Parameters
+    ----------
+    ax object to draw on: Matplotlib Axes
+    List of Interacting Chains: list
+    Size of Nodes in Network: int
+    Width of Edges in Network: float
+    Size of font for Node Labels: int (optional)
+
+    Returns
+    -------
+    Node Positions
+        Dictionary of Node Positions in NetworkX layout
+    Interacting Network Edges
+        List of Edges for Interacting Nodes
+    Number of Network Edges
+        Float of the Number of Possible Interacting Edges
+
+    Examples
+    --------
+    >>> interacting_chains_list = get_interacting_chains_from_PDB('6YW7', '/n/data1/hms/ccb/lab/projects/bioplex/BioPlexPy/protein_function_testing') # (1) Obtain list of interacting chains from 6YW7 structure
+    >>> chain_to_UniProt_mapping_dict = list_uniprot_pdb_mappings('6YW7') # (2) Obtain a mapping of PDB ID 6YW7 chains to UniProt IDs
+    >>> interacting_UniProt_IDs = PDB_chains_to_uniprot(interacting_chains_list, chain_to_UniProt_mapping_dict) # (3) Obtain list of interacting chains from 6YW7 structure using UniProt IDs
+    >>> fig, ax = plt.subplots() # (4) create figure and axis objects to draw on
+    >>> node_layout_pdb, edges_list_pdb, num_possible_edges_pdb = display_PDB_network_for_complex(ax, interacting_UniProt_IDs, 2300, 3.5) # (5) Visualize interacting chains using Uniprot IDs
+    '''
+    # create connected graph from all uniprot IDs
+    chain_uniprot_IDs = [chain_uniprot_i[0] for chain_uniprot_i in chain_to_UniProt_mapping_dict.values()]
+
+    # create a graph from the nodes/genes of this complex structure
+    pdb_structure_i_G = nx.Graph()
+    pdb_structure_i_G.add_nodes_from(chain_uniprot_IDs)
+
+    # iterate over physical interactions and add edges
+    for chain_pair_interacting in interacting_UniProt_IDs:
+        pdb_structure_i_G.add_edge(chain_pair_interacting[0], chain_pair_interacting[1])
+
+    # create a complete graph from the nodes of complex graph to add in all "background" edges (edges detected with AP-MS will be colored over)
+    # position will be the same for both graphs since nodes are the same
+    pdb_structure_i_G_complete = nx.Graph()
+    pdb_structure_i_G_complete.add_nodes_from(pdb_structure_i_G.nodes)
+    pdb_structure_i_G_complete.add_edges_from(itertools.combinations(pdb_structure_i_G.nodes, 2))
+
+    # set position of nodes w/ circular layout
+    pos = nx.circular_layout(pdb_structure_i_G)
+
+    # construct edges for COMPLETE graph for "background" edges
+    edges_complete = nx.draw_networkx_edges(pdb_structure_i_G_complete, pos, width = edge_width, alpha = 0.25, ax = ax)
+    edges_complete.set_edgecolor("xkcd:grey")
+
+    # construct edges
+    edges = nx.draw_networkx_edges(pdb_structure_i_G, pos, width = edge_width, ax = ax)
+    edges.set_edgecolor('xkcd:blue')
+
+    # construct nodes
+    nodes = nx.draw_networkx_nodes(pdb_structure_i_G, pos, node_size = node_size, node_color = 'xkcd:black', ax = ax)
+    nodes.set_edgecolor("xkcd:black")
+    nodes.set_linewidth(1.5)
+    nx.draw_networkx_labels(pdb_structure_i_G, pos, font_size = node_font_size, font_weight = 'bold', font_color = 'xkcd:white', ax = ax)
+
+    # return node position layout, list of edges detected, number of possible edges
+    return [pos, pdb_structure_i_G.edges, float(len(pdb_structure_i_G_complete.edges))]
