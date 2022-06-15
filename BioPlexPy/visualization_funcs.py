@@ -153,7 +153,7 @@ def display_PPI_network_for_complex(ax, bp_PPI_df, Corum_DF, Complex_ID, node_si
     # return node position layout
     return pos
 
-def display_PDB_network_for_complex(ax, interacting_UniProt_IDs, node_size, edge_width, node_font_size=10):
+def display_PDB_network_for_complex(ax, chain_to_UniProt_mapping_dict, interacting_UniProt_IDs, node_size, edge_width, node_font_size=10):
     '''
     Display network of interacting chains.
     
@@ -165,6 +165,7 @@ def display_PDB_network_for_complex(ax, interacting_UniProt_IDs, node_size, edge
     Parameters
     ----------
     ax object to draw on: Matplotlib Axes
+    Mapping of Chains to UniProt IDs: dictionary
     List of Interacting Chains: list
     Size of Nodes in Network: int
     Width of Edges in Network: float
@@ -224,7 +225,7 @@ def display_PDB_network_for_complex(ax, interacting_UniProt_IDs, node_size, edge
     # return node position layout, list of edges detected, number of possible edges
     return [pos, pdb_structure_i_G.edges, float(len(pdb_structure_i_G_complete.edges))]
 
-def display_PPI_network_match_PDB(ax, interacting_UniProt_IDs, bp_PPI_df, node_pos, node_size, edge_width, node_font_size=10, bait_node_color='xkcd:red', prey_node_color='xkcd:rose pink', AP_MS_edge_color='xkcd:red'):
+def display_PPI_network_match_PDB(ax, chain_to_UniProt_mapping_dict, interacting_UniProt_IDs, bp_PPI_df, node_pos, node_size, edge_width, node_font_size=10, bait_node_color='xkcd:red', prey_node_color='xkcd:rose pink', AP_MS_edge_color='xkcd:red'):
     '''
     Display network of BioPlex PPIs for a set of interacting UniProt IDs.
     
@@ -236,6 +237,7 @@ def display_PPI_network_match_PDB(ax, interacting_UniProt_IDs, bp_PPI_df, node_p
     Parameters
     ----------
     ax object to draw on: Matplotlib Axes
+    Mapping of Chains to UniProt IDs: dictionary
     List of Interacting Chains: list
     DataFrame of PPIs : Pandas DataFrame
     Networkx Position of Nodes: dict
