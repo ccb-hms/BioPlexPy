@@ -6,6 +6,7 @@ import anndata as ad
 import pandas as pd
 import itertools
 from collections import Counter
+from pypdb import *
 
 def getBioPlex(cell_line, version):
     '''
