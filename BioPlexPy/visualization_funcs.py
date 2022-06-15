@@ -223,3 +223,144 @@ def display_PDB_network_for_complex(ax, interacting_UniProt_IDs, node_size, edge
 
     # return node position layout, list of edges detected, number of possible edges
     return [pos, pdb_structure_i_G.edges, float(len(pdb_structure_i_G_complete.edges))]
+
+def display_PPI_network_match_PDB(ax, interacting_UniProt_IDs, bp_PPI_df, node_pos, node_size, edge_width, node_font_size=10, bait_node_color='xkcd:red', prey_node_color='xkcd:rose pink', AP_MS_edge_color='xkcd:red'):
+    '''
+    Display network of BioPlex PPIs for a set of interacting UniProt IDs.
+    
+    This function displays a complete network in which nodes represent the 
+    proteins in a specified PDB structure, and edges represent chains in that
+    structure, using NetworkX. Edges that are classified as interacting from
+    BioPlex PPI data (detected through AP-MS) are colored darker.
+
+    Parameters
+    ----------
+    ax object to draw on: Matplotlib Axes
+    List of Interacting Chains: list
+    DataFrame of PPIs : Pandas DataFrame
+    Networkx Position of Nodes: dict
+    Size of Nodes in Network: int
+    Width of Edges in Network: float
+    Size of font for Node Labels: int (optional)
+    Color of Nodes targeted as baits: str (optional)
+    Color of Nodes detected as preys only: str (optional)
+    Color of Edges observed via AP-MS from PPI data: str (optional)
+
+    Returns
+    -------
+    Interacting Network Edges
+        List of Edges for Interacting Nodes
+    Number of Network Edges
+        Float of the Number of Possible Interacting Edges
+
+    Examples
+    --------
+    >>> interacting_chains_list = get_interacting_chains_from_PDB('6YW7', '/n/data1/hms/ccb/lab/projects/bioplex/BioPlexPy/protein_function_testing') # (1) Obtain list of interacting chains from 6YW7 structure
+    >>> chain_to_UniProt_mapping_dict = list_uniprot_pdb_mappings('6YW7') # (2) Obtain a mapping of PDB ID 6YW7 chains to UniProt IDs
+    >>> interacting_UniProt_IDs = PDB_chains_to_uniprot(interacting_chains_list, chain_to_UniProt_mapping_dict) # (3) Obtain list of interacting chains from 6YW7 structure using UniProt IDs
+    >>> fig, ax1 = plt.subplots() # (4) create figure and axis objects to draw on
+    >>> node_layout_pdb, edges_list_pdb, num_possible_edges_pdb = display_PDB_network_for_complex(ax1, interacting_UniProt_IDs, 2300, 3.5) # (5) Visualize interacting chains using Uniprot IDs
+    >>> bp_PPI_df = getBioPlex('293T', '3.0') # (6) Get BioPlex PPI data
+    >>> fig, ax2 = plt.subplots() # (7) create figure and axis objects to draw on
+    >>> edges_list_bp, num_possible_edges_bp = display_PPI_network_match_PDB(ax2, interacting_UniProt_IDs, bp_PPI_df, node_layout_pdb, 2300, 3.5) # (8) Visualize BioPlex PPI interactions using layout from interacting chains
+    '''
+    # create connected graph from all uniprot IDs
+    chain_uniprot_IDs = [chain_uniprot_i[0] for chain_uniprot_i in chain_to_UniProt_mapping_dict.values()]
+    
+    # filter BioPlex PPI dataframe to include only interactions where both genes are found in complex
+    structure_uniprots_i_PPI_filter = []
+    for uniprot_A, uniprot_B in zip(bp_PPI_df.UniprotA, bp_PPI_df.UniprotB):
+
+        # check for isoform IDs and adjust
+        if '-' in uniprot_A:
+            uniprot_A = uniprot_A.split('-')[0]
+        if '-' in uniprot_B:
+            uniprot_B = uniprot_B.split('-')[0]
+
+        # check to see if both gene symbols for this interaction are genes in complex
+        if (uniprot_A in chain_uniprot_IDs) and (uniprot_B in chain_uniprot_IDs):
+            structure_uniprots_i_PPI_filter.append(True)
+        else:
+            structure_uniprots_i_PPI_filter.append(False)
+
+    structure_uniprots_i_PPI_filter = np.array(structure_uniprots_i_PPI_filter)
+    bp_structure_i_df = bp_PPI_df[structure_uniprots_i_PPI_filter] # use filter to subset bp PPI dataframe
+    bp_structure_i_df.reset_index(inplace = True, drop = True) # reset index
+
+    # reconstruct UniprotA/UniprotB columns without '-' isoform id
+    UniprotA_new = []
+    UniprotB_new = []
+    for UniprotA, UniprotB in zip(bp_structure_i_df.UniprotA, bp_structure_i_df.UniprotB):
+
+        if '-' in UniprotA:
+            UniprotA_new.append(UniprotA.split('-')[0])
+        else:
+            UniprotA_new.append(UniprotA)
+
+        if '-' in UniprotB:
+            UniprotB_new.append(UniprotB.split('-')[0])
+        else:
+            UniprotB_new.append(UniprotB)
+
+    # update columns for Uniprot source & Uniprot target to exclude isoform '-' ID
+    bp_structure_i_df.loc[:,'UniprotA'] = UniprotA_new
+    bp_structure_i_df.loc[:,'UniprotB'] = UniprotB_new
+
+    # subset PPI dataframe to the cols we need to construct graph
+    bp_structure_i_df = bp_structure_i_df.loc[:,['UniprotA','UniprotB','SymbolA','SymbolB']]
+
+    # create a graph from the nodes/genes of specified complex
+    bp_structure_i_G = nx.Graph()
+    bp_structure_i_G.add_nodes_from(chain_uniprot_IDs)
+
+    # iterate over AP-MS interactions in PPI df and add edges
+    for source, target in zip(bp_structure_i_df.UniprotA, bp_structure_i_df.UniprotB):
+        bp_structure_i_G.add_edge(source, target)
+
+    # get a list of genes that were identifed as "baits" and "preys" for coloring nodes
+    bp_structure_i_baits = list(set(bp_structure_i_df.UniprotA))
+    bp_structure_i_preys = list(set(bp_structure_i_df.UniprotB))
+
+    # color nodes according to whether they were present among "baits" & "preys", just "baits", just "preys" or not detected in PPI data for this structure
+    node_color_map = []
+    for node_i_uniprot in bp_structure_i_G.nodes:
+
+        # gene is present among baits & preys for the PPIs detected in this structure
+        if (node_i_uniprot in bp_structure_i_baits) and (node_i_uniprot in bp_structure_i_preys):
+            node_color_map.append(bait_node_color)
+
+        # gene is present among baits but NOT preys for the PPIs detected in this structure
+        elif (node_i_uniprot in bp_structure_i_baits) and (node_i_uniprot not in bp_structure_i_preys):
+            node_color_map.append(bait_node_color)
+
+        # gene is NOT present among baits but is present among preys for the PPIs detected in this structure
+        elif (node_i_uniprot not in bp_structure_i_baits) and (node_i_uniprot in bp_structure_i_preys):
+            node_color_map.append(prey_node_color)
+
+        # gene is NOT present among baits and is NOT present among preys for the PPIs detected in this complex
+        elif (node_i_uniprot not in bp_structure_i_baits) and (node_i_uniprot not in bp_structure_i_preys):
+            node_color_map.append('0.7')
+            
+    # can use the complete graph from the pdb direct interaction graph since they have the same nodes
+    # create a complete graph from the nodes of complex graph to add in all "background" edges (edges detected with AP-MS will be colored over)
+    # position will be the same for both graphs since nodes are the same
+    bp_structure_i_G_complete = nx.Graph()
+    bp_structure_i_G_complete.add_nodes_from(bp_structure_i_G.nodes)
+    bp_structure_i_G_complete.add_edges_from(itertools.combinations(bp_structure_i_G.nodes, 2))
+
+    # construct edges for COMPLETE graph for "background" edges
+    edges_complete = nx.draw_networkx_edges(bp_structure_i_G_complete, node_pos, width = edge_width, alpha = 0.25, ax = ax)
+    edges_complete.set_edgecolor("xkcd:grey")
+
+    # construct edges
+    edges = nx.draw_networkx_edges(bp_structure_i_G, node_pos, width = edge_width, ax = ax)
+    edges.set_edgecolor(AP_MS_edge_color)
+
+    # construct nodes
+    nodes = nx.draw_networkx_nodes(bp_structure_i_G, node_pos, node_size = node_size, node_color = node_color_map, ax = ax)
+    nodes.set_edgecolor("xkcd:black")
+    nodes.set_linewidth(1.5)
+    nx.draw_networkx_labels(bp_structure_i_G, node_pos, font_size = node_font_size, font_weight = 'bold', font_color = 'xkcd:white', ax = ax)
+
+    # return node position layout, list of edges detected, number of possible edges
+    return [bp_structure_i_G.edges, float(len(bp_structure_i_G_complete.edges))]
