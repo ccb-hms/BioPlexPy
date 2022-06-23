@@ -33,7 +33,8 @@ def getBioPlex(cell_line, version):
     >>> bp_293t = getBioPlex('293T', '1.0')
     >>> bp_hct116 = getBioPlex('HCT116', '1.0')
     '''
-    if f'{cell_line}.{version}' not in ['293T.1.0','293T.2.0','293T.3.0','HCT116.1.0']:
+    if (f'{cell_line}.{version}' not in 
+        ['293T.1.0','293T.2.0','293T.3.0','HCT116.1.0']):
         print('dataset not available for this Cell Line - Version')
         
     else:
@@ -46,14 +47,23 @@ def getBioPlex(cell_line, version):
         elif f'{cell_line}.{version}' == 'HCT116.1.0':
             file_ext = 'HCT116_Network_5.5K_Dec_2019'
 
-        BioPlex_interactions_df = pd.read_csv(f"https://bioplex.hms.harvard.edu/data/BioPlex_{file_ext}.tsv", sep = '\t')
+        BioPlex_interactions_df = pd.read_csv(
+                f"https://bioplex.hms.harvard.edu/data/BioPlex_{file_ext}.tsv", 
+                sep = '\t')
         
-    # if pulling 293T cell line version 1.0 or 2.0, change column names to standardize across datasets for input into other functions
+    # if pulling 293T cell line version 1.0 or 2.0, change column names to 
+    # standardize across datasets for input into other functions
     if (cell_line == '293T') and (version == '1.0'):
-        BioPlex_interactions_df.rename({'Gene A':'GeneA','Gene B':'GeneB','Uniprot A':'UniprotA','Uniprot B':'UniprotB','Symbol A':'SymbolA','Symbol B':'SymbolB','p(Wrong)':'pW','p(No Interaction)':'pNI','p(Interaction)':'pInt'}, axis = 1, inplace = True)
+        BioPlex_interactions_df.rename({'Gene A':'GeneA','Gene B':'GeneB',
+            'Uniprot A':'UniprotA','Uniprot B':'UniprotB',
+            'Symbol A':'SymbolA','Symbol B':'SymbolB','p(Wrong)':'pW',
+            'p(No Interaction)':'pNI','p(Interaction)':'pInt'}, 
+            axis = 1, inplace = True)
 
     if (cell_line == '293T') and (version == '2.0'):
-        BioPlex_interactions_df.rename({'p(Wrong)':'pW','p(No Interaction)':'pNI','p(Interaction)':'pInt'}, axis = 1, inplace = True)
+        BioPlex_interactions_df.rename({'p(Wrong)':'pW',
+            'p(No Interaction)':'pNI','p(Interaction)':'pInt'}, 
+            axis = 1, inplace = True)
     
     return BioPlex_interactions_df
 
@@ -64,21 +74,25 @@ def getGSE122425():
     Returns
     -------
     adata : AnnData object
-        SummarizedExperiment of HEK293 raw count with an added layer storing rpkm.
+        SummarizedExperiment of HEK293 raw count with an 
+        added layer storing rpkm.
     
     Examples
     --------
     >>> HEK293_adata = getGSE122425()
     '''
     # specify URL where data is stored
-    baseURL = 'https://ftp.ncbi.nlm.nih.gov/geo/series/GSE122nnn/GSE122425/suppl/'
+    baseURL = ('https://ftp.ncbi.nlm.nih.gov/geo/series/GSE122nnn/'
+               'GSE122425/suppl/')
     filename = 'GSE122425_all.counts.293_vs_293NK.edgeR_all.xls.gz'
     outFilePath = filename[:-3]
 
-    # stream the file as bytes into memory using io.bytesIO and decompress using pandas
+    # stream the file as bytes into memory using 
+    # io.bytesIO and decompress using pandas
     response = requests.get(baseURL + filename)
     content = response.content
-    GSE122425_df = pd.read_csv(io.BytesIO(content), sep='\t', compression='gzip')
+    GSE122425_df = pd.read_csv(io.BytesIO(content), 
+                               sep='\t', compression='gzip')
 
     # create annot for observations (rows)
     obs = GSE122425_df.loc[:,['gene_id','GeneSymbol','KO','GO','length']]
@@ -87,14 +101,21 @@ def getGSE122425():
 
     # we have raw counts and rpkms here in one matrix
     # raw counts
-    raw_X = GSE122425_df.loc[:,['HEK293NK-SEQ1','HEK293NK-SEQ2','HEK293NK-SEQ3','HEK293-SEQ1','HEK293-SEQ2','HEK293-SEQ3']].values
-    raw_var = pd.DataFrame(index=['NK.1','NK.2','NK.3','WT.1','WT.2','WT.3']) # annot for variables (cols)
+    raw_X = (GSE122425_df.loc[:,
+                              ['HEK293NK-SEQ1','HEK293NK-SEQ2',
+                               'HEK293NK-SEQ3','HEK293-SEQ1','HEK293-SEQ2',
+                               'HEK293-SEQ3']].values)
+    # annot for variables (cols)
+    raw_var = pd.DataFrame(index=['NK.1','NK.2','NK.3','WT.1','WT.2','WT.3'])
     
     # convert to AnnData object (default datatype is 'float32')
     adata = ad.AnnData(raw_X, obs=obs, var=raw_var, dtype='int32')
 
     # store rpkms as a layer
-    rpkm_X = GSE122425_df.loc[:,['HEK293NK-SEQ1_RPKM','HEK293NK-SEQ2_RPKM','HEK293NK-SEQ3_RPKM','HEK293-SEQ1_RPKM','HEK293-SEQ2_RPKM','HEK293-SEQ3_RPKM']].values
+    rpkm_X = (GSE122425_df.loc[:,['HEK293NK-SEQ1_RPKM','HEK293NK-SEQ2_RPKM',
+                                  'HEK293NK-SEQ3_RPKM','HEK293-SEQ1_RPKM',
+                                  'HEK293-SEQ2_RPKM',
+                                  'HEK293-SEQ3_RPKM']].values)
     adata.layers["rpkm"] = rpkm_X
 
     return adata
@@ -108,7 +129,8 @@ def getCorum(complex_set = 'all', organism = 'Human'):
     complex_set : str
         Takes input ['all','core','splice'] (default 'all').
     organism : str
-        Takes input ['Bovine','Dog','Hamster','Human','MINK','Mammalia','Mouse','Pig','Rabbit','Rat'] (default 'Human').
+        Takes input ['Bovine','Dog','Hamster','Human','MINK','Mammalia',
+        'Mouse','Pig','Rabbit','Rat'] (default 'Human').
 
     Returns
     -------
@@ -125,7 +147,8 @@ def getCorum(complex_set = 'all', organism = 'Human'):
     filename = f'{complex_set}Complexes.txt.zip'
     outFilePath = filename[:-4]
 
-    # stream the file as bytes into memory using io.bytesIO and decompress using pandas
+    # stream the file as bytes into memory using
+    # io.bytesIO and decompress using pandas
     response = requests.get(baseURL + filename)
     content = response.content
     CORUM_df = pd.read_csv(io.BytesIO(content), sep='\t', compression='zip')
@@ -155,21 +178,25 @@ def get_UniProts_from_CORUM(Corum_DF, Complex_ID):
 
     Examples
     --------
-    >>> Corum_DF = getCorum('core', 'Human') # (1) Obtain CORUM complexes
-    >>> UniProts_Arp_2_3 = get_UniProts_from_CORUM(Corum_DF, Complex_ID = 27) # (2) Get set of UniProt IDs for specified protein complex (Arp 2/3 complex ID: 27)
+    # (1) Obtain CORUM complexes
+    >>> Corum_DF = getCorum('core', 'Human')
+    # (2) Get set of UniProt IDs for specified protein 
+    #     complex (Arp 2/3 complex ID: 27)
+    >>> UniProts_Arp_2_3 = get_UniProts_from_CORUM(Corum_DF, Complex_ID = 27)
     '''
     # get UniProt IDs for each protein in the CORUM complex
-    uniprot_IDs_list = Corum_DF[Corum_DF.ComplexID == Complex_ID].loc[:,'subunits(UniProt IDs)'].values[0].split(';')
-        
+    uniprot_IDs_list = (Corum_DF[Corum_DF.ComplexID == Complex_ID].loc[:,
+                                'subunits(UniProt IDs)'].values[0].split(';'))
     return uniprot_IDs_list
 
 def get_PDB_from_UniProts(uniprot_IDs_list):
     '''
     Retreive PDB IDs for protein structures corresponding to set of UniProt IDs.
     
-    This function takes a list of UniProt IDs and maps the corresponding UniProt IDs (from
-    the UniProt IDs input or CORUM complex ID) to PDB IDs using the SIFTS project. Some 
-    metadata for each PDB ID is pulled from PDB and stored in a DataFrame that is returned.
+    This function takes a list of UniProt IDs and maps the corresponding 
+    UniProt IDs (from the UniProt IDs input or CORUM complex ID) to PDB IDs 
+    using the SIFTS project. Some metadata for each PDB ID is pulled from PDB 
+    and stored in a DataFrame that is returned.
 
     Parameters
     ----------
@@ -178,26 +205,34 @@ def get_PDB_from_UniProts(uniprot_IDs_list):
     Returns
     -------
     PDB IDs and associated metadata
-        Pandas DataFrame of PDB IDs that map to the UniProt IDs input, or corresponding UniProt IDs from
-        the CORUM complex specified.
+        Pandas DataFrame of PDB IDs that map to the UniProt IDs input, 
+        or corresponding UniProt IDs from the CORUM complex specified.
 
     Examples
     --------
-    >>> PDB_ID_Arp_2_3 = get_PDB_from_UniProts(['Q92747','O15144','P61158','P61160','O15145','P59998','O15511']) # (1) Get set of PDB IDs for list of UniProt IDs that correspond to Arp 2/3
+    # (1) Get set of PDB IDs for list of UniProt IDs that correspond to Arp 2/3
+    >>> PDB_ID_Arp_2_3 = get_PDB_from_UniProts(
+        ['Q92747','O15144','P61158','P61160','O15145','P59998','O15511'])
     '''
     # get number of proteins in query
     num_proteins = len(uniprot_IDs_list)
 
     # Map from CORUM complex subunits given as UniProt IDs 
-    # via [SIFTS](https://www.ebi.ac.uk/pdbe/docs/sifts/quick.html) to PDB structures:
-    # "A summary of the UniProt to PDB mappings showing the UniProt accession followed by a semicolon-separated list of PDB four letter codes."
-    uniprot_pdb_mapping_df = pd.read_csv("ftp://ftp.ebi.ac.uk/pub/databases/msd/sifts/flatfiles/csv/uniprot_pdb.csv.gz", header = 1, sep = ',', compression = 'gzip')
+    # via [SIFTS](https://www.ebi.ac.uk/pdbe/docs/sifts/quick.html) 
+    # to PDB structures:
+    # "A summary of the UniProt to PDB mappings showing the UniProt accession 
+    #  followed by a semicolon-separated list of PDB four letter codes."
+    uniprot_pdb_mapping_df = pd.read_csv(
+            ('ftp://ftp.ebi.ac.uk/pub/databases/msd/sifts/'
+            'flatfiles/csv/uniprot_pdb.csv.gz'), header = 1, 
+             sep = ',', compression = 'gzip')
 
     # set UniProt IDs as index
     uniprot_pdb_mapping_df.set_index('SP_PRIMARY', drop = True, inplace = True)
 
     # convert col PDB semicolon-separated list into Python list
-    uniprot_pdb_mapping_df.loc[:,'PDB'] = [PDB_codes_i.split(';') for PDB_codes_i in uniprot_pdb_mapping_df.PDB]
+    uniprot_pdb_mapping_df.loc[:,'PDB'] = ([PDB_codes_i.split(';') 
+                                for PDB_codes_i in uniprot_pdb_mapping_df.PDB])
 
     # get PDB IDs that map to each UniProt ID
     PDB_IDs_for_uniprot_dict = {}
@@ -207,7 +242,8 @@ def get_PDB_from_UniProts(uniprot_IDs_list):
         if uniprot_ID_i in uniprot_pdb_mapping_df.index:
 
             # append to list of PDB IDs, take ALL PDB IDs in mapped list
-            mapped_PDB_ID_i = uniprot_pdb_mapping_df.loc[uniprot_ID_i,:].values[0]
+            mapped_PDB_ID_i = (uniprot_pdb_mapping_df.loc[uniprot_ID_i,
+                                                          :].values[0])
 
             # convert to uppercase
             mapped_PDB_ID_i = [PDB_ID.upper() for PDB_ID in mapped_PDB_ID_i]
@@ -215,10 +251,14 @@ def get_PDB_from_UniProts(uniprot_IDs_list):
             PDB_IDs_for_uniprot_dict[uniprot_ID_i] = mapped_PDB_ID_i
 
         else:
-            print(f'WARNING: {uniprot_ID_i_complex_i} does not have any corresponding PDB IDs mapped.')
+            print(f'WARNING: {uniprot_ID_i_complex_i} does not have any '
+                  'corresponding PDB IDs mapped.')
 
-    # create dictionary of PDB IDs and store list of Uniprot IDs each one is mapped to
-    unique_PDB_IDs = list(set(itertools.chain(*list(PDB_IDs_for_uniprot_dict.values())))) # flatten list of PDB IDs that mapped to UniProt IDs
+    # create dictionary of PDB IDs and store list of 
+    # Uniprot IDs each one is mapped to
+    # flatten list of PDB IDs that mapped to UniProt IDs
+    unique_PDB_IDs = list(set(
+            itertools.chain(*list(PDB_IDs_for_uniprot_dict.values()))))
     uniprot_IDs_list_for_PDB_dict = {}
     for PDB_ID in unique_PDB_IDs:
 
@@ -233,35 +273,57 @@ def get_PDB_from_UniProts(uniprot_IDs_list):
 
     # if no PDB IDs mapped to UniProt IDs (empty list), raise warning
     if len(uniprot_IDs_list_for_PDB_series) == 0:
-        print(f'WARNING: Could not map PDB ID to this CORUM complex ID or UniProt IDs.')
+        print(f'WARNING: Could not map PDB ID to this CORUM '
+              'complex ID or UniProt IDs.')
         complex_i_PDBs_df = None
 
     else:
         # iterate through PDB ID & retreive metadata
-        PDB_protein_count = [] # stores number of polymer proteins for this structure
-        PDB_deposit_date = [] # store the date of deposit for this structure
-        PDB_citation_title = [] # store the title of the citation for this structure
-        PDB_to_uniprot_map_list = [] # store list of UniProt IDs that mapped to each PDB ID
+        # stores number of polymer proteins for this structure
+        PDB_protein_count = []
+        # store the date of deposit for this structure
+        PDB_deposit_date = []
+        # store the title of the citation for this structure
+        PDB_citation_title = []
+        # store list of UniProt IDs that mapped to each PDB ID
+        PDB_to_uniprot_map_list = []
         for PDB_ID in uniprot_IDs_list_for_PDB_series.index:
 
             # retreive metadata for this structure from PDB
             PDB_structure_all_info = get_info(PDB_ID)
-            PDB_protein_count.append(PDB_structure_all_info['rcsb_entry_info']['polymer_entity_count_protein'])
-            PDB_deposit_date.append(pd.to_datetime(PDB_structure_all_info['rcsb_accession_info']['deposit_date']))
-            PDB_citation_title.append(PDB_structure_all_info['rcsb_primary_citation']['title'])
-            PDB_to_uniprot_map_list.append(uniprot_IDs_list_for_PDB_series[PDB_ID])
+            PDB_protein_count.append(
+                (PDB_structure_all_info['rcsb_entry_info']
+                ['polymer_entity_count_protein']))
+            PDB_deposit_date.append(
+                (pd.to_datetime(PDB_structure_all_info['rcsb_accession_info']
+                ['deposit_date'])))
+            PDB_citation_title.append(
+                PDB_structure_all_info['rcsb_primary_citation']['title'])
+            PDB_to_uniprot_map_list.append(
+                uniprot_IDs_list_for_PDB_series[PDB_ID])
 
-        # convert CORUM complex i - associated PDB IDs into DataFrame w/ # proteins & resolution
-        UniProt_assoc_PDBs_df = pd.DataFrame(index = uniprot_IDs_list_for_PDB_series.index)
+        # convert CORUM complex i - associated PDB IDs into 
+        # DataFrame w/ # proteins & resolution
+        UniProt_assoc_PDBs_df = (pd.DataFrame(
+            index = uniprot_IDs_list_for_PDB_series.index))
         UniProt_assoc_PDBs_df.loc[:,'num_proteins'] = PDB_protein_count
         UniProt_assoc_PDBs_df.loc[:,'deposit_date'] = PDB_deposit_date
         UniProt_assoc_PDBs_df.loc[:,'citation_title'] = PDB_citation_title
-        UniProt_assoc_PDBs_df.loc[:,'UniProts_mapped_to_PDB'] = PDB_to_uniprot_map_list # the UniProt IDs that mapped to this PDB ID from SIFTS
+        # the UniProt IDs that mapped to this PDB ID from SIFTS
+        (UniProt_assoc_PDBs_df.loc[:,
+            'UniProts_mapped_to_PDB']) = PDB_to_uniprot_map_list
 
-        # column for number of proteins in PDB structure different from num proteins listed in CORUM complex or input by user
-        UniProt_assoc_PDBs_df.loc[:,'num_proteins_diff_btwn_PDB_and_UniProts_input'] = abs(UniProt_assoc_PDBs_df.num_proteins - num_proteins)
+        # column for number of proteins in PDB structure different from
+        # num proteins listed in CORUM complex or input by user
+        (UniProt_assoc_PDBs_df.loc[:,
+            'num_proteins_diff_btwn_PDB_and_UniProts_input']) = abs(
+                UniProt_assoc_PDBs_df.num_proteins - num_proteins)
 
-        # pick PDB structure that has same number of proteins/chains as CORUM complex (or matches closest), then rank by most recent deposit date
-        UniProt_assoc_PDBs_df.sort_values(by = ['num_proteins_diff_btwn_PDB_and_UniProts_input','deposit_date'], ascending = [True, False], inplace = True)
+        # pick PDB structure that has same number of proteins/chains as CORUM
+        # complex (or matches closest), then rank by most recent deposit date
+        UniProt_assoc_PDBs_df.sort_values(
+            by = (['num_proteins_diff_btwn_PDB_and_UniProts_input',
+                   'deposit_date']), 
+            ascending = [True, False], inplace = True)
         
     return UniProt_assoc_PDBs_df
