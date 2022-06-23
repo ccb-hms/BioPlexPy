@@ -398,31 +398,33 @@ def permutation_test_for_CORUM_complex(bp_PPI_G, Corum_DF, Complex_ID,
                             (float(num_perms) + 1.0))
         return p_val
     
-def get_interacting_chains_from_PDB(PDB_ID_structure_i, protein_structure_dir):
+def get_interacting_chains_from_PDB(PDB_ID_structure_i, protein_structure_dir, dist_threshold):
     '''
     Retreive chain pairs that are physically close to eachother from 
     PDB structure.
     
     This function downloads the PDB structure that is specified from the input 
     PDB ID into the input directory, then computes the pairwise distances 
-    between all atoms for each pair of chains in the structure. A list of chain 
-    pairs that are interacting (have at least a pair of atoms < 6 angstroms 
-    apart) is returned.
+    between all atoms for each pair of chains in the structure. A list of 
+    chain pairs that are interacting (have at least a pair of 
+    atoms < dist_threshold angstroms apart) is returned.
 
     Parameters
     ----------
     PDB ID: str
     directory to store PDB file: str
+    distance threshold: int
 
     Returns
     -------
     Interacting Chains
-        List of chain pairs from PDB structure that interact.
+        List of chain pairs from PDB structure that have at least 
+        one pair of atoms located < distance threshold apart.
 
     Examples
     --------
     # (1) Obtain list of interacting chains from 6YW7 structure
-    >>> interacting_chains_list = get_interacting_chains_from_PDB('6YW7', '.')
+    >>> interacting_chains_list = get_interacting_chains_from_PDB('6YW7', '.', 6)
     '''
     # download structure from PDB
     pdbl = PDBList()
@@ -466,8 +468,8 @@ def get_interacting_chains_from_PDB(PDB_ID_structure_i, protein_structure_dir):
         # compute pairwise distances betweeen all atoms from different chains
         dists = cdist(atom_coords_i, atom_coords_j)
 
-        # if a pair of atoms < 6 angstroms apart, store as interacting chains
-        if np.sum(dists < 6) >= 1:
+        # if a pair of atoms < dist_threshold angstroms apart, store as interacting chains
+        if np.sum(dists < dist_threshold) >= 1:
             chain_pairs_direct_interaction.append([chain_i_id, chain_j_id])
         
     return chain_pairs_direct_interaction
