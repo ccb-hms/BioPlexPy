@@ -671,7 +671,7 @@ def PDB_to_interacting_chains_uniprot_maps(PDB_ID,
     Get interacting chains from PDB structure mapped to UniProt IDs and 
     PDB chain to UniProt mappings.
     
-    This is a wrapper function runs functions 
+    This is a wrapper function for functions 
     (1) get_interacting_chains_from_PDB(),
     (2) list_uniprot_pdb_mappings(), and
     (3) PDB_chains_to_uniprot() 

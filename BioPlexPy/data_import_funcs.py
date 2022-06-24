@@ -200,7 +200,7 @@ def get_PDB_from_UniProts(uniprot_IDs_list):
 
     Parameters
     ----------
-    UniProt IDs : list (optional)
+    UniProt IDs : list
 
     Returns
     -------

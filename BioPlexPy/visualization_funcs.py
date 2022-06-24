@@ -210,7 +210,7 @@ def display_PDB_network_for_complex(ax, chain_to_UniProt_mapping_dict,
     This function displays a complete network in which nodes represent the 
     proteins in a specified PDB structure, and edges represent chains in that
     structure, using NetworkX. Edges that are classified as interacting
-    (are < 6 angstroms apart) are colored black.
+    (are < dist_threshold angstroms apart) are colored black.
 
     Parameters
     ----------
