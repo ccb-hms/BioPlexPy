@@ -1,3 +1,4 @@
+
 pandas
 requests
 anndata
@@ -21,3 +22,6 @@ sphinx-typlog-theme
 sphinx-autobuild
 mkdocs==1.2.3
 jinja2==3.0.0
+pydevd
+git+https://github.com/ccb-hms/BioPlexPy.git#egg=BioPlexPy
+

@@ -20,7 +20,7 @@
 project = 'BioPlexPy'
 copyright = '2022, Roger Vargas Jr, Ludwig Geistlinger, Tyrone Lee'
 author = 'Roger Vargas Jr, Ludwig Geistlinger, Tyrone Lee'
-version = '0.0.0'
+version = '0.99.0'
 
 
 # -- General configuration ---------------------------------------------------
@@ -29,7 +29,7 @@ version = '0.0.0'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'nbsphinx',
+    'myst_nb',
     'sphinx.ext.autodoc',
     'sphinx_rtd_theme'
 ]
@@ -55,12 +55,14 @@ html_theme = 'sphinx_rtd_theme'
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
-
-nbsphinx_kernel_name = 'python3'
-nbsphinx_execute_arguments = [
-    "--InlineBackend.figure_formats={'png2x', 'pdf'}",
-    "--InlineBackend.rc=figure.dpi=96",
-]
+#html_css_files = ['https://cdn.jupyter.org/notebook/5.1.0/style/style.min.css']
 
 
+#-- Global Options for myst_nb -------------------------------------------------
+# If you require your notebooks to run with a different kernel, 
+# to those specified in the actual files, you can set global aliases 
+# The mapping keys are regular expressions
+nb_kernel_rgx_aliases = {"CCB*": "python*"}
+number_source_lines = True
+nb_execution_timeout = 640
 

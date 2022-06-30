@@ -20,7 +20,7 @@
 project = 'BioPlexPy'
 copyright = '2022, Roger Vargas Jr, Ludwig Geistlinger, Tyrone Lee'
 author = 'Roger Vargas Jr, Ludwig Geistlinger, Tyrone Lee'
-version = '0.0.0'
+version = '0.99.1'
 
 
 # -- General configuration ---------------------------------------------------
@@ -29,7 +29,7 @@ version = '0.0.0'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'myst_nb',
+    'nbsphinx',
     'sphinx.ext.autodoc',
     'sphinx_rtd_theme'
 ]
@@ -56,12 +56,11 @@ html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
 
 
-#-- Global Options for myst_nb -------------------------------------------------
-# If you require your notebooks to run with a different kernel, 
-# to those specified in the actual files, you can set global aliases 
-# The mapping keys are regular expressions so, for example ccb.* will match any 
-# kernel name starting with ccb.
-nb_kernel_rgx_aliases = {"CCB.*": "python3"}
-nb_execution_timeout = 60
-nb_words_per_minute = 100
-nb_dmath_double_inline = True
+nbsphinx_kernel_name = 'python3'
+nbsphinx_execute_arguments = [
+    "--InlineBackend.figure_formats={'png2x', 'pdf'}",
+    "--InlineBackend.rc=figure.dpi=96",
+]
+
+
+
