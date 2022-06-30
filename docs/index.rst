@@ -5,20 +5,26 @@
 
 Welcome to BioplexPy's documentation!
 ======================================
+**BioplexPy** (/baɪˈoʊ plɛks paɪ/) package provides access to PPI data from Gygi lab.
+It fetches protein interaction data and offers a *simple* and *intuitive* API for Analysis.
+
+Getting Started
+======================================
+
+The package can be installed directly from github via
+
+```
+pip install git+https://github.com/ccb-hms/BioPlexPy.git#egg=BioPlexPy
+```
 
 
-BioplexPy's key applications
------------------------------
-- analysis functions
-- data import functions
-- visualization functions
+*todo* pypi package here
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Examples of Functions and Analysis:
    
    BioPlex_Examples
-   README
 
 Indices and tables
 ==================
