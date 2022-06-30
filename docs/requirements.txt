@@ -5,8 +5,6 @@ anndata
 networkx
 numpy
 matplotlib
-myst-nb
-myst-parser
 sphinx
 ipykernel
 sphinx-notfound-page
@@ -23,5 +21,6 @@ sphinx-autobuild
 mkdocs==1.2.3
 jinja2==3.0.0
 pydevd
+nbsphinx
 git+https://github.com/ccb-hms/BioPlexPy.git#egg=BioPlexPy
 
