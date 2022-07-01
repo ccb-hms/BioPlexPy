@@ -20,7 +20,7 @@
 project = 'BioPlexPy'
 copyright = '2022, Roger Vargas Jr, Ludwig Geistlinger, Tyrone Lee'
 author = 'Roger Vargas Jr, Ludwig Geistlinger, Tyrone Lee'
-version = '0.99.1'
+version = '0.99.2'
 
 
 # -- General configuration ---------------------------------------------------
