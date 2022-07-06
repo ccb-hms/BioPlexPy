@@ -14,7 +14,7 @@ pip install --index-url https://test.pypi.org/simple/ bioplexpy
 
 ## Usage
 
-See the [BioPlex examples notebook](https://github.com/ccb-hms/BioPlexPy/blob/main/BioPlex_Examples.ipynb) for basic usage and how to obtain
+See the [BioPlex examples notebook](https://github.com/ccb-hms/BioPlexPy/blob/main/docs/BioPlex_Examples.ipynb) for basic usage and how to obtain
 BioPlex datasets.
 
 https://bioplexpy.readthedocs.io/en/latest/

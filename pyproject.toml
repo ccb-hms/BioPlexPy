@@ -1,0 +1,43 @@
+[build-system]
+requires = [
+    "hatchling>=1.3.1",
+]
+build-backend = "hatchling.build"
+
+[project]
+name = "BioPlexPy"
+version = "0.99.2"
+description = "Python-side access to PPI data from Gygi lab"
+readme = "README.md"
+license = { file="LICENSE" }
+authors = [
+    { name = "Roger Vargas, Ludwig Geistlinger, Tyrone Lee", email = "roger_vargas@g.harvard.edu" },
+]
+dependencies = [
+    "anndata",
+    "biopython",
+    "matplotlib",
+    "networkx",
+    "numpy",
+    "pandas",
+    "pypdb",
+    "requests",
+    "scipy",
+]
+
+
+[tool.hatch.version]
+path = "BioPlexPy/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+  "/.github",
+  "/docs",
+]
+include = [
+    "/BioPlexPy",
+]
+
+
+[tool.hatch.build.targets.wheel]
+packages = ["BioPlexPy"]
