@@ -31,7 +31,9 @@ def getBioPlex(cell_line, version):
     Examples
     --------
     >>> bp_293t = getBioPlex('293T', '1.0')
-    >>> bp_hct116 = getBioPlex('HCT116', '1.0')
+    >>> bp_293t.head(1)
+       GeneA   GeneB UniprotA UniprotB SymbolA SymbolB            pW       pNI      pInt
+    0    100  728378   P00813   A5A3E0     ADA   POTEF  2.605947e-09  0.000333  0.999667
     '''
     if (f'{cell_line}.{version}' not in 
         ['293T.1.0','293T.2.0','293T.3.0','HCT116.1.0']):
@@ -80,6 +82,12 @@ def getGSE122425():
     Examples
     --------
     >>> HEK293_adata = getGSE122425()
+    >>> HEK293_adata
+    AnnData object with n_obs × n_vars = 57905 × 6
+        obs: 'SYMBOL', 'KO', 'GO', 'length'
+        layers: 'rpkm'
+    >>> print(HEK293_adata.obs_names[:10].tolist())
+    ['ENSG00000223972', 'ENSG00000227232', 'ENSG00000243485', 'ENSG00000237613', 'ENSG00000268020', 'ENSG00000240361', 'ENSG00000186092', 'ENSG00000238009', 'ENSG00000239945', 'ENSG00000233750']
     '''
     # specify URL where data is stored
     baseURL = ('https://ftp.ncbi.nlm.nih.gov/geo/series/GSE122nnn/'
@@ -141,6 +149,13 @@ def getCorum(complex_set = 'all', organism = 'Human'):
     --------
     >>> CORUM_df = getCorum()
     >>> CORUM_df = getCorum('core', 'Human')
+    >>> CORUM_df.size
+    48340
+    >>> CORUM_df.head(1)  # doctest: +NORMALIZE_WHITESPACE
+       ComplexID         ComplexName Organism  ... subunits(Gene name) PubMed ID                           subunits(Protein name)
+    0          1  BCL6-HDAC4 complex    Human  ...          BCL6;HDAC4  11929873  B-cell lymphoma 6 protein;Histone deacetylase 4
+    <BLANKLINE>
+    [1 rows x 20 columns]
     '''
     # specify URL where data is stored
     baseURL = 'https://mips.helmholtz-muenchen.de/corum/download/'
@@ -179,10 +194,12 @@ def get_UniProts_from_CORUM(Corum_DF, Complex_ID):
     Examples
     --------
     # (1) Obtain CORUM complexes
-    >>> Corum_DF = getCorum('core', 'Human')
     # (2) Get set of UniProt IDs for specified protein 
     #     complex (Arp 2/3 complex ID: 27)
+    >>> Corum_DF = getCorum('core', 'Human')
     >>> UniProts_Arp_2_3 = get_UniProts_from_CORUM(Corum_DF, Complex_ID = 27)
+    >>> UniProts_Arp_2_3
+    ['O15143', 'O15144', 'O15145', 'O15511', 'P59998', 'P61158', 'P61160']
     '''
     # get UniProt IDs for each protein in the CORUM complex
     uniprot_IDs_list = (Corum_DF[Corum_DF.ComplexID == Complex_ID].loc[:,
@@ -210,9 +227,15 @@ def get_PDB_from_UniProts(uniprot_IDs_list):
 
     Examples
     --------
+
+    # this test is not consistent > PDB_ID_Arp_2_3.UniProts_mapped_to_PDB[1]
+    ['O15144', 'P61158', 'P61160', 'O15145', 'P59998']
     # (1) Get set of PDB IDs for list of UniProt IDs that correspond to Arp 2/3
-    >>> PDB_ID_Arp_2_3 = get_PDB_from_UniProts(
-        ['Q92747','O15144','P61158','P61160','O15145','P59998','O15511'])
+    >>> PDB_ID_Arp_2_3 = get_PDB_from_UniProts(['Q92747','O15144','P61158','P61160','O15145','P59998','O15511'])
+    >>> PDB_ID_Arp_2_3.size
+    15
+    >>> type(PDB_ID_Arp_2_3)
+    <class 'pandas.core.frame.DataFrame'>
     '''
     # get number of proteins in query
     num_proteins = len(uniprot_IDs_list)
