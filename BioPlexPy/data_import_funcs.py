@@ -344,6 +344,7 @@ def get_PDB_from_UniProts(uniprot_IDs_list):
 
         # pick PDB structure that has same number of proteins/chains as CORUM
         # complex (or matches closest), then rank by most recent deposit date
+        # tyl: recent deposit date fluctuates?
         UniProt_assoc_PDBs_df.sort_values(
             by = (['num_proteins_diff_btwn_PDB_and_UniProts_input',
                    'deposit_date']), 

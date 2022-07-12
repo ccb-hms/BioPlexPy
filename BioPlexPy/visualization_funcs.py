@@ -3,6 +3,8 @@
 import numpy as np
 import itertools
 import networkx as nx
+import matplotlib.pyplot as plt
+
 
 def display_PPI_network_for_complex(ax, bp_PPI_df, Corum_DF, Complex_ID, 
     node_size, edge_width, node_font_size = 10, bait_node_color='xkcd:red', 
@@ -38,15 +40,16 @@ def display_PPI_network_for_complex(ax, bp_PPI_df, Corum_DF, Complex_ID,
     Examples
     --------
     # (1) Obtain the latest version of the 293T PPI network
-    >>> bp_PPI_df = getBioPlex('293T', '3.0')
     # (2) Obtain CORUM complexes
-    >>> Corum_DF = getCorum('core', 'Human')
     # (3) create figure and axis objects to draw on
-    >>> fig, ax = plt.subplots()
     # (4) Visualize network for specified protein complex
     #     using PPI data (ING2 complex ID: 2851)
-    >>> ING2_node_layout = display_PPI_network_for_complex(ax, bp_PPI_df, 
-                            Corum_DF, 2851, 2300, 3.5)
+    >>> bp_PPI_df = getBioPlex('293T', '3.0')
+    >>> Corum_DF = getCorum('core', 'Human')
+    >>> fig, ax = plt.subplots()
+    >>> ING2_node_layout = display_PPI_network_for_complex(ax, bp_PPI_df, Corum_DF, 2851, 2300, 3.5)
+    >>> ING2_node_layout
+    {'A0A024R3R1': array([ 1.00000000e+00, -2.29248628e-09]), 'O75446': array([0.88545603, 0.46472316]), 'P29374': array([0.56806476, 0.82298384]), 'Q09028': array([0.12053671, 0.99270884]), 'Q13547': array([-0.35460481,  0.93501625]), 'Q16576': array([-0.74851068,  0.66312264]), 'Q5PSV4': array([-0.9709418 ,  0.23931567]), 'Q92769': array([-0.9709418 , -0.23931561]), 'Q96ST3': array([-0.7485108 , -0.66312258]), 'Q9H0E3': array([-0.35460499, -0.9350162 ]), 'Q9H160': array([ 0.12053676, -0.99270884]), 'Q9H7L9': array([ 0.56806458, -0.82298396]), 'Q9HCU9': array([ 0.88545603, -0.46472319])}
     '''
     # store uniprot IDs & gene symbols that belong to this complex in a list
     genes_in_complex_i = (Corum_DF[Corum_DF.ComplexID == Complex_ID]
@@ -202,6 +205,7 @@ def display_PPI_network_for_complex(ax, bp_PPI_df, Corum_DF, Complex_ID,
     # return node position layout
     return pos
 
+
 def display_PDB_network_for_complex(ax, chain_to_UniProt_mapping_dict, 
     interacting_UniProt_IDs, node_size, edge_width, node_font_size=10):
     '''
@@ -229,22 +233,30 @@ def display_PDB_network_for_complex(ax, chain_to_UniProt_mapping_dict,
         List of Edges for Interacting Nodes
     Number of Network Edges
         Float of the Number of Possible Interacting Edges
+    
+    # what order are they returned?
 
     Examples
     --------
     # (1) Obtain list of interacting chains from 6YW7 structure
-    >>> interacting_chains_list = get_interacting_chains_from_PDB('6YW7', '.')
     # (2) Obtain a mapping of PDB ID 6YW7 chains to UniProt IDs
-    >>> chain_to_UniProt_mapping_dict = list_uniprot_pdb_mappings('6YW7')
     # (3) Obtain list of interacting chains from 6YW7 
     # structure using UniProt IDs
-    >>> interacting_UniProt_IDs = PDB_chains_to_uniprot(interacting_chains_list,
-        chain_to_UniProt_mapping_dict)
     # (4) create figure and axis objects to draw on
-    >>> fig, ax = plt.subplots()
     # (5) Visualize interacting chains using Uniprot IDs
-    >>> node_layout_pdb, edges_list_pdb, num_possible_edges_pdb = 
-        display_PDB_network_for_complex(ax, interacting_UniProt_IDs, 2300, 3.5)
+
+    >>> interacting_chains_list = get_interacting_chains_from_PDB('6YW7', '.', 6)
+    Downloading PDB structure '6YW7'...
+    >>> chain_to_UniProt_mapping_dict = list_uniprot_pdb_mappings('6YW7')
+    >>> interacting_UniProt_IDs = PDB_chains_to_uniprot(interacting_chains_list,chain_to_UniProt_mapping_dict)
+    >>> fig, ax = plt.subplots()
+    >>> node_layout_pdb, edges_list_pdb, num_possible_edges_pdb = display_PDB_network_for_complex(ax,chain_to_UniProt_mapping_dict, interacting_UniProt_IDs, 1500, 3, node_font_size = 8)
+    >>> len(node_layout_pdb)
+    7
+    >>> len(edges_list_pdb)
+    9
+    >>> num_possible_edges_pdb
+    21.0
     '''
     # create connected graph from all uniprot IDs
     chain_uniprot_IDs = ([chain_uniprot_i[0] for chain_uniprot_i in 
@@ -327,30 +339,33 @@ def display_PPI_network_match_PDB(ax, chain_to_UniProt_mapping_dict,
         List of Edges for Interacting Nodes
     Number of Network Edges
         Float of the Number of Possible Interacting Edges
+    
 
     Examples
     --------
     # (1) Obtain list of interacting chains from 6YW7 structure
-    >>> interacting_chains_list = get_interacting_chains_from_PDB('6YW7', '.')
     # (2) Obtain a mapping of PDB ID 6YW7 chains to UniProt IDs
-    >>> chain_to_UniProt_mapping_dict = list_uniprot_pdb_mappings('6YW7')
     # (3) Obtain list of interacting chains from 6YW7 
     #     structure using UniProt IDs
-    >>> interacting_UniProt_IDs = PDB_chains_to_uniprot(interacting_chains_list,
-        chain_to_UniProt_mapping_dict)
     # (4) create figure and axis objects to draw on
-    >>> fig, ax1 = plt.subplots()
     # (5) Visualize interacting chains using Uniprot IDs
-    >>> node_layout_pdb, edges_list_pdb, num_possible_edges_pdb = 
-        display_PDB_network_for_complex(ax1, interacting_UniProt_IDs, 2300, 3.5)
     # (6) Get BioPlex PPI data
-    >>> bp_PPI_df = getBioPlex('293T', '3.0')
     # (7) create figure and axis objects to draw on
-    >>> fig, ax2 = plt.subplots()
     # (8) Visualize BioPlex PPI interactions using layout 
     #     from interacting chains
-    >>> edges_list_bp, num_possible_edges_bp = display_PPI_network_match_PDB(
-            ax2, interacting_UniProt_IDs, bp_PPI_df, node_layout_pdb, 2300, 3.5)
+    >>> interacting_chains_list = get_interacting_chains_from_PDB('6YW7', '.', 6)
+    Downloading PDB structure '6YW7'...
+    >>> chain_to_UniProt_mapping_dict = list_uniprot_pdb_mappings('6YW7')
+    >>> interacting_UniProt_IDs = PDB_chains_to_uniprot(interacting_chains_list,chain_to_UniProt_mapping_dict)
+    >>> fig, ax1 = plt.subplots()
+    >>> node_layout_pdb, edges_list_pdb, num_possible_edges_pdb = display_PDB_network_for_complex(ax1, chain_to_UniProt_mapping_dict, interacting_UniProt_IDs, 1500, 3, node_font_size = 8)
+    >>> bp_PPI_df = getBioPlex('293T', '3.0')
+    >>> fig, ax2 = plt.subplots()
+    >>> edges_list_bp, num_possible_edges_bp = display_PPI_network_match_PDB(ax2, chain_to_UniProt_mapping_dict, interacting_UniProt_IDs, bp_PPI_df, node_layout_pdb, 1500, 3, node_font_size = 8)
+    >>> len(edges_list_bp)
+    13
+    >>> num_possible_edges_bp
+    21.0
     '''
     # create connected graph from all uniprot IDs
     chain_uniprot_IDs = ([chain_uniprot_i[0] for chain_uniprot_i 
@@ -483,4 +498,4 @@ def display_PPI_network_match_PDB(ax, chain_to_UniProt_mapping_dict,
 
     # return node position layout, list of edges detected,
     # and number of possible edges
-    return [bp_structure_i_G.edges, float(len(bp_structure_i_G_complete.edges))]
+    return [bp_structure_i_G.edges, float(len(bp_structure_i_G_complete.edges))]    
