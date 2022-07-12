@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "bioplexpy"
-version = "0.99.3"
+version = "1.0.0"
 description = "Python-side access to PPI data from Gygi lab"
 readme = "README.md"
 license = { file="LICENSE" }

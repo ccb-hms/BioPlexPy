@@ -6,12 +6,12 @@ Python-side access to PPI data from Gygi lab
 
 ## Installation
 -------------
-The package can be installed through github or through pypi
+The package can be installed through pypi or through github
 
-```
-pip install --index-url https://test.pypi.org/simple/ bioplexpy
+`pip install bioplexpy`
+or 
+`pip install git+https://github.com/ccb-hms/BioPlexPy.git#egg=BioPlexPy`
 
-```
 
 ## Usage
 -------------

@@ -1,3 +1,4 @@
+from .version import __version__
 from .data_import_funcs import getBioPlex
 from .data_import_funcs import getGSE122425
 from .data_import_funcs import getCorum
