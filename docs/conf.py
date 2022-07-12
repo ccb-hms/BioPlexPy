@@ -20,7 +20,7 @@
 project = 'BioPlexPy'
 copyright = '2022, Roger Vargas Jr, Ludwig Geistlinger, Tyrone Lee'
 author = 'Roger Vargas Jr, Ludwig Geistlinger, Tyrone Lee'
-version = '0.99.1'
+version = '0.99.2'
 
 
 # -- General configuration ---------------------------------------------------
@@ -58,9 +58,7 @@ html_static_path = ['_static']
 
 nbsphinx_kernel_name = 'python3'
 nbsphinx_execute_arguments = [
-    "--InlineBackend.figure_formats={'png2x', 'pdf'}",
-    "--InlineBackend.rc=figure.dpi=96",
+    "--InlineBackend.figure_formats={'png'}",
 ]
-
-
-
+nbsphinx_execute = 'always'
+nbsphinx_allow_errors = True

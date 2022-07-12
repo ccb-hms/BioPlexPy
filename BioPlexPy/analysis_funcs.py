@@ -31,9 +31,15 @@ def bioplex2graph(bp_PPI_df):
     Examples
     --------
     # (1) Obtain the latest version of the 293T PPI network
-    >>> bp_293t_df = getBioPlex('293T', '3.0')
     # (2) Turn the data into a graph
+    >>> bp_293t_df = getBioPlex('293T', '3.0')
     >>> bp_293t_G = bioplex2graph(bp_293t_df) 
+    >>> type(bp_293t_G)
+    <class 'networkx.classes.digraph.DiGraph'>
+    >>> len(bp_293t_G.edges)
+    115868
+    >>> len(bp_293t_G.nodes)
+    13689
     '''
     # add isoform columns for Uniprot source & Uniprot target
     bp_PPI_df.loc[:,'isoformA'] = bp_PPI_df.UniprotA
@@ -128,14 +134,17 @@ def get_PPI_network_for_complex(bp_PPI_G, Corum_DF, Complex_ID):
     Examples
     --------
     # (1) Obtain the latest version of the 293T PPI network
-    >>> bp_293t_df = getBioPlex('293T', '3.0')
     # (2) Obtain NetworkX graph representation of 293T PPI network
-    >>> bp_293t_G = bioplex2graph(bp_293t_df)
     # (3) Obtain CORUM complexes
+    # (4) Get AP-MS interactions as subgraph for a specified protein complex using PPI data
+    >>> bp_293t_df = getBioPlex('293T', '3.0')
+    >>> bp_293t_G = bioplex2graph(bp_293t_df)
     >>> Corum_DF = getCorum('core', 'Human')
-    # (4) Get AP-MS interactions as subgraph for a specified 
-          protein complex using PPI data
     >>> ING2_bp_293t_G = get_PPI_network_for_complex(bp_293t_G, Corum_DF, 2851)
+    >>> type(ING2_bp_293t_G)
+    <class 'networkx.classes.digraph.DiGraph'>
+    >>> len(ING2_bp_293t_G)
+    12
     '''
     # store gene UNIPROT IDs that belong to this complex in a list
     genes_in_complex_i = (Corum_DF[Corum_DF.ComplexID == Complex_ID].loc[:,
@@ -166,17 +175,22 @@ def get_DataFrame_from_PPI_network(bp_PPI_G):
     Examples
     --------
     # (1) Obtain the latest version of the 293T PPI network
-    >>> bp_293t_df = getBioPlex('293T', '3.0')
     # (2) Obtain NetworkX graph representation of 293T PPI network
-    >>> bp_293t_G = bioplex2graph(bp_293t_df)
     # (3) Obtain CORUM complexes
-    >>> Corum_DF = getCorum('core', 'Human')
-    # (4) Get AP-MS interactions as subgraph for a specified 
-          protein complex using PPI data
-    >>> ING2_bp_293t_G = get_PPI_network_for_complex(bp_293t_G, Corum_DF, 2851)
+    # (4) Get AP-MS interactions as subgraph for a specified protein complex using PPI data row corresponding to an edge
     # (5) Convert ING2 AP-MS network into DataFrame w/ each 
-          row corresponding to an edge
+    # order of rows in dataframe?
+    >>> bp_293t_df = getBioPlex('293T', '3.0')
+    >>> bp_293t_G = bioplex2graph(bp_293t_df)
+    >>> Corum_DF = getCorum('core', 'Human')
+    >>> ING2_bp_293t_G = get_PPI_network_for_complex(bp_293t_G, Corum_DF, 2851)
     >>> ING2_bp_293t_df = get_DataFrame_from_PPI_network(ING2_bp_293t_G)
+    >>> type(ING2_bp_293t_df)
+    <class 'pandas.core.frame.DataFrame'>
+    >>> ING2_bp_293t_df.shape
+    (51, 7)
+    >>> ING2_bp_293t_df.columns
+    Index(['UniprotA', 'UniprotB', 'SymbolA', 'SymbolB', 'pW', 'pNI', 'pInt'], dtype='object')
     '''
     # get list of edges in network
     PPI_edge_list = list(bp_PPI_G.edges)
@@ -221,7 +235,7 @@ def get_DataFrame_from_PPI_network(bp_PPI_G):
     bp_complex_i_df.loc[:,'pInt'] = pInt_list
     
     return bp_complex_i_df
-
+    
 def get_prop_edges_in_complex_identified(bp_PPI_G, Corum_DF, Complex_ID):
     '''
     Calculates proportion of all possible edges identified from BioPlex (AP-MS) 
@@ -245,14 +259,16 @@ def get_prop_edges_in_complex_identified(bp_PPI_G, Corum_DF, Complex_ID):
     Examples
     --------
     # (1) Obtain the latest version of the 293T PPI network
-    >>> bp_293t_df = getBioPlex('293T', '3.0')
     # (2) Obtain NetworkX graph representation of 293T PPI network
-    >>> bp_293t_G = bioplex2graph(bp_293t_df)
     # (3) Obtain CORUM complexes
+    # (4) Get proportion of interactions identified for a specified CORUM complex 
+    # using PPI data
+
+    >>> bp_293t_df = getBioPlex('293T', '3.0')
+    >>> bp_293t_G = bioplex2graph(bp_293t_df)
     >>> Corum_DF = getCorum('core', 'Human')
-    # (4) Get proportion of interactions identified for a specified 
-          CORUM complex using PPI data
-    >>> get_prop_edges_in_complex_identfied(bp_293t_G, Corum_DF, 2851)
+    >>> get_prop_edges_in_complex_identified(bp_293t_G, Corum_DF, 2851)
+    0.654
     '''
     # store gene UNIPROT IDs that belong to this complex in a list
     genes_in_complex_i = (Corum_DF[Corum_DF.ComplexID == Complex_ID].loc[:,
@@ -312,14 +328,15 @@ def permutation_test_for_CORUM_complex(bp_PPI_G, Corum_DF, Complex_ID,
     Examples
     --------
     # (1) Obtain the latest version of the 293T PPI network
-    >>> bp_293t_df = getBioPlex('293T', '3.0')
     # (2) Obtain NetworkX graph representation of 293T PPI network
-    >>> bp_293t_G = bioplex2graph(bp_293t_df)
     # (3) Obtain CORUM complexes
-    >>> Corum_DF = getCorum('core', 'Human')
     # (4) Calculate p-value to check for enrichment of edges in 
     #     Arp2/3 protein complex
+    >>> bp_293t_df = getBioPlex('293T', '3.0')
+    >>> bp_293t_G = bioplex2graph(bp_293t_df)
+    >>> Corum_DF = getCorum('core', 'Human')
     >>> permutation_test_for_CORUM_complex(bp_293t_G, Corum_DF, 27, 1000)
+    0.000999000999000999
     '''
     # store gene UNIPROT IDs that belong to this complex in a list
     genes_in_complex_i = (Corum_DF[Corum_DF.ComplexID == Complex_ID].loc[:,
@@ -396,8 +413,8 @@ def permutation_test_for_CORUM_complex(bp_PPI_G, Corum_DF, Complex_ID,
         p_val = (float(np.sum(num_edges_random_subgraphs 
                                 >= num_edges_identified_CORUM_complex) + 1.0) / 
                             (float(num_perms) + 1.0))
-        return p_val
-    
+        return p_val    
+
 def get_interacting_chains_from_PDB(PDB_ID_structure_i, protein_structure_dir, dist_threshold):
     '''
     Retreive chain pairs that are physically close to eachother from 
@@ -425,6 +442,9 @@ def get_interacting_chains_from_PDB(PDB_ID_structure_i, protein_structure_dir, d
     --------
     # (1) Obtain list of interacting chains from 6YW7 structure
     >>> interacting_chains_list = get_interacting_chains_from_PDB('6YW7', '.', 6)
+    Downloading PDB structure '6YW7'...
+    >>> interacting_chains_list
+    [['A', 'D'], ['A', 'E'], ['A', 'B'], ['D', 'F'], ['B', 'F'], ['B', 'G'], ['F', 'G'], ['F', 'C'], ['G', 'C']]
     '''
     # download structure from PDB
     pdbl = PDBList()
@@ -564,6 +584,12 @@ def list_uniprot_pdb_mappings(pdb_id):
     --------
     # (1) Obtain a mapping of PDB ID 6YW7 chains to UniProt IDs
     >>> chain_to_UniProt_mapping_dict = list_uniprot_pdb_mappings('6YW7')
+    >>> len(chain_to_UniProt_mapping_dict)
+    7
+    >>> sorted(chain_to_UniProt_mapping_dict.keys())
+    ['A', 'B', 'C', 'D', 'E', 'F', 'G']
+    >>> sorted(chain_to_UniProt_mapping_dict.values())
+    [['O15144'], ['O15145'], ['O15511'], ['P59998'], ['P61158'], ['P61160'], ['Q92747']]
     '''
     # convert to PDB id to lower case
     pdb_id = pdb_id.lower()
@@ -638,13 +664,15 @@ def PDB_chains_to_uniprot(interacting_chains_list,
     Examples
     --------
     # (1) Obtain list of interacting chains from 6YW7 structure
-    >>> interacting_chains_list = get_interacting_chains_from_PDB('6YW7', '.')
     # (2) Obtain a mapping of PDB ID 6YW7 chains to UniProt IDs
-    >>> chain_to_UniProt_mapping_dict = list_uniprot_pdb_mappings('6YW7') 
     # (3) Obtain list of interacting chains from 6YW7 
     #     structure using UniProt IDs 
-    >>> interacting_UniProt_IDs = PDB_chains_to_uniprot(interacting_chains_list,
-        chain_to_UniProt_mapping_dict)
+    >>> interacting_chains_list = get_interacting_chains_from_PDB('6YW7', '.', 6)
+    Downloading PDB structure '6YW7'...
+    >>> chain_to_UniProt_mapping_dict = list_uniprot_pdb_mappings('6YW7') 
+    >>> interacting_UniProt_IDs = PDB_chains_to_uniprot(interacting_chains_list, chain_to_UniProt_mapping_dict)
+    >>> sorted(interacting_UniProt_IDs)
+    [['O15144', 'P59998'], ['O15511', 'Q92747'], ['P59998', 'O15511'], ['P59998', 'Q92747'], ['P61158', 'O15144'], ['P61158', 'O15145'], ['P61158', 'P61160'], ['P61160', 'O15511'], ['P61160', 'P59998']]
     '''
     interacting_UniProt_IDs = []
     for interacting_chain_pair_i in interacting_chains_list:
@@ -693,9 +721,8 @@ def PDB_to_interacting_chains_uniprot_maps(PDB_ID,
     
     Examples
     --------
-    >>> (chain_to_UniProt_mapping_dict, 
-            interacting_UniProt_IDs) = PDB_to_interacting_chains_uniprot_maps(
-            '6NMI', '.', 6)
+    >>> (chain_to_UniProt_mapping_dict, interacting_UniProt_IDs) = PDB_to_interacting_chains_uniprot_maps('6NMI', '.', 6)
+    Downloading PDB structure '6NMI'...
     '''
     # get list of chain pairs that interact in PDB structure 
     interacting_chains_list = get_interacting_chains_from_PDB(PDB_ID, 
