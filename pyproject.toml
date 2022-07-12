@@ -5,8 +5,8 @@ requires = [
 build-backend = "hatchling.build"
 
 [project]
-name = "BioPlexPy"
-version = "0.99.2"
+name = "bioplexpy"
+version = "0.99.3"
 description = "Python-side access to PPI data from Gygi lab"
 readme = "README.md"
 license = { file="LICENSE" }
@@ -27,7 +27,7 @@ dependencies = [
 
 
 [tool.hatch.version]
-path = "BioPlexPy/__init__.py"
+path = "bioplexpy/__init__.py"
 
 [tool.hatch.build.targets.sdist]
 exclude = [
@@ -35,9 +35,9 @@ exclude = [
   "/docs",
 ]
 include = [
-    "/BioPlexPy",
+    "/bioplexpy",
 ]
 
 
 [tool.hatch.build.targets.wheel]
-packages = ["BioPlexPy"]
+packages = ["bioplexpy"]

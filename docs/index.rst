@@ -11,14 +11,21 @@ It fetches protein interaction data and offers a *simple* and *intuitive* API fo
 Getting Started
 ======================================
 
-The package can be installed directly from github via
+The package can be installed through pypi or through github
 
-```
-pip install git+https://github.com/ccb-hms/BioPlexPy.git#egg=BioPlexPy
-```
+.. code-block:: bash
+   
+   pip install --index-url https://test.pypi.org/simple/ bioplexpy
 
 
-*todo* pypi package here
+
+or
+
+.. code-block:: bash
+   
+   pip install git+https://github.com/ccb-hms/BioPlexPy.git#egg=BioPlexPy
+
+
 
 .. toctree::
    :maxdepth: 2
