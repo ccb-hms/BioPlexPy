@@ -15,7 +15,7 @@ The package can be installed through pypi or through github
 
 .. code-block:: bash
    
-   pip install --index-url https://test.pypi.org/simple/ bioplexpy
+   pip install bioplexpy
 
 
 
