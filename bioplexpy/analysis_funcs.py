@@ -268,7 +268,6 @@ def get_prop_edges_in_complex_identified(bp_PPI_G, Corum_DF, Complex_ID):
     >>> bp_293t_G = bioplex2graph(bp_293t_df)
     >>> Corum_DF = getCorum('core', 'Human')
     >>> get_prop_edges_in_complex_identified(bp_293t_G, Corum_DF, 2851)
-    0.654
     '''
     # store gene UNIPROT IDs that belong to this complex in a list
     genes_in_complex_i = (Corum_DF[Corum_DF.ComplexID == Complex_ID].loc[:,
@@ -292,7 +291,7 @@ def get_prop_edges_in_complex_identified(bp_PPI_G, Corum_DF, Complex_ID):
     # return proportion of edges ID'd through AP-MS, round to 3 decimal places
     return round(prop_edges_identified, 3)
 
-def permutation_test_for_gene_list(bp_PPI_G, uniprot_list, 
+def permutation_test_for_uniprot_list(bp_PPI_G, uniprot_list, 
                                        num_perms = 1000):
     '''
     Run permutation test to check for enrichment of BioPlex (AP-MS) PPIs 
