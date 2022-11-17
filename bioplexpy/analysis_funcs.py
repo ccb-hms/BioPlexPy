@@ -9,6 +9,7 @@ from Bio.PDB import *
 from scipy.spatial.distance import cdist
 import requests
 import re
+from collections import Counter
 
 def bioplex2graph(bp_PPI_df):
     '''
@@ -291,12 +292,6 @@ def get_prop_edges_in_complex_identified(bp_PPI_G, Corum_DF, Complex_ID):
     # return proportion of edges ID'd through AP-MS, round to 3 decimal places
     return round(prop_edges_identified, 3)
 
-import numpy as np
-import networkx as nx
-import itertools
-import random
-from collections import Counter
-
 def permutation_test_for_uniprot_list(bp_PPI_G, uniprot_list, 
                     num_perms = 1000, preserve_node_degree = False):
     '''
@@ -381,7 +376,7 @@ def permutation_test_for_uniprot_list(bp_PPI_G, uniprot_list,
         G_baits_filter = np.array(
             [bp_PPI_G.nodes[node_i]['bait'] for node_i in bp_PPI_G.nodes])
 
-        # get array of baits in complex
+        # get array of baits in large network
         G_baits = np.array(nodes_in_overall_PPI_network)[G_baits_filter]
 
         # get degree of each bait
@@ -393,7 +388,7 @@ def permutation_test_for_uniprot_list(bp_PPI_G, uniprot_list,
         G_preys_filter = np.array(
             [not bp_PPI_G.nodes[node_i]['bait'] for node_i in bp_PPI_G.nodes])
 
-        # get array of preys in complex
+        # get array of preys in large network
         G_preys = np.array(nodes_in_overall_PPI_network)[G_preys_filter]
 
         # get degree of each prey
