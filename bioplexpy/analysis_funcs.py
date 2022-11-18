@@ -362,13 +362,6 @@ def permutation_test_for_uniprot_list(bp_PPI_G, uniprot_list,
 
         # list of nodes in large network generated from PPI data
         nodes_in_overall_PPI_network = list(bp_PPI_G.nodes)
-
-        # find number of baits in complex
-        bp_complex_i_baits_num = (np.sum([bp_uniprots_i_G.nodes[node_i]['bait'] 
-                                          for node_i in bp_uniprots_i_G.nodes]))
-        # find proportion of baits in complex
-        bp_complex_i_baits_prop = (float(bp_complex_i_baits_num) / 
-                                   float(num_genes_in_uniprot_list))
         
         # bait degrees in large PPI network
         ########################################
@@ -416,6 +409,28 @@ def permutation_test_for_uniprot_list(bp_PPI_G, uniprot_list,
         bp_uniprots_i_G_baits_degree_distr = Counter(
             [bp_uniprots_i_G_baits_degrees[uniprot_i] for 
              uniprot_i in bp_uniprots_i_G_baits])
+        
+        # remove count for any "0" degree baits
+        # would not contribute to edges in S
+        if 0 in bp_uniprots_i_G_baits_degree_distr.keys():
+            del bp_uniprots_i_G_baits_degree_distr[0]
+        
+        # find number of baits in complex
+        
+        # if preserve node degree TRUE
+        # exclude baits w/ degree 0 from bait count
+        # b/c random subgraphs won't have these
+        if preserve_node_degree == True:
+            bp_complex_i_baits_num = (np.sum(list(
+                    bp_uniprots_i_G_baits_degree_distr.values())))
+        
+        # else count all baits in complex
+        else:
+            bp_complex_i_baits_num = (np.sum(bp_uniprots_i_G_baits_filter))
+        
+        # find proportion of baits in complex
+        bp_complex_i_baits_prop = (float(bp_complex_i_baits_num) / 
+                                   float(num_genes_in_uniprot_list))
 
         # prey degrees in complex
         ########################################
@@ -439,6 +454,11 @@ def permutation_test_for_uniprot_list(bp_PPI_G, uniprot_list,
         bp_uniprots_i_G_preys_degree_distr = Counter(
             [bp_uniprots_i_G_preys_degrees[uniprot_i] for 
              uniprot_i in bp_uniprots_i_G_preys])
+        
+        # remove count for any "0" degree preys
+        # would not contribute to edges in S
+        if 0 in bp_uniprots_i_G_preys_degree_distr.keys():
+            del bp_uniprots_i_G_preys_degree_distr[0]
 
         # list that will store number of edges detected in each subgraph
         num_edges_random_subgraphs = []
@@ -464,7 +484,7 @@ def permutation_test_for_uniprot_list(bp_PPI_G, uniprot_list,
                         G_baits[np.array(
                             [G_baits_degrees[bait_i] == deg_i for 
                              bait_i in G_baits])])
-
+                    
                     # choose N baits w/ same degree at random w/o replacement
                     N_rando_baits_from_PPI_network = random.sample(
                         G_baits_with_deg_i, uniprot_count_i)
@@ -510,6 +530,7 @@ def permutation_test_for_uniprot_list(bp_PPI_G, uniprot_list,
 
             # check to see if nodes in subgraph have the same proportion of 
             # baits as the subgraph induced by the CORUM complex
+            # excluding baits that had degree 0
             bp_S_baits_num = np.sum(
                 [bp_PPI_S.nodes[node_i]['bait'] for node_i in bp_PPI_S.nodes])
             bp_S_baits_prop = (float(bp_S_baits_num) / 
