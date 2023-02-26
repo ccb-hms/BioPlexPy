@@ -4,6 +4,13 @@
 
 Python-side access to PPI data from Gygi lab
 
+## Citation
+-------------
+
+If you use the BioPlexPy package in published research, please cite:
+
+Ludwig Geistlinger, Roger Vargas Jr, Tyrone Lee, Joshua Pan, Edward Huttlin, Robert Gentleman (2023) BioPlexR and BioPlexPy: integrated data products for the analysis of human protein interactions. *Bioinformatics*. doi: [10.1093/bioinformatics/btad091](https://doi.org/10.1093/bioinformatics/btad091). 
+
 ## Installation
 -------------
 The package can be installed through pypi or through github
