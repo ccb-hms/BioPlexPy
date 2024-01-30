@@ -19,7 +19,7 @@ sphinx-rtd-theme
 sphinx-typlog-theme
 sphinx-autobuild
 mkdocs==1.2.3
-jinja2==3.0.0
+jinja2==3.1.3
 pydevd
 nbsphinx
 git+https://github.com/ccb-hms/BioPlexPy.git#egg=BioPlexPy
