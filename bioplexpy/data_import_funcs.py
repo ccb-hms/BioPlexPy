@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 
 import io
-import requests
+import itertools
+
 import anndata as ad
 import pandas as pd
-import itertools
-from collections import Counter
+import requests
 from pypdb import *
+
 
 def getBioPlex(cell_line, version):
     '''
@@ -313,7 +314,7 @@ def get_PDB_from_UniProts(uniprot_IDs_list):
 
     # if no PDB IDs mapped to UniProt IDs (empty list), raise warning
     if len(uniprot_IDs_list_for_PDB_series) == 0:
-        print(f'WARNING: Could not map PDB ID to this CORUM '
+        print('WARNING: Could not map PDB ID to this CORUM '
               'complex ID or UniProt IDs.')
         complex_i_PDBs_df = None
 

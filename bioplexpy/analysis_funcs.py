@@ -1,15 +1,17 @@
 #!/usr/bin/env python
 
-import pandas as pd
-import networkx as nx
-import numpy as np
 import itertools
 import random
-from Bio.PDB import *
-from scipy.spatial.distance import cdist
-import requests
 import re
 from collections import Counter
+
+import networkx as nx
+import numpy as np
+import pandas as pd
+import requests
+from Bio.PDB import *
+from scipy.spatial.distance import cdist
+
 
 def bioplex2graph(bp_PPI_df):
     '''

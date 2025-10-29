@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
-import numpy as np
 import itertools
+
 import networkx as nx
-import matplotlib.pyplot as plt
+import numpy as np
 
 
 def display_PPI_network_for_complex(ax, bp_PPI_df, Corum_DF, Complex_ID, 

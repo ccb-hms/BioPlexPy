@@ -1,6 +1,6 @@
 # setup.py
-from setuptools import setup, find_packages
 from distutils.util import convert_path
+from setuptools import setup
 
 main_ns = {}
 ver_path = convert_path('bioplexpy/version.py')
