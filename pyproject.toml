@@ -25,6 +25,10 @@ dependencies = [
     "scipy",
 ]
 
+[project.optional-dependencies]
+devel = [
+    "ruff",
+]
 
 [tool.hatch.version]
 path = "bioplexpy/__init__.py"
@@ -41,3 +45,10 @@ include = [
 
 [tool.hatch.build.targets.wheel]
 packages = ["bioplexpy"]
+
+[tool.ruff]
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]   # Errors, Pyflakes, Imports
+ignore = ["E501"]          # Example: ignore line length
