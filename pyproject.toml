@@ -6,12 +6,14 @@ build-backend = "hatchling.build"
 
 [project]
 name = "bioplexpy"
-version = "1.0.0"
+version = "1.1.0"
 description = "Python-side access to PPI data from Gygi lab"
 readme = "README.md"
 license = { file="LICENSE" }
 authors = [
-    { name = "Roger Vargas, Ludwig Geistlinger, Tyrone Lee", email = "roger_vargas@g.harvard.edu" },
+    { name = "Roger Vargas", email = "roger_vargas@g.harvard.edu" },
+    { name = "Ludwig Geistlinger", email = "ludwig_geistlinger@hms.harvard.edu" },
+    { name = "Tyrone Lee", email = "tyrone_lee@hms.harvard.edu" },
 ]
 dependencies = [
     "anndata",
