@@ -45,7 +45,7 @@ def display_PPI_network_for_complex(ax, bp_PPI_df, Corum_DF, Complex_ID,
     # (4) Visualize network for specified protein complex
     #     using PPI data (ING2 complex ID: 2851)
     >>> bp_PPI_df = getBioPlex('293T', '3.0')
-    >>> Corum_DF = getCorum('core', 'Human')
+    >>> Corum_DF = getCorum()
     >>> fig, ax = plt.subplots()
     >>> ING2_node_layout = display_PPI_network_for_complex(ax, bp_PPI_df, Corum_DF, 2851, 2300, 3.5)
     >>> ING2_node_layout
