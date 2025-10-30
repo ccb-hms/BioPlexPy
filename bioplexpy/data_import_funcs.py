@@ -136,10 +136,11 @@ def getCorum(complex_set = 'all', organism = 'Human'):
     Parameters
     ----------
     complex_set : str
-        Takes input ['all','human_partial','splice','all'] (default 'all').
+        Takes input ['all','drug','splice','partial'] (default 'all').
         Maps to CORUM files: 'all' -> corum_allComplexes.txt, 
-        'human_partial' -> corum_humanComplexes.txt, 
-        'splice' -> corum_spliceComplexes.txt.
+        'drug' -> corum_drugs.txt, 
+        'splice' -> corum_spliceComplexes.txt,
+        'partial' -> corum_partialComplexes.txt.
     organism : str
         Takes input ['Bovine','Dog','Hamster','Human','MINK','Mammalia',
         'Mouse','Pig','Rabbit','Rat'] (default 'Human').
@@ -164,7 +165,7 @@ def getCorum(complex_set = 'all', organism = 'Human'):
     complex_set_map = {
         'all': 'corum_allComplexes.txt',
         'partial': 'corum_partialComplexes.txt',
-        'human_partial': 'corum_humanComplexes.txt',
+        'drug': 'corum_drugs.txt',
         'splice': 'corum_spliceComplexes.txt'
     }
     
