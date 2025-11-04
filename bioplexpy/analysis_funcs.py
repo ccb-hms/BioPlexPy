@@ -1,15 +1,17 @@
 #!/usr/bin/env python
 
-import pandas as pd
-import networkx as nx
-import numpy as np
 import itertools
 import random
-from Bio.PDB import *
-from scipy.spatial.distance import cdist
-import requests
 import re
 from collections import Counter
+
+import networkx as nx
+import numpy as np
+import pandas as pd
+import requests
+from Bio.PDB import *
+from scipy.spatial.distance import cdist
+
 
 def bioplex2graph(bp_PPI_df):
     '''
@@ -140,7 +142,7 @@ def get_PPI_network_for_complex(bp_PPI_G, Corum_DF, Complex_ID):
     # (4) Get AP-MS interactions as subgraph for a specified protein complex using PPI data
     >>> bp_293t_df = getBioPlex('293T', '3.0')
     >>> bp_293t_G = bioplex2graph(bp_293t_df)
-    >>> Corum_DF = getCorum('core', 'Human')
+    >>> Corum_DF = getCorum()
     >>> ING2_bp_293t_G = get_PPI_network_for_complex(bp_293t_G, Corum_DF, 2851)
     >>> type(ING2_bp_293t_G)
     <class 'networkx.classes.digraph.DiGraph'>
@@ -148,8 +150,8 @@ def get_PPI_network_for_complex(bp_PPI_G, Corum_DF, Complex_ID):
     12
     '''
     # store gene UNIPROT IDs that belong to this complex in a list
-    genes_in_complex_i = (Corum_DF[Corum_DF.ComplexID == Complex_ID].loc[:,
-                                'subunits(UniProt IDs)'].values[0].split(';'))
+    genes_in_complex_i = (Corum_DF[Corum_DF.complex_id == Complex_ID].loc[:,
+                                'subunits_uniprot_id'].values[0].split(';'))
     
     # get subgraph induced by the subset of nodes in this CORUM complex
     bp_complex_i_G = bp_PPI_G.subgraph(genes_in_complex_i)
@@ -183,7 +185,7 @@ def get_DataFrame_from_PPI_network(bp_PPI_G):
     # order of rows in dataframe?
     >>> bp_293t_df = getBioPlex('293T', '3.0')
     >>> bp_293t_G = bioplex2graph(bp_293t_df)
-    >>> Corum_DF = getCorum('core', 'Human')
+    >>> Corum_DF = getCorum()
     >>> ING2_bp_293t_G = get_PPI_network_for_complex(bp_293t_G, Corum_DF, 2851)
     >>> ING2_bp_293t_df = get_DataFrame_from_PPI_network(ING2_bp_293t_G)
     >>> type(ING2_bp_293t_df)
@@ -267,12 +269,12 @@ def get_prop_edges_in_complex_identified(bp_PPI_G, Corum_DF, Complex_ID):
 
     >>> bp_293t_df = getBioPlex('293T', '3.0')
     >>> bp_293t_G = bioplex2graph(bp_293t_df)
-    >>> Corum_DF = getCorum('core', 'Human')
+    >>> Corum_DF = getCorum()
     >>> get_prop_edges_in_complex_identified(bp_293t_G, Corum_DF, 2851)
     '''
     # store gene UNIPROT IDs that belong to this complex in a list
-    genes_in_complex_i = (Corum_DF[Corum_DF.ComplexID == Complex_ID].loc[:,
-                                'subunits(UniProt IDs)'].values[0].split(';'))
+    genes_in_complex_i = (Corum_DF[Corum_DF.complex_id == Complex_ID].loc[:,
+                                'subunits_uniprot_id'].values[0].split(';'))
     
     # get subgraph induced by the subset of nodes in this CORUM complex
     bp_complex_i_G = bp_PPI_G.subgraph(genes_in_complex_i)
@@ -334,7 +336,7 @@ def resampling_test_for_uniprot_list(bp_PPI_G, uniprot_list,
     # (2) Obtain NetworkX graph representation of 293T PPI network
     >>> bp_293t_G = bioplex2graph(bp_293t_df)
     # (3) Obtain CORUM complexes
-    >>> Corum_DF = getCorum('core', 'Human')
+    >>> Corum_DF = getCorum()
     # (4) Get list of uniprots for Arp2/3 complex
     >>> UniProts_Arp_2_3 = get_UniProts_from_CORUM(Corum_DF, Complex_ID = 27)
     # (5) Calculate p-value to check for enrichment of edges in 

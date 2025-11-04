@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
-import numpy as np
 import itertools
+
 import networkx as nx
-import matplotlib.pyplot as plt
+import numpy as np
 
 
 def display_PPI_network_for_complex(ax, bp_PPI_df, Corum_DF, Complex_ID, 
@@ -45,19 +45,19 @@ def display_PPI_network_for_complex(ax, bp_PPI_df, Corum_DF, Complex_ID,
     # (4) Visualize network for specified protein complex
     #     using PPI data (ING2 complex ID: 2851)
     >>> bp_PPI_df = getBioPlex('293T', '3.0')
-    >>> Corum_DF = getCorum('core', 'Human')
+    >>> Corum_DF = getCorum()
     >>> fig, ax = plt.subplots()
     >>> ING2_node_layout = display_PPI_network_for_complex(ax, bp_PPI_df, Corum_DF, 2851, 2300, 3.5)
     >>> ING2_node_layout
     {'A0A024R3R1': array([ 1.00000000e+00, -2.29248628e-09]), 'O75446': array([0.88545603, 0.46472316]), 'P29374': array([0.56806476, 0.82298384]), 'Q09028': array([0.12053671, 0.99270884]), 'Q13547': array([-0.35460481,  0.93501625]), 'Q16576': array([-0.74851068,  0.66312264]), 'Q5PSV4': array([-0.9709418 ,  0.23931567]), 'Q92769': array([-0.9709418 , -0.23931561]), 'Q96ST3': array([-0.7485108 , -0.66312258]), 'Q9H0E3': array([-0.35460499, -0.9350162 ]), 'Q9H160': array([ 0.12053676, -0.99270884]), 'Q9H7L9': array([ 0.56806458, -0.82298396]), 'Q9HCU9': array([ 0.88545603, -0.46472319])}
     '''
     # store uniprot IDs & gene symbols that belong to this complex in a list
-    genes_in_complex_i = (Corum_DF[Corum_DF.ComplexID == Complex_ID]
-                            .loc[:,'subunits(UniProt IDs)'].values[0]
+    genes_in_complex_i = (Corum_DF[Corum_DF.complex_id == Complex_ID]
+                            .loc[:,'subunits_uniprot_id'].values[0]
                             .split(';')) # Uniprot
     
-    gene_symbols_in_complex_i = (Corum_DF[Corum_DF.ComplexID == Complex_ID]
-                                 .loc[:,'subunits(Gene name)'].values[0]
+    gene_symbols_in_complex_i = (Corum_DF[Corum_DF.complex_id == Complex_ID]
+                                 .loc[:,'subunits_gene_name'].values[0]
                                  .split(';')) # Symbol
 
     # filter BioPlex PPI dataframe to include only interactions 

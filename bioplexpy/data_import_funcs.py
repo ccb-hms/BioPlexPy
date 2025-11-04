@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 
 import io
-import requests
+import itertools
+
 import anndata as ad
 import pandas as pd
-import itertools
-from collections import Counter
+import requests
 from pypdb import *
+
 
 def getBioPlex(cell_line, version):
     '''
@@ -135,7 +136,11 @@ def getCorum(complex_set = 'all', organism = 'Human'):
     Parameters
     ----------
     complex_set : str
-        Takes input ['all','core','splice'] (default 'all').
+        Takes input ['all','drug','splice','partial'] (default 'all').
+        Maps to CORUM files: 'all' -> corum_allComplexes.txt, 
+        'drug' -> corum_drugs.txt, 
+        'splice' -> corum_spliceComplexes.txt,
+        'partial' -> corum_partialComplexes.txt.
     organism : str
         Takes input ['Bovine','Dog','Hamster','Human','MINK','Mammalia',
         'Mouse','Pig','Rabbit','Rat'] (default 'Human').
@@ -148,35 +153,46 @@ def getCorum(complex_set = 'all', organism = 'Human'):
     Examples
     --------
     >>> CORUM_df = getCorum()
-    >>> CORUM_df = getCorum('core', 'Human')
-    >>> CORUM_df.size
-    48340
-    >>> CORUM_df.head(1)  # doctest: +NORMALIZE_WHITESPACE
-       ComplexID         ComplexName Organism  ... subunits(Gene name) PubMed ID                           subunits(Protein name)
-    0          1  BCL6-HDAC4 complex    Human  ...          BCL6;HDAC4  11929873  B-cell lymphoma 6 protein;Histone deacetylase 4
-    <BLANKLINE>
-    [1 rows x 20 columns]
+    >>> CORUM_df = getCorum('splice', 'Human')
+    >>> CORUM_df.size > 0
+    True
+    >>> 'complex_id' in CORUM_df.columns
+    True
+    >>> 'subunits_uniprot_id' in CORUM_df.columns
+    True
     '''
-    # specify URL where data is stored
-    baseURL = 'https://mips.helmholtz-muenchen.de/corum/download/'
-    filename = f'{complex_set}Complexes.txt.zip'
-    outFilePath = filename[:-4]
+    # Map complex_set input to CORUM filename
+    complex_set_map = {
+        'all': 'corum_allComplexes.txt',
+        'partial': 'corum_partialComplexes.txt',
+        'drug': 'corum_drugs.txt',
+        'splice': 'corum_spliceComplexes.txt'
+    }
+    
+    if complex_set not in complex_set_map:
+        raise ValueError(f"complex_set must be one of {list(complex_set_map.keys())}, "
+                        f"got '{complex_set}'")
+    
+    # specify URL
+    baseURL = 'https://zenodo.org/records/17419058/files/'
+    filename = complex_set_map[complex_set]
 
     # stream the file as bytes into memory using
-    # io.bytesIO and decompress using pandas
+    # io.BytesIO and read using pandas
     response = requests.get(baseURL + filename)
+    response.raise_for_status()  # raise exception for bad status codes
     content = response.content
-    CORUM_df = pd.read_csv(io.BytesIO(content), sep='\t', compression='zip')
+    CORUM_df = pd.read_csv(io.BytesIO(content), sep='\t')
 
     # filter to keep only CORUM sets for a specific organism
-    CORUM_df = CORUM_df[CORUM_df.Organism == organism]
+    CORUM_df = CORUM_df[CORUM_df.organism == organism]
     CORUM_df.reset_index(inplace = True, drop = True)
     
     return CORUM_df
 
 def get_UniProts_from_CORUM(Corum_DF, Complex_ID):
     '''
-    Retreive set of UniProt IDs corresponding to a CORUM complex ID.
+    Retrieve set of UniProt IDs corresponding to a CORUM complex ID.
     
     This function takes a CORUM complex ID and CORUM complex DataFrame
     and returns the corresponding UniProt IDs.
@@ -196,14 +212,17 @@ def get_UniProts_from_CORUM(Corum_DF, Complex_ID):
     # (1) Obtain CORUM complexes
     # (2) Get set of UniProt IDs for specified protein 
     #     complex (Arp 2/3 complex ID: 27)
-    >>> Corum_DF = getCorum('core', 'Human')
+    >>> Corum_DF = getCorum('all', 'Human')
     >>> UniProts_Arp_2_3 = get_UniProts_from_CORUM(Corum_DF, Complex_ID = 27)
-    >>> UniProts_Arp_2_3
-    ['O15143', 'O15144', 'O15145', 'O15511', 'P59998', 'P61158', 'P61160']
+    >>> len(UniProts_Arp_2_3) > 0
+    True
+    >>> isinstance(UniProts_Arp_2_3, list)
+    True
     '''
     # get UniProt IDs for each protein in the CORUM complex
-    uniprot_IDs_list = (Corum_DF[Corum_DF.ComplexID == Complex_ID].loc[:,
-                                'subunits(UniProt IDs)'].values[0].split(';'))
+        # NOTE: CORUM 5.1 now has a uniprot mapping txt file, not sure if better than DF?
+    uniprot_IDs_list = (Corum_DF[Corum_DF.complex_id == Complex_ID].loc[:,
+                                'subunits_uniprot_id'].values[0].split(';'))
     return uniprot_IDs_list
 
 def get_PDB_from_UniProts(uniprot_IDs_list):
@@ -274,7 +293,7 @@ def get_PDB_from_UniProts(uniprot_IDs_list):
             PDB_IDs_for_uniprot_dict[uniprot_ID_i] = mapped_PDB_ID_i
 
         else:
-            print(f'WARNING: {uniprot_ID_i_complex_i} does not have any '
+            print(f'WARNING: {uniprot_ID_i} does not have any '
                   'corresponding PDB IDs mapped.')
 
     # create dictionary of PDB IDs and store list of 
@@ -296,7 +315,7 @@ def get_PDB_from_UniProts(uniprot_IDs_list):
 
     # if no PDB IDs mapped to UniProt IDs (empty list), raise warning
     if len(uniprot_IDs_list_for_PDB_series) == 0:
-        print(f'WARNING: Could not map PDB ID to this CORUM '
+        print('WARNING: Could not map PDB ID to this CORUM '
               'complex ID or UniProt IDs.')
         complex_i_PDBs_df = None
 

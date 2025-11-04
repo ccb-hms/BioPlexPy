@@ -6,12 +6,14 @@ build-backend = "hatchling.build"
 
 [project]
 name = "bioplexpy"
-version = "1.0.0"
+version = "1.1.0"
 description = "Python-side access to PPI data from Gygi lab"
 readme = "README.md"
 license = { file="LICENSE" }
 authors = [
-    { name = "Roger Vargas, Ludwig Geistlinger, Tyrone Lee", email = "roger_vargas@g.harvard.edu" },
+    { name = "Roger Vargas", email = "roger_vargas@g.harvard.edu" },
+    { name = "Ludwig Geistlinger", email = "ludwig_geistlinger@hms.harvard.edu" },
+    { name = "Tyrone Lee", email = "tyrone_lee@hms.harvard.edu" },
 ]
 dependencies = [
     "anndata",
@@ -25,6 +27,10 @@ dependencies = [
     "scipy",
 ]
 
+[project.optional-dependencies]
+devel = [
+    "ruff",
+]
 
 [tool.hatch.version]
 path = "bioplexpy/__init__.py"
@@ -41,3 +47,10 @@ include = [
 
 [tool.hatch.build.targets.wheel]
 packages = ["bioplexpy"]
+
+[tool.ruff]
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]   # Errors, Pyflakes, Imports
+ignore = ["E501"]          # Example: ignore line length
