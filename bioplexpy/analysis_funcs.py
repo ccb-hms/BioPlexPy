@@ -150,8 +150,8 @@ def get_PPI_network_for_complex(bp_PPI_G, Corum_DF, Complex_ID):
     12
     '''
     # store gene UNIPROT IDs that belong to this complex in a list
-    genes_in_complex_i = (Corum_DF[Corum_DF.ComplexID == Complex_ID].loc[:,
-                                'subunits(UniProt IDs)'].values[0].split(';'))
+    genes_in_complex_i = (Corum_DF[Corum_DF.complex_id == Complex_ID].loc[:,
+                                'subunits_uniprot_id'].values[0].split(';'))
     
     # get subgraph induced by the subset of nodes in this CORUM complex
     bp_complex_i_G = bp_PPI_G.subgraph(genes_in_complex_i)
@@ -273,8 +273,8 @@ def get_prop_edges_in_complex_identified(bp_PPI_G, Corum_DF, Complex_ID):
     >>> get_prop_edges_in_complex_identified(bp_293t_G, Corum_DF, 2851)
     '''
     # store gene UNIPROT IDs that belong to this complex in a list
-    genes_in_complex_i = (Corum_DF[Corum_DF.ComplexID == Complex_ID].loc[:,
-                                'subunits(UniProt IDs)'].values[0].split(';'))
+    genes_in_complex_i = (Corum_DF[Corum_DF.complex_id == Complex_ID].loc[:,
+                                'subunits_uniprot_id'].values[0].split(';'))
     
     # get subgraph induced by the subset of nodes in this CORUM complex
     bp_complex_i_G = bp_PPI_G.subgraph(genes_in_complex_i)

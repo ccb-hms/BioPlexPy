@@ -192,7 +192,7 @@ def getCorum(complex_set = 'all', organism = 'Human'):
 
 def get_UniProts_from_CORUM(Corum_DF, Complex_ID):
     '''
-    Retreive set of UniProt IDs corresponding to a CORUM complex ID.
+    Retrieve set of UniProt IDs corresponding to a CORUM complex ID.
     
     This function takes a CORUM complex ID and CORUM complex DataFrame
     and returns the corresponding UniProt IDs.
@@ -293,7 +293,7 @@ def get_PDB_from_UniProts(uniprot_IDs_list):
             PDB_IDs_for_uniprot_dict[uniprot_ID_i] = mapped_PDB_ID_i
 
         else:
-            print(f'WARNING: {uniprot_ID_i_complex_i} does not have any '
+            print(f'WARNING: {uniprot_ID_i} does not have any '
                   'corresponding PDB IDs mapped.')
 
     # create dictionary of PDB IDs and store list of 
