@@ -354,211 +354,211 @@ def resampling_test_for_uniprot_list(bp_PPI_G, uniprot_list,
     if num_edges_identified_uniprot_list == 0.0:
         print('ERROR: no edges detected in PPI data for this protein list, '
               'p-value could not be computed.')
+        return
 
     # if at least 1 edge in complex, estimate p-value 
     # using resampling test
-    else:
 
-        # number of genes in complex (N genes)
-        num_genes_in_uniprot_list = len(list(bp_uniprots_i_G.nodes))    
+    # number of genes in complex (N genes)
+    num_genes_in_uniprot_list = len(list(bp_uniprots_i_G.nodes))    
 
-        # list of nodes in large network generated from PPI data
-        nodes_in_overall_PPI_network = list(bp_PPI_G.nodes)
-        
-        # bait degrees in large PPI network
-        ########################################
-        # create a filter for uniprot IDs in large network that are baits
-        G_baits_filter = np.array(
-            [bp_PPI_G.nodes[node_i]['bait'] for node_i in bp_PPI_G.nodes])
+    # list of nodes in large network generated from PPI data
+    nodes_in_overall_PPI_network = list(bp_PPI_G.nodes)
+    
+    # bait degrees in large PPI network
+    ########################################
+    # create a filter for uniprot IDs in large network that are baits
+    G_baits_filter = np.array(
+        [bp_PPI_G.nodes[node_i]['bait'] for node_i in bp_PPI_G.nodes])
 
-        # get array of baits in large network
-        G_baits = np.array(nodes_in_overall_PPI_network)[G_baits_filter]
+    # get array of baits in large network
+    G_baits = np.array(nodes_in_overall_PPI_network)[G_baits_filter]
 
-        # get degree of each bait
-        G_baits_degrees = bp_PPI_G.degree(G_baits)
+    # get degree of each bait
+    G_baits_degrees = bp_PPI_G.degree(G_baits)
 
-        # prey degrees in large PPI network
-        ########################################
-        # create a filter for uniprot IDs in complex that are preys
-        G_preys_filter = np.array(
-            [not bp_PPI_G.nodes[node_i]['bait'] for node_i in bp_PPI_G.nodes])
+    # prey degrees in large PPI network
+    ########################################
+    # create a filter for uniprot IDs in complex that are preys
+    G_preys_filter = np.array(
+        [not bp_PPI_G.nodes[node_i]['bait'] for node_i in bp_PPI_G.nodes])
 
-        # get array of preys in large network
-        G_preys = np.array(nodes_in_overall_PPI_network)[G_preys_filter]
+    # get array of preys in large network
+    G_preys = np.array(nodes_in_overall_PPI_network)[G_preys_filter]
 
-        # get degree of each prey
-        G_preys_degrees = bp_PPI_G.degree(G_preys)
+    # get degree of each prey
+    G_preys_degrees = bp_PPI_G.degree(G_preys)
 
-        # bait degrees in complex
-        ########################################
-        # get array of uniprot IDs in complex
-        bp_uniprots_i_G_nodes = np.array(bp_uniprots_i_G.nodes)
+    # bait degrees in complex
+    ########################################
+    # get array of uniprot IDs in complex
+    bp_uniprots_i_G_nodes = np.array(bp_uniprots_i_G.nodes)
 
-        # create a filter for uniprot IDs in complex that are baits
-        bp_uniprots_i_G_baits_filter = np.array(
-            [bp_uniprots_i_G.nodes[node_i]['bait'] for 
-                 node_i in bp_uniprots_i_G.nodes])
-
-        # get list of baits in complex
-        bp_uniprots_i_G_baits = bp_uniprots_i_G_nodes[
-            bp_uniprots_i_G_baits_filter]
-
-        # get degree of each bait
-        bp_uniprots_i_G_baits_degrees = bp_uniprots_i_G.degree(
-                                        bp_uniprots_i_G_baits)
-
-        # get degree distribution of baits
-        bp_uniprots_i_G_baits_degree_distr = Counter(
-            [bp_uniprots_i_G_baits_degrees[uniprot_i] for 
-             uniprot_i in bp_uniprots_i_G_baits])
-        
-        # remove count for any "0" degree baits
-        # would not contribute to edges in S
-        if 0 in bp_uniprots_i_G_baits_degree_distr.keys():
-            del bp_uniprots_i_G_baits_degree_distr[0]
-        
-        # find number of baits in complex
-        
-        # if preserve node degree TRUE
-        # exclude baits w/ degree 0 from bait count
-        # b/c random subgraphs won't have these
-        if preserve_node_degree == True:
-            bp_complex_i_baits_num = (np.sum(list(
-                    bp_uniprots_i_G_baits_degree_distr.values())))
-        
-        # else count all baits in complex
-        else:
-            bp_complex_i_baits_num = (np.sum(bp_uniprots_i_G_baits_filter))
-        
-        # find proportion of baits in complex
-        bp_complex_i_baits_prop = (float(bp_complex_i_baits_num) / 
-                                   float(num_genes_in_uniprot_list))
-
-        # prey degrees in complex
-        ########################################
-        # get array of uniprot IDs in complex
-        bp_uniprots_i_G_nodes = np.array(bp_uniprots_i_G.nodes)
-
-        # create a filter for uniprot IDs in complex that are preys
-        bp_uniprots_i_G_preys_filter = np.array(
-            [not bp_uniprots_i_G.nodes[node_i]['bait'] for 
+    # create a filter for uniprot IDs in complex that are baits
+    bp_uniprots_i_G_baits_filter = np.array(
+        [bp_uniprots_i_G.nodes[node_i]['bait'] for 
              node_i in bp_uniprots_i_G.nodes])
 
-        # get list of prey in complex
-        bp_uniprots_i_G_preys = bp_uniprots_i_G_nodes[
-            bp_uniprots_i_G_preys_filter]
+    # get list of baits in complex
+    bp_uniprots_i_G_baits = bp_uniprots_i_G_nodes[
+        bp_uniprots_i_G_baits_filter]
 
-        # get degree of each prey
-        bp_uniprots_i_G_preys_degrees = bp_uniprots_i_G.degree(
-            bp_uniprots_i_G_preys)
+    # get degree of each bait
+    bp_uniprots_i_G_baits_degrees = bp_uniprots_i_G.degree(
+                                    bp_uniprots_i_G_baits)
 
-        # get degree distribution of preys
-        bp_uniprots_i_G_preys_degree_distr = Counter(
-            [bp_uniprots_i_G_preys_degrees[uniprot_i] for 
-             uniprot_i in bp_uniprots_i_G_preys])
-        
-        # remove count for any "0" degree preys
-        # would not contribute to edges in S
-        if 0 in bp_uniprots_i_G_preys_degree_distr.keys():
-            del bp_uniprots_i_G_preys_degree_distr[0]
-
-        # list that will store number of edges detected in each subgraph
-        num_edges_random_subgraphs = []
-
-        # iterate through num_resamples random subgraphs induced by N nodes
-        S_i = 0
-        while S_i < num_resamples:
-            
-            # if degree distribution option is invoked
-            if preserve_node_degree == True:
-
-                # baits in S
-                ########################################
-                # preserve degrees by randomly pulling baits
-                # with same degree for each uniprot in complex
-                S_rando_baits = []
-                for deg_i, uniprot_count_i in zip(
-                    bp_uniprots_i_G_baits_degree_distr.keys(), 
-                    bp_uniprots_i_G_baits_degree_distr.values()):
-
-                    # get baits in G with same degree
-                    G_baits_with_deg_i = list(
-                        G_baits[np.array(
-                            [G_baits_degrees[bait_i] == deg_i for 
-                             bait_i in G_baits])])
-                    
-                    # choose N baits w/ same degree at random w/o replacement
-                    N_rando_baits_from_PPI_network = random.sample(
-                        G_baits_with_deg_i, uniprot_count_i)
-
-                    # add to list of random baits
-                    S_rando_baits = (S_rando_baits + 
-                                     N_rando_baits_from_PPI_network)
-
-                # preys in S
-                ########################################
-                # preserve degrees by randomly pulling preys
-                # with same degree for each uniprot in complex
-                S_rando_preys = []
-                for deg_i, uniprot_count_i in zip(
-                    bp_uniprots_i_G_preys_degree_distr.keys(), 
-                    bp_uniprots_i_G_preys_degree_distr.values()):
-
-                    # get preys in G with same degree
-                    G_preys_with_deg_i = list(
-                        G_preys[np.array([G_preys_degrees[prey_i] == deg_i for 
-                                          prey_i in G_preys])])
-
-                    # choose N preys w/ same degree at random w/o replacement
-                    N_rando_preys_from_PPI_network = random.sample(
-                        G_preys_with_deg_i, uniprot_count_i)
-
-                    # add to list of random preys
-                    S_rando_preys = (S_rando_preys + 
-                                     N_rando_preys_from_PPI_network)
-
-                # combine random Preys & Baits while preserving degrees
-                N_rando_nodes_from_PPI_network = S_rando_baits + S_rando_preys
-
-            # if degree distribution not invoked
-            elif preserve_node_degree == False:
-
-                # choose N genes at random without replacement
-                N_rando_nodes_from_PPI_network = random.sample(
-                    nodes_in_overall_PPI_network, num_genes_in_uniprot_list)
-
-            # get subgraph induced by random subset of nodes
-            bp_PPI_S = bp_PPI_G.subgraph(N_rando_nodes_from_PPI_network)
-
-            # check to see if nodes in subgraph have the same proportion of 
-            # baits as the subgraph induced by the CORUM complex
-            # excluding baits that had degree 0
-            bp_S_baits_num = np.sum(
-                [bp_PPI_S.nodes[node_i]['bait'] for node_i in bp_PPI_S.nodes])
-            bp_S_baits_prop = (float(bp_S_baits_num) / 
+    # get degree distribution of baits
+    bp_uniprots_i_G_baits_degree_distr = Counter(
+        [bp_uniprots_i_G_baits_degrees[uniprot_i] for 
+         uniprot_i in bp_uniprots_i_G_baits])
+    
+    # remove count for any "0" degree baits
+    # would not contribute to edges in S
+    if 0 in bp_uniprots_i_G_baits_degree_distr.keys():
+        del bp_uniprots_i_G_baits_degree_distr[0]
+    
+    # find number of baits in complex
+    
+    # if preserve node degree TRUE
+    # exclude baits w/ degree 0 from bait count
+    # b/c random subgraphs won't have these
+    if preserve_node_degree == True:
+        bp_complex_i_baits_num = (np.sum(list(
+                bp_uniprots_i_G_baits_degree_distr.values())))
+    
+    # else count all baits in complex
+    else:
+        bp_complex_i_baits_num = (np.sum(bp_uniprots_i_G_baits_filter))
+    
+    # find proportion of baits in complex
+    bp_complex_i_baits_prop = (float(bp_complex_i_baits_num) / 
                                float(num_genes_in_uniprot_list))
 
-            # proportion of baits in CORUM complex & S are the same (+/- 10%)
-            if abs(bp_complex_i_baits_prop - bp_S_baits_prop) <= 0.1:
+    # prey degrees in complex
+    ########################################
+    # get array of uniprot IDs in complex
+    bp_uniprots_i_G_nodes = np.array(bp_uniprots_i_G.nodes)
 
-                # calculate the number of edges detected within 
-                # subgraph induced by random nodes
-                num_edges_S = float(len(list(bp_PPI_S.edges)))
+    # create a filter for uniprot IDs in complex that are preys
+    bp_uniprots_i_G_preys_filter = np.array(
+        [not bp_uniprots_i_G.nodes[node_i]['bait'] for 
+         node_i in bp_uniprots_i_G.nodes])
 
-                # store in list that contains resamplings
-                num_edges_random_subgraphs.append(num_edges_S)
+    # get list of prey in complex
+    bp_uniprots_i_G_preys = bp_uniprots_i_G_nodes[
+        bp_uniprots_i_G_preys_filter]
 
-                # count this as a resampling
-                S_i += 1
+    # get degree of each prey
+    bp_uniprots_i_G_preys_degrees = bp_uniprots_i_G.degree(
+        bp_uniprots_i_G_preys)
 
-        # convert list to numpy array
-        num_edges_random_subgraphs = np.array(num_edges_random_subgraphs)
+    # get degree distribution of preys
+    bp_uniprots_i_G_preys_degree_distr = Counter(
+        [bp_uniprots_i_G_preys_degrees[uniprot_i] for 
+         uniprot_i in bp_uniprots_i_G_preys])
+    
+    # remove count for any "0" degree preys
+    # would not contribute to edges in S
+    if 0 in bp_uniprots_i_G_preys_degree_distr.keys():
+        del bp_uniprots_i_G_preys_degree_distr[0]
 
-        # calculate proportion of subgraphs that had more edges than edges 
-        # detected in complex (p-val from resampling test)
-        p_val = (float(np.sum(num_edges_random_subgraphs 
-                                >= num_edges_identified_uniprot_list) + 1.0) / 
-                            (float(num_resamples) + 1.0))
+    # list that will store number of edges detected in each subgraph
+    num_edges_random_subgraphs = []
+
+    # iterate through num_resamples random subgraphs induced by N nodes
+    S_i = 0
+    while S_i < num_resamples:
+        
+        # if degree distribution option is invoked
+        if preserve_node_degree == True:
+
+            # baits in S
+            ########################################
+            # preserve degrees by randomly pulling baits
+            # with same degree for each uniprot in complex
+            S_rando_baits = []
+            for deg_i, uniprot_count_i in zip(
+                bp_uniprots_i_G_baits_degree_distr.keys(), 
+                bp_uniprots_i_G_baits_degree_distr.values()):
+
+                # get baits in G with same degree
+                G_baits_with_deg_i = list(
+                    G_baits[np.array(
+                        [G_baits_degrees[bait_i] == deg_i for 
+                         bait_i in G_baits])])
+                
+                # choose N baits w/ same degree at random w/o replacement
+                N_rando_baits_from_PPI_network = random.sample(
+                    G_baits_with_deg_i, uniprot_count_i)
+
+                # add to list of random baits
+                S_rando_baits = (S_rando_baits + 
+                                 N_rando_baits_from_PPI_network)
+
+            # preys in S
+            ########################################
+            # preserve degrees by randomly pulling preys
+            # with same degree for each uniprot in complex
+            S_rando_preys = []
+            for deg_i, uniprot_count_i in zip(
+                bp_uniprots_i_G_preys_degree_distr.keys(), 
+                bp_uniprots_i_G_preys_degree_distr.values()):
+
+                # get preys in G with same degree
+                G_preys_with_deg_i = list(
+                    G_preys[np.array([G_preys_degrees[prey_i] == deg_i for 
+                                      prey_i in G_preys])])
+
+                # choose N preys w/ same degree at random w/o replacement
+                N_rando_preys_from_PPI_network = random.sample(
+                    G_preys_with_deg_i, uniprot_count_i)
+
+                # add to list of random preys
+                S_rando_preys = (S_rando_preys + 
+                                 N_rando_preys_from_PPI_network)
+
+            # combine random Preys & Baits while preserving degrees
+            N_rando_nodes_from_PPI_network = S_rando_baits + S_rando_preys
+
+        # if degree distribution not invoked
+        elif preserve_node_degree == False:
+
+            # choose N genes at random without replacement
+            N_rando_nodes_from_PPI_network = random.sample(
+                nodes_in_overall_PPI_network, num_genes_in_uniprot_list)
+
+        # get subgraph induced by random subset of nodes
+        bp_PPI_S = bp_PPI_G.subgraph(N_rando_nodes_from_PPI_network)
+
+        # check to see if nodes in subgraph have the same proportion of 
+        # baits as the subgraph induced by the CORUM complex
+        # excluding baits that had degree 0
+        bp_S_baits_num = np.sum(
+            [bp_PPI_S.nodes[node_i]['bait'] for node_i in bp_PPI_S.nodes])
+        bp_S_baits_prop = (float(bp_S_baits_num) / 
+                           float(num_genes_in_uniprot_list))
+
+        # proportion of baits in CORUM complex & S are the same (+/- 10%)
+        if abs(bp_complex_i_baits_prop - bp_S_baits_prop) <= 0.1:
+
+            # calculate the number of edges detected within 
+            # subgraph induced by random nodes
+            num_edges_S = float(len(list(bp_PPI_S.edges)))
+
+            # store in list that contains resamplings
+            num_edges_random_subgraphs.append(num_edges_S)
+
+            # count this as a resampling
+            S_i += 1
+
+    # convert list to numpy array
+    num_edges_random_subgraphs = np.array(num_edges_random_subgraphs)
+
+    # calculate proportion of subgraphs that had more edges than edges 
+    # detected in complex (p-val from resampling test)
+    p_val = (float(np.sum(num_edges_random_subgraphs 
+                            >= num_edges_identified_uniprot_list) + 1.0) / 
+                        (float(num_resamples) + 1.0))
     return p_val
 
 def get_interacting_chains_from_PDB(PDB_ID_structure_i, protein_structure_dir, dist_threshold):
